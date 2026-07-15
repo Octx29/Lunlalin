@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lunlalin Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg: #0f1a12; --bg2: #162119; --bg3: #1d2e22;
+  --mint: #C1EBE9; --sage: #8AA68D; --dark-green: #2B4533;
+  --text: #d0ddd4; --text-dim: #8a9b8e; --white: #fff;
+  --radius: 12px; --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.3);
+}
+body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+/* --- Layout --- */
+.app { display:flex; min-height:100vh; }
+.sidebar { width:260px; background:var(--bg2); border-right:1px solid rgba(255,255,255,0.05); padding:24px 0; position:fixed; top:0; left:0; bottom:0; overflow-y:auto; z-index:100; }
+.sidebar__logo { padding:0 24px 28px; border-bottom:1px solid rgba(255,255,255,0.05); margin-bottom:16px; }
+.sidebar__logo h1 { font-size:1.3rem; color:var(--mint); font-weight:700; }
+.sidebar__logo span { font-size:0.75rem; color:var(--text-dim); }
+
+.sidebar__nav { display:flex; flex-direction:column; gap:2px; padding:0 12px; }
+.sidebar__nav a {
+  display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:var(--radius-sm);
+  color:var(--text-dim); font-size:0.9rem; font-weight:500; text-decoration:none;
+  transition: all 0.2s ease;
+}
+.sidebar__nav a:hover { background:var(--bg3); color:var(--text); }
+.sidebar__nav a.active { background:var(--dark-green); color:var(--mint); }
+.sidebar__nav a i { width:20px; text-align:center; font-size:1rem; }
+
+.main { margin-left:260px; flex:1; padding:32px; }
+
+/* --- Header --- */
+.header { display:flex; justify-content:space-between; align-items:center; margin-bottom:32px; }
+.header h2 { font-size:1.6rem; color:var(--white); }
+.header__actions { display:flex; gap:12px; }
+
+/* --- Buttons --- */
+.btn {
+  display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border-radius:999px;
+  font-size:0.88rem; font-weight:600; border:none; cursor:pointer; transition:all 0.25s ease;
+}
+.btn--primary { background:var(--mint); color:var(--bg); }
+.btn--primary:hover { background:var(--white); transform:translateY(-1px); box-shadow:0 4px 16px rgba(193,235,233,0.3); }
+.btn--success { background:#22c55e; color:#fff; }
+.btn--success:hover { background:#16a34a; }
+.btn--danger { background:#ef4444; color:#fff; }
+.btn--danger:hover { background:#dc2626; }
+.btn--ghost { background:transparent; color:var(--mint); border:1px solid rgba(193,235,233,0.3); }
+.btn--ghost:hover { background:rgba(193,235,233,0.1); }
+.btn--sm { padding:6px 14px; font-size:0.8rem; }
+
+/* --- Card --- */
+.card {
+  background:var(--bg2); border:1px solid rgba(255,255,255,0.05); border-radius:var(--radius);
+  padding:28px; margin-bottom:24px; transition:border-color 0.3s;
+}
+.card:hover { border-color:rgba(193,235,233,0.15); }
+.card__title { font-size:1.1rem; color:var(--white); margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+.card__title i { color:var(--sage); }
+
+/* --- Form Elements --- */
+.form-group { margin-bottom:18px; }
+.form-group label { display:block; font-size:0.8rem; font-weight:600; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
+.form-group input, .form-group textarea, .form-group select {
+  width:100%; padding:12px 14px; background:var(--bg); border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--radius-sm); color:var(--white); font-family:inherit; font-size:0.92rem;
+  transition:border-color 0.3s;
+}
+.form-group input:focus, .form-group textarea:focus { outline:none; border-color:var(--mint); box-shadow:0 0 0 3px rgba(193,235,233,0.1); }
+.form-group textarea { resize:vertical; min-height:80px; }
+
+/* --- Image Upload --- */
+.img-upload { position:relative; border:2px dashed rgba(255,255,255,0.15); border-radius:var(--radius); padding:40px; text-align:center; cursor:pointer; transition:all 0.3s; }
+.img-upload:hover { border-color:var(--mint); background:rgba(193,235,233,0.03); }
+.img-upload input { position:absolute; inset:0; opacity:0; cursor:pointer; }
+.img-upload i { font-size:2rem; color:var(--sage); margin-bottom:10px; display:block; }
+.img-upload p { color:var(--text-dim); font-size:0.85rem; }
+.img-upload p span { color:var(--mint); font-weight:600; }
+
+.img-preview { display:flex; flex-wrap:wrap; gap:12px; margin-top:16px; }
+.img-preview__item { position:relative; width:100px; height:100px; border-radius:var(--radius-sm); overflow:hidden; border:1px solid rgba(255,255,255,0.1); }
+.img-preview__item img { width:100%; height:100%; object-fit:cover; }
+.img-preview__item .remove-img {
+  position:absolute; top:4px; right:4px; width:22px; height:22px; border-radius:50%;
+  background:rgba(239,68,68,0.9); color:#fff; border:none; cursor:pointer; font-size:0.7rem;
+  display:flex; align-items:center; justify-content:center;
+}
+
+/* --- Feature list editor --- */
+.feature-list { display:flex; flex-direction:column; gap:8px; }
+.feature-item { display:flex; gap:8px; }
+.feature-item input { flex:1; }
+.feature-item button { flex-shrink:0; }
+
+/* --- Grid --- */
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; }
+
+/* --- Promo Cards Admin --- */
+.promo-card-editor { background:var(--bg3); border-radius:var(--radius); padding:20px; margin-bottom:16px; border:1px solid rgba(255,255,255,0.05); }
+.promo-card-editor__header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.promo-card-editor__header h4 { color:var(--mint); font-size:0.95rem; }
+
+/* --- Review editor --- */
+.review-editor { background:var(--bg3); border-radius:var(--radius); padding:20px; margin-bottom:12px; border:1px solid rgba(255,255,255,0.05); }
+
+/* --- Gallery grid --- */
+.gallery-admin { display:grid; grid-template-columns:repeat(auto-fill, minmax(140px,1fr)); gap:12px; }
+.gallery-admin__item { position:relative; aspect-ratio:1; border-radius:var(--radius-sm); overflow:hidden; border:1px solid rgba(255,255,255,0.08); }
+.gallery-admin__item img { width:100%; height:100%; object-fit:cover; }
+.gallery-admin__item .remove-img { position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:50%; background:rgba(239,68,68,0.9); color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+
+/* --- Toast --- */
+.toast {
+  position:fixed; bottom:30px; right:30px; padding:14px 24px; border-radius:var(--radius);
+  color:#fff; font-weight:600; font-size:0.9rem; z-index:9999; transform:translateY(100px); opacity:0;
+  transition:all 0.4s cubic-bezier(.22,1,.36,1); display:flex; align-items:center; gap:10px;
+}
+.toast.show { transform:translateY(0); opacity:1; }
+.toast--success { background:#22c55e; }
+.toast--error { background:#ef4444; }
+.toast--info { background:var(--dark-green); border:1px solid var(--mint); }
+
+/* --- Status bar --- */
+.status-bar {
+  position:fixed; bottom:0; left:260px; right:0; padding:10px 32px; background:var(--bg2);
+  border-top:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; align-items:center;
+  font-size:0.8rem; color:var(--text-dim); z-index:90;
+}
+.status-bar__branch { color:var(--mint); font-weight:600; }
+.status-bar__changes { color:#fbbf24; }
+
+/* --- Section panels --- */
+.section-panel { display:none; }
+.section-panel.active { display:block; }
+
+/* --- Loading overlay --- */
+.loading { position:fixed; inset:0; background:rgba(15,26,18,0.8); backdrop-filter:blur(8px); z-index:9998; display:none; align-items:center; justify-content:center; flex-direction:column; gap:16px; }
+.loading.show { display:flex; }
+.loading i { font-size:2.5rem; color:var(--mint); animation:spin 1s linear infinite; }
+.loading p { color:var(--text); font-size:1rem; }
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* --- Responsive --- */
+@media(max-width:768px) {
+  .sidebar { transform:translateX(-100%); transition:transform 0.3s; z-index:200; }
+  .sidebar.open { transform:translateX(0); }
+  .main { margin-left:0; padding:16px; }
+  .grid-2, .grid-3 { grid-template-columns:1fr; }
+  .status-bar { left:0; }
+  .mobile-toggle { display:flex !important; }
+}
+.mobile-toggle { display:none; position:fixed; top:16px; left:16px; z-index:300; width:40px; height:40px; border-radius:50%; background:var(--bg2); border:1px solid rgba(255,255,255,0.1); color:var(--mint); align-items:center; justify-content:center; cursor:pointer; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Mobile toggle -->
+  <button class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar__logo">
+      <h1>🌿 Lunlalin</h1>
+      <span>Admin Panel</span>
+    </div>
+    <nav class="sidebar__nav">
+      <a href="#" data-section="hero" class="active"><i class="fa-solid fa-home"></i> Hero / หน้าแรก</a>
+      <a href="#" data-section="about"><i class="fa-solid fa-heart"></i> About / เกี่ยวกับ</a>
+      <a href="#" data-section="services"><i class="fa-solid fa-spa"></i> Services / บริการ</a>
+      <a href="#" data-section="promotions"><i class="fa-solid fa-tags"></i> Promotions / โปรโมชั่น</a>
+      <a href="#" data-section="gallery"><i class="fa-solid fa-images"></i> Gallery / แกลเลอรี่</a>
+      <a href="#" data-section="reviews"><i class="fa-solid fa-star"></i> Reviews / รีวิว</a>
+      <a href="#" data-section="banner"><i class="fa-brands fa-instagram"></i> Instagram Banner</a>
+      <a href="#" data-section="contact"><i class="fa-solid fa-phone"></i> Contact / ติดต่อ</a>
+      <a href="#" data-section="media"><i class="fa-solid fa-folder-open"></i> Media / จัดการรูป</a>
+    </nav>
+  </aside>
+
+  <!-- Main content -->
+  <div class="main">
+    <div class="header">
+      <h2 id="pageTitle">Hero / หน้าแรก</h2>
+      <div class="header__actions">
+        <button class="btn btn--ghost" onclick="previewSite()"><i class="fa-solid fa-eye"></i> Preview</button>
+        <button class="btn btn--primary" onclick="saveContent()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+        <button class="btn btn--success" onclick="pushToGit()"><i class="fa-brands fa-github"></i> Push to Git</button>
+      </div>
+    </div>
+
+    <!-- ===== HERO SECTION ===== -->
+    <div class="section-panel active" id="panel-hero">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-heading"></i> Hero Content</div>
+        <div class="form-group">
+          <label>Eyebrow Text (ข้อความเล็กด้านบน)</label>
+          <input type="text" id="hero-eyebrow">
+        </div>
+        <div class="form-group">
+          <label>Title (หัวข้อหลัก — ใช้ &lt;em&gt; สำหรับตัวเอียง)</label>
+          <input type="text" id="hero-title">
+        </div>
+        <div class="form-group">
+          <label>Description (คำอธิบาย)</label>
+          <textarea id="hero-description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Badge Text</label>
+          <input type="text" id="hero-badge">
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-image"></i> Hero Image (รูปหน้าแรก)</div>
+        <div class="img-upload" id="heroImageUpload">
+          <input type="file" accept="image/*" onchange="uploadImageFor('hero-image', this)">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <p>ลากรูปมาวาง หรือ <span>คลิกเพื่อเลือกไฟล์</span></p>
+        </div>
+        <div class="img-preview" id="hero-image-preview"></div>
+      </div>
+    </div>
+
+    <!-- ===== ABOUT SECTION ===== -->
+    <div class="section-panel" id="panel-about">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-pen"></i> About Content</div>
+        <div class="form-group">
+          <label>Eyebrow</label>
+          <input type="text" id="about-eyebrow">
+        </div>
+        <div class="form-group">
+          <label>Title</label>
+          <input type="text" id="about-title">
+        </div>
+        <div class="form-group">
+          <label>Paragraph 1</label>
+          <textarea id="about-p1" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Paragraph 2</label>
+          <textarea id="about-p2" rows="3"></textarea>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-image"></i> About Images</div>
+        <div class="grid-2">
+          <div>
+            <label style="font-size:0.8rem;color:var(--text-dim);margin-bottom:6px;display:block">Main Image</label>
+            <div class="img-upload" style="padding:20px">
+              <input type="file" accept="image/*" onchange="uploadImageFor('about-main', this)">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p><span>Click to upload</span></p>
+            </div>
+            <div class="img-preview" id="about-main-preview"></div>
+          </div>
+          <div>
+            <label style="font-size:0.8rem;color:var(--text-dim);margin-bottom:6px;display:block">Accent Image</label>
+            <div class="img-upload" style="padding:20px">
+              <input type="file" accept="image/*" onchange="uploadImageFor('about-accent', this)">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p><span>Click to upload</span></p>
+            </div>
+            <div class="img-preview" id="about-accent-preview"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== SERVICES SECTION ===== -->
+    <div class="section-panel" id="panel-services">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-pen"></i> Services Header</div>
+        <div class="form-group"><label>Eyebrow</label><input type="text" id="services-eyebrow"></div>
+        <div class="form-group"><label>Title</label><input type="text" id="services-title"></div>
+        <div class="form-group"><label>Subtitle</label><textarea id="services-subtitle" rows="2"></textarea></div>
+      </div>
+      <div id="services-list"></div>
+    </div>
+
+    <!-- ===== PROMOTIONS SECTION ===== -->
+    <div class="section-panel" id="panel-promotions">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-pen"></i> Promotions Header</div>
+        <div class="form-group"><label>Eyebrow</label><input type="text" id="promo-eyebrow"></div>
+        <div class="form-group"><label>Title</label><input type="text" id="promo-title"></div>
+        <div class="form-group"><label>Subtitle</label><textarea id="promo-subtitle" rows="2"></textarea></div>
+      </div>
+      <div id="promo-list"></div>
+      <button class="btn btn--ghost" onclick="addPromo()" style="margin-top:12px"><i class="fa-solid fa-plus"></i> Add Package</button>
+    </div>
+
+    <!-- ===== GALLERY SECTION ===== -->
+    <div class="section-panel" id="panel-gallery">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-images"></i> Gallery Images</div>
+        <div class="img-upload" id="galleryUpload">
+          <input type="file" accept="image/*" multiple onchange="uploadGalleryImages(this)">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <p>ลากรูปมาวาง หรือ <span>คลิกเพื่อเลือกหลายรูป</span></p>
+        </div>
+        <div class="gallery-admin" id="gallery-grid" style="margin-top:20px"></div>
+      </div>
+    </div>
+
+    <!-- ===== REVIEWS SECTION ===== -->
+    <div class="section-panel" id="panel-reviews">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-star"></i> Reviews</div>
+        <div id="reviews-list"></div>
+        <button class="btn btn--ghost" onclick="addReview()" style="margin-top:12px"><i class="fa-solid fa-plus"></i> Add Review</button>
+      </div>
+    </div>
+
+    <!-- ===== BANNER SECTION ===== -->
+    <div class="section-panel" id="panel-banner">
+      <div class="card">
+        <div class="card__title"><i class="fa-brands fa-instagram"></i> Instagram Banner</div>
+        <div class="form-group"><label>Eyebrow</label><input type="text" id="banner-eyebrow"></div>
+        <div class="form-group"><label>Title</label><input type="text" id="banner-title"></div>
+        <div class="form-group"><label>Description</label><textarea id="banner-desc" rows="2"></textarea></div>
+      </div>
+    </div>
+
+    <!-- ===== CONTACT SECTION ===== -->
+    <div class="section-panel" id="panel-contact">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-phone"></i> Contact Info</div>
+        <div class="grid-2">
+          <div class="form-group"><label>Phone</label><input type="text" id="contact-phone"></div>
+          <div class="form-group"><label>LINE ID</label><input type="text" id="contact-line"></div>
+          <div class="form-group"><label>Instagram</label><input type="text" id="contact-ig"></div>
+          <div class="form-group"><label>Location</label><input type="text" id="contact-location"></div>
+        </div>
+        <div class="form-group"><label>Google Maps Embed URL</label><input type="text" id="contact-map"></div>
+      </div>
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-clock"></i> Business Hours</div>
+        <div id="hours-list"></div>
+      </div>
+    </div>
+
+    <!-- ===== MEDIA SECTION ===== -->
+    <div class="section-panel" id="panel-media">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-folder-open"></i> Uploaded Images</div>
+        <div class="img-upload" style="margin-bottom:20px">
+          <input type="file" accept="image/*" multiple onchange="uploadMediaFiles(this)">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <p>ลากรูปมาวาง หรือ <span>คลิกเพื่ออัปโหลด</span></p>
+        </div>
+        <div class="gallery-admin" id="media-grid"></div>
+      </div>
+    </div>
+
+    <div style="height:60px"></div>
+  </div>
+</div>
+
+<!-- Status bar -->
+<div class="status-bar">
+  <div>Branch: <span class="status-bar__branch" id="currentBranch">—</span></div>
+  <div>Changes: <span class="status-bar__changes" id="changeCount">0</span></div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading" id="loading">
+  <i class="fa-solid fa-spinner"></i>
+  <p id="loadingText">Loading...</p>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+let content = {};
+
+// === Init ===
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadContent();
+  await loadGitStatus();
+  setupNav();
+});
+
+// === Navigation ===
+function setupNav() {
+  document.querySelectorAll('.sidebar__nav a').forEach(a => {
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      document.querySelectorAll('.sidebar__nav a').forEach(n => n.classList.remove('active'));
+      a.classList.add('active');
+      const section = a.dataset.section;
+      document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(`panel-${section}`).classList.add('active');
+      document.getElementById('pageTitle').textContent = a.textContent.trim();
+      // Close mobile sidebar
+      document.querySelector('.sidebar').classList.remove('open');
+    });
+  });
+}
+
+// === Load content from server ===
+async function loadContent() {
+  showLoading('Loading content...');
+  try {
+    const res = await fetch('/api/content');
+    content = await res.json();
+    populateFields();
+  } catch (e) {
+    toast('Cannot load content', 'error');
+  }
+  hideLoading();
+}
+
+// === Populate all fields ===
+function populateFields() {
+  // Hero
+  setVal('hero-eyebrow', content.hero?.eyebrow);
+  setVal('hero-title', content.hero?.title);
+  setVal('hero-description', content.hero?.description);
+  setVal('hero-badge', content.hero?.badge);
+  if (content.hero?.heroImage) showImagePreview('hero-image', content.hero.heroImage);
+
+  // About
+  setVal('about-eyebrow', content.about?.eyebrow);
+  setVal('about-title', content.about?.title);
+  setVal('about-p1', content.about?.paragraphs?.[0]);
+  setVal('about-p2', content.about?.paragraphs?.[1]);
+  if (content.about?.imageMain) showImagePreview('about-main', content.about.imageMain);
+  if (content.about?.imageAccent) showImagePreview('about-accent', content.about.imageAccent);
+
+  // Services
+  setVal('services-eyebrow', content.services?.eyebrow);
+  setVal('services-title', content.services?.title);
+  setVal('services-subtitle', content.services?.subtitle);
+  renderServices();
+
+  // Promotions
+  setVal('promo-eyebrow', content.promotions?.eyebrow);
+  setVal('promo-title', content.promotions?.title);
+  setVal('promo-subtitle', content.promotions?.subtitle);
+  renderPromos();
+
+  // Gallery
+  renderGallery();
+
+  // Reviews
+  renderReviews();
+
+  // Banner
+  setVal('banner-eyebrow', content.banner?.eyebrow);
+  setVal('banner-title', content.banner?.title);
+  setVal('banner-desc', content.banner?.description);
+
+  // Contact
+  setVal('contact-phone', content.contact?.phone);
+  setVal('contact-line', content.contact?.line);
+  setVal('contact-ig', content.contact?.instagram);
+  setVal('contact-location', content.contact?.location);
+  setVal('contact-map', content.contact?.mapUrl);
+  renderHours();
+}
+
+// === Render Services ===
+function renderServices() {
+  const list = document.getElementById('services-list');
+  list.innerHTML = '';
+  (content.services?.items || []).forEach((s, i) => {
+    list.innerHTML += `
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-spa"></i> Service ${i+1}: ${s.name}</div>
+        <div class="form-group"><label>Name</label><input type="text" id="svc-name-${i}" value="${esc(s.name)}"></div>
+        <div class="form-group"><label>Description</label><textarea id="svc-desc-${i}" rows="2">${esc(s.description)}</textarea></div>
+        <div class="form-group"><label>Image</label>
+          <div class="img-upload" style="padding:16px">
+            <input type="file" accept="image/*" onchange="uploadImageFor('svc-img-${i}', this)">
+            <p><span>Upload image</span></p>
+          </div>
+          <div class="img-preview" id="svc-img-${i}-preview">${s.image ? `<div class="img-preview__item"><img src="${s.image}"></div>` : ''}</div>
+        </div>
+      </div>`;
+  });
+}
+
+// === Render Promos ===
+function renderPromos() {
+  const list = document.getElementById('promo-list');
+  list.innerHTML = '';
+  (content.promotions?.items || []).forEach((p, i) => {
+    list.innerHTML += `
+      <div class="promo-card-editor">
+        <div class="promo-card-editor__header">
+          <h4>${p.name}</h4>
+          <button class="btn btn--danger btn--sm" onclick="removePromo(${i})"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div class="grid-2">
+          <div class="form-group"><label>Name</label><input type="text" id="promo-name-${i}" value="${esc(p.name)}"></div>
+          <div class="form-group"><label>Price</label><input type="text" id="promo-price-${i}" value="${esc(p.price)}"></div>
+        </div>
+        <div class="form-group"><label>Description</label><input type="text" id="promo-desc-${i}" value="${esc(p.description)}"></div>
+        <div class="form-group"><label>Tag (e.g. "Most Popular" — leave blank if no tag)</label><input type="text" id="promo-tag-${i}" value="${esc(p.tag || '')}"></div>
+        <div class="form-group">
+          <label>Featured?</label>
+          <select id="promo-featured-${i}">
+            <option value="false" ${!p.featured ? 'selected':''}>No</option>
+            <option value="true" ${p.featured ? 'selected':''}>Yes — แสดงเป็นการ์ดใหญ่</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Features (1 ต่อบรรทัด)</label>
+          <textarea id="promo-features-${i}" rows="3">${(p.features||[]).join('\n')}</textarea>
+        </div>
+      </div>`;
+  });
+}
+
+function addPromo() {
+  content.promotions.items.push({ name:'New Package', description:'', price:'0', currency:'฿', features:[], featured:false, tag:'' });
+  renderPromos();
+}
+function removePromo(i) {
+  content.promotions.items.splice(i, 1);
+  renderPromos();
+}
+
+// === Render Gallery ===
+function renderGallery() {
+  const grid = document.getElementById('gallery-grid');
+  grid.innerHTML = '';
+  (content.gallery?.images || []).forEach((img, i) => {
+    grid.innerHTML += `
+      <div class="gallery-admin__item">
+        <img src="${img}" alt="Gallery ${i+1}">
+        <button class="remove-img" onclick="removeGalleryImage(${i})"><i class="fa-solid fa-xmark"></i></button>
+      </div>`;
+  });
+}
+
+async function uploadGalleryImages(input) {
+  for (const file of input.files) {
+    const fd = new FormData();
+    fd.append('image', file);
+    try {
+      const res = await fetch('/api/upload', { method:'POST', body:fd });
+      const data = await res.json();
+      if (data.url) {
+        if (!content.gallery.images) content.gallery.images = [];
+        content.gallery.images.push(data.url);
+      }
+    } catch(e) { toast('Upload failed', 'error'); }
+  }
+  renderGallery();
+  toast('Images uploaded!', 'success');
+}
+
+function removeGalleryImage(i) {
+  content.gallery.images.splice(i, 1);
+  renderGallery();
+}
+
+// === Render Reviews ===
+function renderReviews() {
+  const list = document.getElementById('reviews-list');
+  list.innerHTML = '';
+  (content.reviews?.items || []).forEach((r, i) => {
+    list.innerHTML += `
+      <div class="review-editor">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <span style="color:var(--mint);font-weight:600">Review ${i+1}</span>
+          <button class="btn btn--danger btn--sm" onclick="removeReview(${i})"><i class="fa-solid fa-trash"></i></button>
+        </div>
+        <div class="grid-2">
+          <div class="form-group"><label>Author</label><input type="text" id="rev-author-${i}" value="${esc(r.author)}"></div>
+          <div class="form-group"><label>Role</label><input type="text" id="rev-role-${i}" value="${esc(r.role)}"></div>
+        </div>
+        <div class="form-group"><label>Stars (1-5)</label><input type="number" id="rev-stars-${i}" value="${r.stars}" min="1" max="5"></div>
+        <div class="form-group"><label>Review Text</label><textarea id="rev-text-${i}" rows="2">${esc(r.text)}</textarea></div>
+      </div>`;
+  });
+}
+
+function addReview() {
+  content.reviews.items.push({ stars:5, text:'', author:'', role:'' });
+  renderReviews();
+}
+function removeReview(i) {
+  content.reviews.items.splice(i, 1);
+  renderReviews();
+}
+
+// === Render Hours ===
+function renderHours() {
+  const list = document.getElementById('hours-list');
+  list.innerHTML = '';
+  (content.contact?.hours || []).forEach((h, i) => {
+    list.innerHTML += `
+      <div class="grid-2" style="margin-bottom:12px">
+        <div class="form-group"><label>Days</label><input type="text" id="hours-days-${i}" value="${esc(h.days)}"></div>
+        <div class="form-group"><label>Time</label><input type="text" id="hours-time-${i}" value="${esc(h.time)}"></div>
+      </div>`;
+  });
+}
+
+// === Collect & Save ===
+function collectContent() {
+  // Hero
+  content.hero.eyebrow = getVal('hero-eyebrow');
+  content.hero.title = getVal('hero-title');
+  content.hero.description = getVal('hero-description');
+  content.hero.badge = getVal('hero-badge');
+
+  // About
+  content.about.eyebrow = getVal('about-eyebrow');
+  content.about.title = getVal('about-title');
+  content.about.paragraphs = [getVal('about-p1'), getVal('about-p2')];
+
+  // Services header
+  content.services.eyebrow = getVal('services-eyebrow');
+  content.services.title = getVal('services-title');
+  content.services.subtitle = getVal('services-subtitle');
+  content.services.items.forEach((s, i) => {
+    s.name = getVal(`svc-name-${i}`);
+    s.description = getVal(`svc-desc-${i}`);
+  });
+
+  // Promotions
+  content.promotions.eyebrow = getVal('promo-eyebrow');
+  content.promotions.title = getVal('promo-title');
+  content.promotions.subtitle = getVal('promo-subtitle');
+  content.promotions.items.forEach((p, i) => {
+    p.name = getVal(`promo-name-${i}`);
+    p.price = getVal(`promo-price-${i}`);
+    p.description = getVal(`promo-desc-${i}`);
+    p.tag = getVal(`promo-tag-${i}`);
+    p.featured = getVal(`promo-featured-${i}`) === 'true';
+    const featuresText = getVal(`promo-features-${i}`);
+    p.features = featuresText ? featuresText.split('\n').filter(Boolean) : [];
+  });
+
+  // Reviews
+  content.reviews.items.forEach((r, i) => {
+    r.author = getVal(`rev-author-${i}`);
+    r.role = getVal(`rev-role-${i}`);
+    r.stars = parseInt(getVal(`rev-stars-${i}`)) || 5;
+    r.text = getVal(`rev-text-${i}`);
+  });
+
+  // Banner
+  content.banner.eyebrow = getVal('banner-eyebrow');
+  content.banner.title = getVal('banner-title');
+  content.banner.description = getVal('banner-desc');
+
+  // Contact
+  content.contact.phone = getVal('contact-phone');
+  content.contact.line = getVal('contact-line');
+  content.contact.instagram = getVal('contact-ig');
+  content.contact.location = getVal('contact-location');
+  content.contact.mapUrl = getVal('contact-map');
+  content.contact.hours = (content.contact.hours || []).map((h, i) => ({
+    days: getVal(`hours-days-${i}`),
+    time: getVal(`hours-time-${i}`)
+  }));
+}
+
+async function saveContent() {
+  collectContent();
+  showLoading('Saving...');
+  try {
+    const res = await fetch('/api/content', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(content)
+    });
+    const data = await res.json();
+    if (data.success) {
+      toast('Saved successfully! ✨', 'success');
+      await loadGitStatus();
+    } else {
+      toast('Save failed', 'error');
+    }
+  } catch (e) {
+    toast('Save error: ' + e.message, 'error');
+  }
+  hideLoading();
+}
+
+// === Push to Git ===
+async function pushToGit() {
+  collectContent();
+  // Save first
+  await fetch('/api/content', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(content)
+  });
+
+  showLoading('Pushing to GitHub...');
+  try {
+    const res = await fetch('/api/push', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: `Update content — ${new Date().toLocaleString('th-TH')}` })
+    });
+    const data = await res.json();
+    if (data.success) {
+      toast(data.message + ' 🚀', 'success');
+      await loadGitStatus();
+    } else {
+      toast('Push failed: ' + data.error, 'error');
+    }
+  } catch (e) {
+    toast('Push error: ' + e.message, 'error');
+  }
+  hideLoading();
+}
+
+// === Image Upload ===
+async function uploadImageFor(fieldId, input) {
+  if (!input.files[0]) return;
+  const fd = new FormData();
+  fd.append('image', input.files[0]);
+  try {
+    const res = await fetch('/api/upload', { method:'POST', body:fd });
+    const data = await res.json();
+    if (data.url) {
+      // Store in content
+      if (fieldId === 'hero-image') content.hero.heroImage = data.url;
+      else if (fieldId === 'about-main') content.about.imageMain = data.url;
+      else if (fieldId === 'about-accent') content.about.imageAccent = data.url;
+      else if (fieldId.startsWith('svc-img-')) {
+        const idx = parseInt(fieldId.split('-')[2]);
+        content.services.items[idx].image = data.url;
+      }
+      showImagePreview(fieldId, data.url);
+      toast('Image uploaded! ✨', 'success');
+    }
+  } catch(e) { toast('Upload failed', 'error'); }
+}
+
+function showImagePreview(fieldId, url) {
+  const el = document.getElementById(fieldId + '-preview');
+  if (el) el.innerHTML = `<div class="img-preview__item"><img src="${url}"><button class="remove-img" onclick="clearImage('${fieldId}')"><i class="fa-solid fa-xmark"></i></button></div>`;
+}
+
+function clearImage(fieldId) {
+  if (fieldId === 'hero-image') content.hero.heroImage = '';
+  else if (fieldId === 'about-main') content.about.imageMain = '';
+  else if (fieldId === 'about-accent') content.about.imageAccent = '';
+  const el = document.getElementById(fieldId + '-preview');
+  if (el) el.innerHTML = '';
+}
+
+// === Media page ===
+async function loadMedia() {
+  try {
+    const res = await fetch('/api/images');
+    const images = await res.json();
+    const grid = document.getElementById('media-grid');
+    grid.innerHTML = '';
+    images.forEach(img => {
+      grid.innerHTML += `
+        <div class="gallery-admin__item">
+          <img src="${img.url}" alt="${img.name}">
+          <button class="remove-img" onclick="deleteMedia('${img.name}')"><i class="fa-solid fa-xmark"></i></button>
+        </div>`;
+    });
+  } catch(e) {}
+}
+
+async function uploadMediaFiles(input) {
+  for (const file of input.files) {
+    const fd = new FormData();
+    fd.append('image', file);
+    await fetch('/api/upload', { method:'POST', body:fd });
+  }
+  toast('Uploaded!', 'success');
+  loadMedia();
+}
+
+async function deleteMedia(name) {
+  await fetch(`/api/images/${name}`, { method:'DELETE' });
+  loadMedia();
+}
+
+// Load media when that tab is opened
+document.querySelector('[data-section="media"]').addEventListener('click', loadMedia);
+
+// === Git status ===
+async function loadGitStatus() {
+  try {
+    const res = await fetch('/api/git-status');
+    const data = await res.json();
+    document.getElementById('currentBranch').textContent = data.branch || '—';
+    document.getElementById('changeCount').textContent = data.changes?.length || 0;
+  } catch(e) {}
+}
+
+// === Preview ===
+function previewSite() {
+  window.open('/', '_blank');
+}
+
+// === Utilities ===
+function setVal(id, val) { const el = document.getElementById(id); if (el) el.value = val || ''; }
+function getVal(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+function esc(s) { return (s||'').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+function showLoading(text) { document.getElementById('loadingText').textContent = text; document.getElementById('loading').classList.add('show'); }
+function hideLoading() { document.getElementById('loading').classList.remove('show'); }
+
+function toast(msg, type='info') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast toast--${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
