@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lunlalin Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0f1a12;--bg2:#162119;--bg3:#1d2e22;
+  --mint:#C1EBE9;--sage:#8AA68D;--dk:#2B4533;
+  --txt:#d0ddd4;--dim:#8a9b8e;--wh:#fff;
+  --r:12px;--rs:8px;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh;-webkit-tap-highlight-color:transparent}
+
+/* Login */
+.login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.login__box{background:var(--bg2);border:1px solid rgba(255,255,255,.06);border-radius:var(--r);padding:40px 32px;max-width:400px;width:100%;text-align:center}
+.login__box h1{color:var(--mint);font-size:1.4rem;margin-bottom:8px}
+.login__box p{color:var(--dim);font-size:.85rem;margin-bottom:24px}
+.login__box input{width:100%;padding:14px 16px;background:var(--bg);border:1px solid rgba(255,255,255,.1);border-radius:var(--rs);color:var(--wh);font-size:.95rem;margin-bottom:16px}
+.login__box input:focus{outline:none;border-color:var(--mint)}
+.login__box button{width:100%}
+.login__error{color:#ef4444;font-size:.82rem;margin-top:8px;min-height:20px}
+
+/* App layout */
+.app{display:none;min-height:100vh}
+
+/* Top bar (mobile-friendly) */
+.topbar{position:sticky;top:0;z-index:100;background:rgba(22,33,25,.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.05);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.topbar__left{display:flex;align-items:center;gap:10px}
+.topbar__logo{color:var(--mint);font-weight:700;font-size:1.1rem}
+.topbar__branch{font-size:.7rem;background:var(--dk);color:var(--mint);padding:3px 10px;border-radius:999px}
+.topbar__actions{display:flex;gap:8px}
+
+/* Tabs (horizontal scrollable) */
+.tabs{display:flex;overflow-x:auto;gap:4px;padding:8px 16px;background:var(--bg2);border-bottom:1px solid rgba(255,255,255,.04);-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 16px;border-radius:999px;font-size:.8rem;font-weight:500;color:var(--dim);background:transparent;border:none;cursor:pointer;white-space:nowrap;transition:all .2s}
+.tab.active{background:var(--dk);color:var(--mint)}
+.tab:hover{color:var(--txt)}
+
+/* Content area */
+.content{padding:16px;max-width:800px;margin:0 auto;padding-bottom:100px}
+
+/* Cards */
+.card{background:var(--bg2);border:1px solid rgba(255,255,255,.05);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.card__title{font-size:.95rem;color:var(--wh);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card__title i{color:var(--sage);font-size:.9rem}
+
+/* Form */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.72rem;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
+.fg input,.fg textarea,.fg select{width:100%;padding:11px 14px;background:var(--bg);border:1px solid rgba(255,255,255,.1);border-radius:var(--rs);color:var(--wh);font-family:inherit;font-size:.9rem}
+.fg input:focus,.fg textarea:focus{outline:none;border-color:var(--mint);box-shadow:0 0 0 3px rgba(193,235,233,.08)}
+.fg textarea{resize:vertical;min-height:70px}
+.fg select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238a9b8e' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.row{grid-template-columns:1fr}}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;font-size:.82rem;font-weight:600;border:none;cursor:pointer;transition:all .25s}
+.btn--p{background:var(--mint);color:var(--bg)}
+.btn--p:hover{background:var(--wh)}
+.btn--s{background:#22c55e;color:#fff}
+.btn--s:hover{background:#16a34a}
+.btn--g{background:transparent;color:var(--mint);border:1px solid rgba(193,235,233,.3)}
+.btn--g:hover{background:rgba(193,235,233,.08)}
+.btn--d{background:rgba(239,68,68,.15);color:#ef4444;border:1px solid rgba(239,68,68,.2)}
+.btn--d:hover{background:#ef4444;color:#fff}
+.btn--sm{padding:6px 12px;font-size:.75rem}
+.btn--block{width:100%;justify-content:center}
+
+/* Image upload */
+.img-up{border:2px dashed rgba(255,255,255,.12);border-radius:var(--r);padding:28px 16px;text-align:center;cursor:pointer;position:relative;transition:all .3s}
+.img-up:hover{border-color:var(--mint);background:rgba(193,235,233,.02)}
+.img-up input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.img-up i{font-size:1.6rem;color:var(--sage);margin-bottom:6px}
+.img-up p{color:var(--dim);font-size:.8rem}
+.img-up p span{color:var(--mint);font-weight:600}
+
+.img-prev{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.img-prev__item{position:relative;width:80px;height:80px;border-radius:var(--rs);overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+.img-prev__item img{width:100%;height:100%;object-fit:cover}
+.img-prev__item .rm{position:absolute;top:3px;right:3px;width:20px;height:20px;border-radius:50%;background:rgba(239,68,68,.9);color:#fff;border:none;cursor:pointer;font-size:.6rem;display:flex;align-items:center;justify-content:center}
+
+/* Gallery grid */
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
+.gal-item{position:relative;aspect-ratio:1;border-radius:var(--rs);overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.gal-item img{width:100%;height:100%;object-fit:cover}
+.gal-item .rm{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(239,68,68,.9);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.65rem}
+
+/* Promo / Review editors */
+.editor-block{background:var(--bg3);border-radius:var(--r);padding:16px;margin-bottom:12px;border:1px solid rgba(255,255,255,.04)}
+.editor-block__head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.editor-block__head h4{color:var(--mint);font-size:.85rem}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);padding:12px 22px;border-radius:var(--r);color:#fff;font-weight:600;font-size:.85rem;z-index:9999;opacity:0;transition:all .4s cubic-bezier(.22,1,.36,1);white-space:nowrap;max-width:90vw}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toast--ok{background:#22c55e}
+.toast--err{background:#ef4444}
+.toast--info{background:var(--dk);border:1px solid var(--mint)}
+
+/* Panels */
+.panel{display:none}.panel.active{display:block}
+
+/* Loading */
+.ld{position:fixed;inset:0;background:rgba(15,26,18,.85);backdrop-filter:blur(8px);z-index:9998;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.ld.show{display:flex}
+.ld i{font-size:2rem;color:var(--mint);animation:sp 1s linear infinite}
+.ld p{color:var(--txt);font-size:.9rem}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* Bottom save bar (mobile) */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(22,33,25,.95);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.05);padding:10px 16px;display:flex;gap:8px;z-index:90}
+.bottom-bar .btn{flex:1;justify-content:center}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="login" id="loginPage">
+  <div class="login__box">
+    <h1>🌿 Lunlalin Admin</h1>
+    <p>ใส่ GitHub Token เพื่อเข้าสู่ระบบ</p>
+    <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxx...">
+    <button class="btn btn--p btn--block" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ</button>
+    <div class="login__error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div class="app" id="appPage">
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="topbar__left">
+      <span class="topbar__logo">🌿 Lunlalin</span>
+      <span class="topbar__branch" id="branchBadge">admin</span>
+    </div>
+    <div class="topbar__actions">
+      <button class="btn btn--g btn--sm" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-tab="hero"><i class="fa-solid fa-home"></i> Home</button>
+    <button class="tab" data-tab="about"><i class="fa-solid fa-heart"></i> About</button>
+    <button class="tab" data-tab="services"><i class="fa-solid fa-spa"></i> Services</button>
+    <button class="tab" data-tab="promos"><i class="fa-solid fa-tags"></i> Promos</button>
+    <button class="tab" data-tab="gallery"><i class="fa-solid fa-images"></i> Gallery</button>
+    <button class="tab" data-tab="reviews"><i class="fa-solid fa-star"></i> Reviews</button>
+    <button class="tab" data-tab="banner"><i class="fa-brands fa-instagram"></i> IG</button>
+    <button class="tab" data-tab="contact"><i class="fa-solid fa-phone"></i> Contact</button>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+
+    <!-- HERO -->
+    <div class="panel active" id="p-hero">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-heading"></i> Hero Content</div>
+        <div class="fg"><label>Eyebrow</label><input type="text" id="h-eye"></div>
+        <div class="fg"><label>Title (ใช้ &lt;em&gt; สำหรับตัวเอียง)</label><input type="text" id="h-ttl"></div>
+        <div class="fg"><label>Description</label><textarea id="h-desc" rows="3"></textarea></div>
+        <div class="fg"><label>Badge</label><input type="text" id="h-badge"></div>
+      </div>
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-image"></i> Hero Image</div>
+        <div class="img-up"><input type="file" accept="image/*" onchange="upImg('heroImage',this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>เลือกรูป</span></p></div>
+        <div class="img-prev" id="prev-heroImage"></div>
+      </div>
+    </div>
+
+    <!-- ABOUT -->
+    <div class="panel" id="p-about">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-pen"></i> About</div>
+        <div class="fg"><label>Eyebrow</label><input type="text" id="a-eye"></div>
+        <div class="fg"><label>Title</label><input type="text" id="a-ttl"></div>
+        <div class="fg"><label>Paragraph 1</label><textarea id="a-p1" rows="3"></textarea></div>
+        <div class="fg"><label>Paragraph 2</label><textarea id="a-p2" rows="3"></textarea></div>
+      </div>
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-image"></i> Images</div>
+        <div class="fg"><label>Main Image</label>
+          <div class="img-up"><input type="file" accept="image/*" onchange="upImg('aboutMain',this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>เลือกรูป</span></p></div>
+          <div class="img-prev" id="prev-aboutMain"></div>
+        </div>
+        <div class="fg"><label>Accent Image</label>
+          <div class="img-up"><input type="file" accept="image/*" onchange="upImg('aboutAccent',this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>เลือกรูป</span></p></div>
+          <div class="img-prev" id="prev-aboutAccent"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="panel" id="p-services">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-spa"></i> Services Header</div>
+        <div class="fg"><label>Eyebrow</label><input type="text" id="s-eye"></div>
+        <div class="fg"><label>Title</label><input type="text" id="s-ttl"></div>
+        <div class="fg"><label>Subtitle</label><textarea id="s-sub" rows="2"></textarea></div>
+      </div>
+      <div id="svc-list"></div>
+    </div>
+
+    <!-- PROMOS -->
+    <div class="panel" id="p-promos">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-tags"></i> Promotions Header</div>
+        <div class="fg"><label>Eyebrow</label><input type="text" id="pm-eye"></div>
+        <div class="fg"><label>Title</label><input type="text" id="pm-ttl"></div>
+        <div class="fg"><label>Subtitle</label><textarea id="pm-sub" rows="2"></textarea></div>
+      </div>
+      <div id="pm-list"></div>
+      <button class="btn btn--g btn--block" onclick="addPromo()" style="margin-top:8px"><i class="fa-solid fa-plus"></i> เพิ่ม Package</button>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="panel" id="p-gallery">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-images"></i> Gallery</div>
+        <div class="img-up"><input type="file" accept="image/*" multiple onchange="upGallery(this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>เลือกหลายรูป</span></p></div>
+        <div class="gal-grid" id="gal-grid" style="margin-top:16px"></div>
+      </div>
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="panel" id="p-reviews">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-star"></i> Reviews</div>
+        <div id="rv-list"></div>
+        <button class="btn btn--g btn--block" onclick="addReview()" style="margin-top:8px"><i class="fa-solid fa-plus"></i> เพิ่มรีวิว</button>
+      </div>
+    </div>
+
+    <!-- BANNER -->
+    <div class="panel" id="p-banner">
+      <div class="card">
+        <div class="card__title"><i class="fa-brands fa-instagram"></i> Instagram Banner</div>
+        <div class="fg"><label>Eyebrow</label><input type="text" id="b-eye"></div>
+        <div class="fg"><label>Title</label><input type="text" id="b-ttl"></div>
+        <div class="fg"><label>Description</label><textarea id="b-desc" rows="2"></textarea></div>
+      </div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="panel" id="p-contact">
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-phone"></i> Contact</div>
+        <div class="row">
+          <div class="fg"><label>Phone</label><input type="text" id="c-phone"></div>
+          <div class="fg"><label>LINE ID</label><input type="text" id="c-line"></div>
+        </div>
+        <div class="row">
+          <div class="fg"><label>Instagram</label><input type="text" id="c-ig"></div>
+          <div class="fg"><label>Location</label><input type="text" id="c-loc"></div>
+        </div>
+        <div class="fg"><label>Google Maps Embed URL</label><input type="text" id="c-map"></div>
+      </div>
+      <div class="card">
+        <div class="card__title"><i class="fa-solid fa-clock"></i> Hours</div>
+        <div id="hr-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="bottom-bar">
+    <button class="btn btn--p" onclick="saveAll()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+    <button class="btn btn--s" onclick="pushAll()"><i class="fa-brands fa-github"></i> Push</button>
+  </div>
+</div>
+
+<!-- Loading -->
+<div class="ld" id="ld"><i class="fa-solid fa-spinner"></i><p id="ldTxt">Loading...</p></div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const OWNER='Octx29', REPO='Lunlalin', BRANCH='admin', DATA_PATH='data/content.json';
+let TOKEN='', content={}, dataSha='';
+
+// ===== GitHub API =====
+async function ghGet(path){
+  const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`,{headers:{Authorization:`Bearer ${TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
+  if(!r.ok) throw new Error(`GitHub GET ${r.status}`);
+  return r.json();
+}
+async function ghPut(path,content64,sha,msg){
+  const body={message:msg,content:content64,branch:BRANCH};
+  if(sha)body.sha=sha;
+  const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`,{method:'PUT',headers:{Authorization:`Bearer ${TOKEN}`,'Content-Type':'application/json','Accept':'application/vnd.github.v3+json'},body:JSON.stringify(body)});
+  if(!r.ok){const e=await r.json();throw new Error(e.message||`PUT ${r.status}`);}
+  return r.json();
+}
+
+// ===== Login =====
+async function doLogin(){
+  TOKEN=document.getElementById('tokenInput').value.trim();
+  if(!TOKEN){document.getElementById('loginError').textContent='กรุณาใส่ Token';return}
+  showLd('Checking token...');
+  try{
+    const r=await fetch('https://api.github.com/user',{headers:{Authorization:`Bearer ${TOKEN}`}});
+    if(!r.ok)throw new Error('Invalid token');
+    localStorage.setItem('ll_token',TOKEN);
+    await loadData();
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('appPage').style.display='block';
+  }catch(e){
+    document.getElementById('loginError').textContent='Token ไม่ถูกต้อง กรุณาลองใหม่';
+  }
+  hideLd();
+}
+
+function logout(){localStorage.removeItem('ll_token');location.reload()}
+
+// Auto-login
+(async()=>{
+  const t=localStorage.getItem('ll_token');
+  if(t){document.getElementById('tokenInput').value=t;await doLogin()}
+})();
+
+// ===== Load data =====
+async function loadData(){
+  showLd('Loading content...');
+  try{
+    const file=await ghGet(DATA_PATH);
+    dataSha=file.sha;
+    content=JSON.parse(atob(file.content.replace(/\n/g,'')));
+    populate();
+  }catch(e){toast('Load error: '+e.message,'err')}
+  hideLd();
+}
+
+// ===== Populate =====
+function populate(){
+  sv('h-eye',content.hero?.eyebrow);sv('h-ttl',content.hero?.title);sv('h-desc',content.hero?.description);sv('h-badge',content.hero?.badge);
+  if(content.hero?.heroImage)showPrev('heroImage',content.hero.heroImage);
+  sv('a-eye',content.about?.eyebrow);sv('a-ttl',content.about?.title);sv('a-p1',content.about?.paragraphs?.[0]);sv('a-p2',content.about?.paragraphs?.[1]);
+  if(content.about?.imageMain)showPrev('aboutMain',content.about.imageMain);
+  if(content.about?.imageAccent)showPrev('aboutAccent',content.about.imageAccent);
+  sv('s-eye',content.services?.eyebrow);sv('s-ttl',content.services?.title);sv('s-sub',content.services?.subtitle);
+  renderSvc();
+  sv('pm-eye',content.promotions?.eyebrow);sv('pm-ttl',content.promotions?.title);sv('pm-sub',content.promotions?.subtitle);
+  renderPm();
+  renderGal();renderRv();
+  sv('b-eye',content.banner?.eyebrow);sv('b-ttl',content.banner?.title);sv('b-desc',content.banner?.description);
+  sv('c-phone',content.contact?.phone);sv('c-line',content.contact?.line);sv('c-ig',content.contact?.instagram);sv('c-loc',content.contact?.location);sv('c-map',content.contact?.mapUrl);
+  renderHr();
+}
+
+// ===== Render functions =====
+function renderSvc(){
+  const el=document.getElementById('svc-list');el.innerHTML='';
+  (content.services?.items||[]).forEach((s,i)=>{
+    el.innerHTML+=`<div class="card"><div class="card__title"><i class="fa-solid fa-spa"></i> ${esc(s.name)}</div>
+    <div class="fg"><label>Name</label><input type="text" id="sv-n-${i}" value="${esc(s.name)}"></div>
+    <div class="fg"><label>Description</label><textarea id="sv-d-${i}" rows="2">${esc(s.description)}</textarea></div>
+    <div class="fg"><label>Image</label><div class="img-up"><input type="file" accept="image/*" onchange="upSvcImg(${i},this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>Upload</span></p></div>
+    <div class="img-prev" id="prev-svc-${i}">${s.image?`<div class="img-prev__item"><img src="${s.image}"></div>`:''}</div></div></div>`;
+  });
+}
+
+function renderPm(){
+  const el=document.getElementById('pm-list');el.innerHTML='';
+  (content.promotions?.items||[]).forEach((p,i)=>{
+    el.innerHTML+=`<div class="editor-block"><div class="editor-block__head"><h4>${esc(p.name)}</h4><button class="btn btn--d btn--sm" onclick="rmPm(${i})"><i class="fa-solid fa-trash"></i></button></div>
+    <div class="row"><div class="fg"><label>Name</label><input type="text" id="pm-n-${i}" value="${esc(p.name)}"></div><div class="fg"><label>Price</label><input type="text" id="pm-pr-${i}" value="${esc(p.price)}"></div></div>
+    <div class="fg"><label>Description</label><input type="text" id="pm-d-${i}" value="${esc(p.description)}"></div>
+    <div class="fg"><label>Tag (e.g. "Most Popular")</label><input type="text" id="pm-t-${i}" value="${esc(p.tag||'')}"></div>
+    <div class="fg"><label>Featured?</label><select id="pm-f-${i}"><option value="false"${!p.featured?' selected':''}>No</option><option value="true"${p.featured?' selected':''}>Yes</option></select></div>
+    <div class="fg"><label>Features (1 ต่อบรรทัด)</label><textarea id="pm-ft-${i}" rows="3">${(p.features||[]).join('\n')}</textarea></div></div>`;
+  });
+}
+function addPromo(){content.promotions.items.push({name:'New',description:'',price:'0',currency:'฿',features:[],featured:false,tag:''});renderPm()}
+function rmPm(i){content.promotions.items.splice(i,1);renderPm()}
+
+function renderGal(){
+  const el=document.getElementById('gal-grid');el.innerHTML='';
+  (content.gallery?.images||[]).forEach((img,i)=>{
+    el.innerHTML+=`<div class="gal-item"><img src="${img}"><button class="rm" onclick="rmGal(${i})"><i class="fa-solid fa-xmark"></i></button></div>`;
+  });
+}
+function rmGal(i){content.gallery.images.splice(i,1);renderGal()}
+
+function renderRv(){
+  const el=document.getElementById('rv-list');el.innerHTML='';
+  (content.reviews?.items||[]).forEach((r,i)=>{
+    el.innerHTML+=`<div class="editor-block"><div class="editor-block__head"><span style="color:var(--mint);font-weight:600">Review ${i+1}</span><button class="btn btn--d btn--sm" onclick="rmRv(${i})"><i class="fa-solid fa-trash"></i></button></div>
+    <div class="row"><div class="fg"><label>Author</label><input type="text" id="rv-a-${i}" value="${esc(r.author)}"></div><div class="fg"><label>Role</label><input type="text" id="rv-r-${i}" value="${esc(r.role)}"></div></div>
+    <div class="fg"><label>Stars (1-5)</label><input type="number" id="rv-s-${i}" value="${r.stars}" min="1" max="5"></div>
+    <div class="fg"><label>Text</label><textarea id="rv-t-${i}" rows="2">${esc(r.text)}</textarea></div></div>`;
+  });
+}
+function addReview(){content.reviews.items.push({stars:5,text:'',author:'',role:''});renderRv()}
+function rmRv(i){content.reviews.items.splice(i,1);renderRv()}
+
+function renderHr(){
+  const el=document.getElementById('hr-list');el.innerHTML='';
+  (content.contact?.hours||[]).forEach((h,i)=>{
+    el.innerHTML+=`<div class="row" style="margin-bottom:10px"><div class="fg"><label>Days</label><input type="text" id="hr-d-${i}" value="${esc(h.days)}"></div><div class="fg"><label>Time</label><input type="text" id="hr-t-${i}" value="${esc(h.time)}"></div></div>`;
+  });
+}
+
+// ===== Collect =====
+function collect(){
+  content.hero.eyebrow=gv('h-eye');content.hero.title=gv('h-ttl');content.hero.description=gv('h-desc');content.hero.badge=gv('h-badge');
+  content.about.eyebrow=gv('a-eye');content.about.title=gv('a-ttl');content.about.paragraphs=[gv('a-p1'),gv('a-p2')];
+  content.services.eyebrow=gv('s-eye');content.services.title=gv('s-ttl');content.services.subtitle=gv('s-sub');
+  content.services.items.forEach((s,i)=>{s.name=gv(`sv-n-${i}`);s.description=gv(`sv-d-${i}`)});
+  content.promotions.eyebrow=gv('pm-eye');content.promotions.title=gv('pm-ttl');content.promotions.subtitle=gv('pm-sub');
+  content.promotions.items.forEach((p,i)=>{p.name=gv(`pm-n-${i}`);p.price=gv(`pm-pr-${i}`);p.description=gv(`pm-d-${i}`);p.tag=gv(`pm-t-${i}`);p.featured=gv(`pm-f-${i}`)==='true';const ft=gv(`pm-ft-${i}`);p.features=ft?ft.split('\n').filter(Boolean):[]});
+  content.reviews.items.forEach((r,i)=>{r.author=gv(`rv-a-${i}`);r.role=gv(`rv-r-${i}`);r.stars=parseInt(gv(`rv-s-${i}`))||5;r.text=gv(`rv-t-${i}`)});
+  content.banner.eyebrow=gv('b-eye');content.banner.title=gv('b-ttl');content.banner.description=gv('b-desc');
+  content.contact.phone=gv('c-phone');content.contact.line=gv('c-line');content.contact.instagram=gv('c-ig');content.contact.location=gv('c-loc');content.contact.mapUrl=gv('c-map');
+  content.contact.hours=(content.contact.hours||[]).map((h,i)=>({days:gv(`hr-d-${i}`),time:gv(`hr-t-${i}`)}));
+}
+
+// ===== Save =====
+async function saveAll(){
+  collect();showLd('Saving...');
+  try{
+    const json=JSON.stringify(content,null,2);
+    const b64=btoa(unescape(encodeURIComponent(json)));
+    const res=await ghPut(DATA_PATH,b64,dataSha,'Update content');
+    dataSha=res.content.sha;
+    toast('Saved! ✨','ok');
+  }catch(e){toast('Error: '+e.message,'err')}
+  hideLd();
+}
+
+// ===== Push (save = push for GitHub API) =====
+async function pushAll(){
+  collect();showLd('Pushing to GitHub...');
+  try{
+    const json=JSON.stringify(content,null,2);
+    const b64=btoa(unescape(encodeURIComponent(json)));
+    const res=await ghPut(DATA_PATH,b64,dataSha,`Update — ${new Date().toLocaleString('th-TH')}`);
+    dataSha=res.content.sha;
+    toast('Pushed to GitHub! 🚀','ok');
+  }catch(e){toast('Error: '+e.message,'err')}
+  hideLd();
+}
+
+// ===== Image upload to GitHub =====
+async function upImg(key,input){
+  if(!input.files[0])return;
+  showLd('Uploading...');
+  try{
+    const file=input.files[0];
+    const b64=await fileToBase64(file);
+    const fname=`images/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+    await ghPut(fname,b64.split(',')[1],null,`Upload ${fname}`);
+    const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${fname}`;
+    if(key==='heroImage')content.hero.heroImage=url;
+    else if(key==='aboutMain')content.about.imageMain=url;
+    else if(key==='aboutAccent')content.about.imageAccent=url;
+    showPrev(key,url);
+    toast('Uploaded! ✨','ok');
+  }catch(e){toast('Upload error: '+e.message,'err')}
+  hideLd();
+}
+
+async function upSvcImg(idx,input){
+  if(!input.files[0])return;
+  showLd('Uploading...');
+  try{
+    const file=input.files[0];
+    const b64=await fileToBase64(file);
+    const fname=`images/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+    await ghPut(fname,b64.split(',')[1],null,`Upload ${fname}`);
+    const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${fname}`;
+    content.services.items[idx].image=url;
+    const prev=document.getElementById(`prev-svc-${idx}`);
+    if(prev)prev.innerHTML=`<div class="img-prev__item"><img src="${url}"></div>`;
+    toast('Uploaded! ✨','ok');
+  }catch(e){toast('Upload error: '+e.message,'err')}
+  hideLd();
+}
+
+async function upGallery(input){
+  showLd('Uploading...');
+  for(const file of input.files){
+    try{
+      const b64=await fileToBase64(file);
+      const fname=`images/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+      await ghPut(fname,b64.split(',')[1],null,`Upload ${fname}`);
+      const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${fname}`;
+      if(!content.gallery.images)content.gallery.images=[];
+      content.gallery.images.push(url);
+    }catch(e){toast('Upload error','err')}
+  }
+  renderGal();
+  toast('Gallery updated! ✨','ok');
+  hideLd();
+}
+
+function showPrev(key,url){
+  const el=document.getElementById('prev-'+key);
+  if(el)el.innerHTML=`<div class="img-prev__item"><img src="${url}"><button class="rm" onclick="clearImg('${key}')"><i class="fa-solid fa-xmark"></i></button></div>`;
+}
+function clearImg(key){
+  if(key==='heroImage')content.hero.heroImage='';
+  else if(key==='aboutMain')content.about.imageMain='';
+  else if(key==='aboutAccent')content.about.imageAccent='';
+  const el=document.getElementById('prev-'+key);if(el)el.innerHTML='';
+}
+
+// ===== Tabs =====
+document.getElementById('tabs').addEventListener('click',e=>{
+  const t=e.target.closest('.tab');if(!t)return;
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');
+  document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+  document.getElementById('p-'+t.dataset.tab).classList.add('active');
+});
+
+// ===== Utils =====
+function sv(id,v){const el=document.getElementById(id);if(el)el.value=v||''}
+function gv(id){const el=document.getElementById(id);return el?el.value:''}
+function esc(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function fileToBase64(f){return new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(f)})}
+function showLd(t){document.getElementById('ldTxt').textContent=t;document.getElementById('ld').classList.add('show')}
+function hideLd(){document.getElementById('ld').classList.remove('show')}
+function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className=`toast toast--${t} show`;setTimeout(()=>el.classList.remove('show'),3000)}
+</script>
+</body>
+</html>
