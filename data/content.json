@@ -1,0 +1,123 @@
+{
+  "hero": {
+    "eyebrow": "Bangkok's Premium Studio",
+    "title": "Lashes, Nails & <em>Waxing</em>",
+    "description": "At Lunlalin, every service is hand-crafted with premium materials and meticulous technique — for a look that feels effortless and beautiful.",
+    "heroImage": "",
+    "badge": "Est. Bangkok",
+    "stats": [
+      { "value": "5,000+", "label": "Happy Clients" },
+      { "value": "4.9", "label": "Average Rating" },
+      { "value": "100%", "label": "Safe Materials" }
+    ]
+  },
+  "about": {
+    "eyebrow": "Our Story",
+    "title": "Crafted with care, worn with confidence",
+    "paragraphs": [
+      "Lunlalin began with a simple belief: artistry should feel like a ritual of care, not just a beauty transaction. From a single studio chair in Bangkok, we built a reputation on precision technique and immaculate hygiene.",
+      "Every technician at Lunlalin is trained to high-quality standards. We use only certified, hypoallergenic materials, because your comfort is as important to us as how beautiful you look walking out the door."
+    ],
+    "values": [
+      "Premium technique & standards",
+      "Certified, high-quality materials",
+      "Sterile tools & single-use consumables"
+    ],
+    "imageMain": "",
+    "imageAccent": "",
+    "counters": [
+      { "value": 5000, "suffix": "+", "label": "Happy Clients" },
+      { "value": 100, "suffix": "%", "label": "Safe Materials" },
+      { "value": 12, "suffix": "+", "label": "Expert Technicians" },
+      { "value": 4, "suffix": ".9★", "label": "Client Rating" }
+    ]
+  },
+  "services": {
+    "eyebrow": "What We Do",
+    "title": "Signature Services",
+    "subtitle": "Each treatment is tailored to your lifestyle and desired look — designed to enhance your natural beauty.",
+    "items": [
+      {
+        "name": "Eyelash Extensions",
+        "description": "Classic, hybrid or volume sets built lash-by-lash with ultra-fine fibers for a full, feather-light finish.",
+        "image": ""
+      },
+      {
+        "name": "Nail Services",
+        "description": "Beautiful, long-lasting gel polish, nail art, and spa manicures to keep your hands looking flawless.",
+        "image": ""
+      },
+      {
+        "name": "Waxing",
+        "description": "Gentle and precise waxing treatments for smooth, hair-free skin using high-quality wax products.",
+        "image": ""
+      }
+    ]
+  },
+  "promotions": {
+    "eyebrow": "Limited-Time Offers",
+    "title": "Promotions & Packages",
+    "subtitle": "Curated packages that pair our most-loved treatments at a graceful price.",
+    "items": [
+      {
+        "name": "Signature Classic",
+        "description": "Natural-looking, one-to-one classic lash set.",
+        "price": "1,500",
+        "currency": "฿",
+        "features": ["Classic 1:1 application", "Free lash bath & aftercare kit", "90-minute session"],
+        "featured": false,
+        "tag": ""
+      },
+      {
+        "name": "Lash & Nails Combo",
+        "description": "Full lash set + gel manicure.",
+        "price": "2,500",
+        "currency": "฿",
+        "features": ["Volume lash set", "Gel polish on hands", "150-minute session"],
+        "featured": true,
+        "tag": "Most Popular"
+      },
+      {
+        "name": "Full Waxing Spa",
+        "description": "Silky smooth skin treatment.",
+        "price": "1,800",
+        "currency": "฿",
+        "features": ["Full leg and arm wax", "Gentle skin soothing lotion", "Priority booking"],
+        "featured": false,
+        "tag": ""
+      }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "Our Work",
+    "title": "Gallery",
+    "subtitle": "A closer look at the artistry behind every Lunlalin appointment.",
+    "images": []
+  },
+  "reviews": {
+    "eyebrow": "Kind Words",
+    "title": "What Our Clients Say",
+    "items": [
+      { "stars": 5, "text": "The most natural volume set I've ever had. My technician took the time to design lashes for my exact eye shape — I get compliments every day.", "author": "Pim S.", "role": "Classic Set Client" },
+      { "stars": 5, "text": "Incredibly clean studio and gentle technique. My eyes are sensitive and I never once felt discomfort. Retention lasted a full four weeks.", "author": "Nicha T.", "role": "Volume Deluxe Client" },
+      { "stars": 5, "text": "Love my new gel nails! The nail artists here are so precise and the spa manicure made my hands so soft.", "author": "Ammy K.", "role": "Nail Spa Client" },
+      { "stars": 5, "text": "Lunlalin feels more like a spa ritual than a beauty errand. Booking on LINE was effortless and the team is genuinely warm.", "author": "Warisa P.", "role": "Waxing Client" }
+    ]
+  },
+  "banner": {
+    "eyebrow": "@lunlalin.th",
+    "title": "Follow our latest lash artistry",
+    "description": "New sets, before & afters, and behind-the-scenes moments — every week on Instagram."
+  },
+  "contact": {
+    "phone": "089-988-9896",
+    "line": "@lunlalin",
+    "instagram": "@lunlalin.th",
+    "location": "Bangkok, Thailand",
+    "mapUrl": "https://www.google.com/maps?q=Sukhumvit+Bangkok+Thailand&output=embed",
+    "hours": [
+      { "days": "Mon – Fri", "time": "10:00 – 20:00" },
+      { "days": "Sat – Sun", "time": "10:00 – 19:00" }
+    ]
+  }
+}
