@@ -2,7 +2,7 @@
   "hero": {
     "eyebrow": "Lunlalin Studio",
     "title": "Lashes, Nails & <em>Waxing</em>",
-    "description": "At Lunlalin, every service is hand-crafted with premium materials and meticulous technique â for a look that feels effortless and beautiful.",
+    "description": "At Lunlalin, every service is hand-crafted with premium materials and meticulous technique Ã¢ÂÂ for a look that feels effortless and beautiful.",
     "heroImage": "",
     "badge": "Est. Bangkok",
     "stats": [
@@ -52,7 +52,7 @@
       },
       {
         "value": 4,
-        "suffix": ".9â",
+        "suffix": ".9Ã¢ÂÂ",
         "label": "Client Rating"
       }
     ]
@@ -60,7 +60,7 @@
   "services": {
     "eyebrow": "What We Do",
     "title": "Signature Services",
-    "subtitle": "Each treatment is tailored to your lifestyle and desired look â designed to enhance your natural beauty.",
+    "subtitle": "Each treatment is tailored to your lifestyle and desired look Ã¢ÂÂ designed to enhance your natural beauty.",
     "items": [
       {
         "name": "Eyelash Extensions",
@@ -88,7 +88,7 @@
         "name": "Signature Classic",
         "description": "Natural-looking, one-to-one classic lash set.",
         "price": "1,500",
-        "currency": "à¸¿",
+        "currency": "Ã Â¸Â¿",
         "features": [
           "Classic 1:1 application",
           "Free lash bath & aftercare kit",
@@ -101,7 +101,7 @@
         "name": "Lash & Nails Combo",
         "description": "Full lash set + gel manicure.",
         "price": "2,500",
-        "currency": "à¸¿",
+        "currency": "Ã Â¸Â¿",
         "features": [
           "Volume lash set",
           "Gel polish on hands",
@@ -114,7 +114,7 @@
         "name": "Full Waxing Spa",
         "description": "Silky smooth skin treatment.",
         "price": "1,800",
-        "currency": "à¸¿",
+        "currency": "Ã Â¸Â¿",
         "features": [
           "Full leg and arm wax",
           "Gentle skin soothing lotion",
@@ -137,7 +137,7 @@
     "items": [
       {
         "stars": 5,
-        "text": "The most natural volume set I've ever had. My technician took the time to design lashes for my exact eye shape â I get compliments every day.",
+        "text": "The most natural volume set I've ever had. My technician took the time to design lashes for my exact eye shape Ã¢ÂÂ I get compliments every day.",
         "author": "Pim S.",
         "role": "Classic Set Client"
       },
@@ -164,7 +164,7 @@
   "banner": {
     "eyebrow": "@lunlalin.th",
     "title": "Follow our latest lash artistry",
-    "description": "New sets, before & afters, and behind-the-scenes moments â every week on Instagram."
+    "description": "New sets, before & afters, and behind-the-scenes moments Ã¢ÂÂ every week on Instagram."
   },
   "contact": {
     "phone": "089-988-9896",
@@ -174,12 +174,12 @@
     "mapUrl": "https://www.google.com/maps?q=Sukhumvit+Bangkok+Thailand&output=embed",
     "hours": [
       {
-        "days": "Mon â Fri",
-        "time": "10:00 â 20:00"
+        "days": "Mon Ã¢ÂÂ Fri",
+        "time": "10:00 Ã¢ÂÂ 20:00"
       },
       {
-        "days": "Sat â Sun",
-        "time": "10:00 â 19:00"
+        "days": "Sat Ã¢ÂÂ Sun",
+        "time": "10:00 Ã¢ÂÂ 19:00"
       }
     ]
   }
