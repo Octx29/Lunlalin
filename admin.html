@@ -125,11 +125,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
 </head>
 <body>
 
-<!-- ===== LOGIN ===== -->
+<!<!-- ===== LOGIN ===== -->
 <div class="login" id="loginPage">
   <div class="login__box">
-    <h1>🌿 Lunlalin Admin</h1>
-    <p>ใส่ GitHub Token เพื่อเข้าสู่ระบบ</p>
+    <h1>🌿 ระบบจัดการเว็บไซต์ Lunlalin</h1>
+    <p>ใส่รหัสผ่าน (GitHub Token) เพื่อเข้าใช้งาน</p>
     <input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxx...">
     <button class="btn btn--p btn--block" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> เข้าสู่ระบบ</button>
     <div class="login__error" id="loginError"></div>
@@ -142,24 +142,24 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
   <!-- Top bar -->
   <div class="topbar">
     <div class="topbar__left">
-      <span class="topbar__logo">🌿 Lunlalin</span>
-      <span class="topbar__branch" id="branchBadge">admin</span>
+      <span class="topbar__logo">🌿 ผู้ดูแลระบบ Lunlalin</span>
+      <span class="topbar__branch" id="branchBadge" style="display:none">admin</span>
     </div>
     <div class="topbar__actions">
-      <button class="btn btn--g btn--sm" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i></button>
+      <button class="btn btn--g btn--sm" onclick="logout()" title="ออกจากระบบ"><i class="fa-solid fa-right-from-bracket"></i></button>
     </div>
   </div>
 
   <!-- Tabs -->
   <div class="tabs" id="tabs">
-    <button class="tab active" data-tab="hero"><i class="fa-solid fa-home"></i> Home</button>
-    <button class="tab" data-tab="about"><i class="fa-solid fa-heart"></i> About</button>
-    <button class="tab" data-tab="services"><i class="fa-solid fa-spa"></i> Services</button>
-    <button class="tab" data-tab="promos"><i class="fa-solid fa-tags"></i> Promos</button>
-    <button class="tab" data-tab="gallery"><i class="fa-solid fa-images"></i> Gallery</button>
-    <button class="tab" data-tab="reviews"><i class="fa-solid fa-star"></i> Reviews</button>
-    <button class="tab" data-tab="banner"><i class="fa-brands fa-instagram"></i> IG</button>
-    <button class="tab" data-tab="contact"><i class="fa-solid fa-phone"></i> Contact</button>
+    <button class="tab active" data-tab="hero"><i class="fa-solid fa-home"></i> หน้าแรก</button>
+    <button class="tab" data-tab="about"><i class="fa-solid fa-heart"></i> เกี่ยวกับร้าน</button>
+    <button class="tab" data-tab="services"><i class="fa-solid fa-spa"></i> บริการ</button>
+    <button class="tab" data-tab="promos"><i class="fa-solid fa-tags"></i> โปรโมชั่น</button>
+    <button class="tab" data-tab="gallery"><i class="fa-solid fa-images"></i> แกลเลอรี่</button>
+    <button class="tab" data-tab="reviews"><i class="fa-solid fa-star"></i> รีวิว</button>
+    <button class="tab" data-tab="banner"><i class="fa-brands fa-instagram"></i> แบนเนอร์ไอจี</button>
+    <button class="tab" data-tab="contact"><i class="fa-solid fa-phone"></i> ข้อมูลติดต่อ</button>
   </div>
 
   <!-- Content -->
@@ -168,15 +168,15 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
     <!-- HERO -->
     <div class="panel active" id="p-hero">
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-heading"></i> Hero Content</div>
-        <div class="fg"><label>Eyebrow</label><input type="text" id="h-eye"></div>
-        <div class="fg"><label>Title (ใช้ &lt;em&gt; สำหรับตัวเอียง)</label><input type="text" id="h-ttl"></div>
-        <div class="fg"><label>Description</label><textarea id="h-desc" rows="3"></textarea></div>
-        <div class="fg"><label>Badge</label><input type="text" id="h-badge"></div>
+        <div class="card__title"><i class="fa-solid fa-heading"></i> ส่วนบนสุดของหน้าแรก</div>
+        <div class="fg"><label>🏷️ ข้อความย่อย (ตัวเล็กด้านบน)</label><input type="text" id="h-eye" placeholder="เช่น Bangkok's Premium Studio"></div>
+        <div class="fg"><label>📌 หัวข้อหลัก (ใช้ &lt;em&gt; คลุมคำที่ต้องการให้เป็นตัวเอียงสีเขียว)</label><input type="text" id="h-ttl" placeholder="เช่น Lashes, Nails & <em>Waxing</em>"></div>
+        <div class="fg"><label>📝 รายละเอียดคำอธิบายใต้หัวข้อ</label><textarea id="h-desc" rows="3"></textarea></div>
+        <div class="fg"><label>🏅 ข้อความบนป้ายวงกลม (ทับรูป)</label><input type="text" id="h-badge" placeholder="เช่น Est. Bangkok"></div>
       </div>
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-image"></i> Hero Image</div>
-        <div class="img-up"><input type="file" accept="image/*" onchange="upImg('heroImage',this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>เลือกรูป</span></p></div>
+        <div class="card__title"><i class="fa-solid fa-image"></i> รูปภาพหลักหน้าแรก</div>
+        <div class="img-up"><input type="file" accept="image/*" onchange="upImg('heroImage',this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>แตะเพื่อเลือกรูปภาพ</span></p></div>
         <div class="img-prev" id="prev-heroImage"></div>
       </div>
     </div>
@@ -184,20 +184,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
     <!-- ABOUT -->
     <div class="panel" id="p-about">
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-pen"></i> About</div>
-        <div class="fg"><label>Eyebrow</label><input type="text" id="a-eye"></div>
-        <div class="fg"><label>Title</label><input type="text" id="a-ttl"></div>
-        <div class="fg"><label>Paragraph 1</label><textarea id="a-p1" rows="3"></textarea></div>
-        <div class="fg"><label>Paragraph 2</label><textarea id="a-p2" rows="3"></textarea></div>
+        <div class="card__title"><i class="fa-solid fa-pen"></i> เนื้อหาเกี่ยวกับร้าน (Our Story)</div>
+        <div class="fg"><label>🏷️ ข้อความย่อยด้านบน</label><input type="text" id="a-eye" placeholder="เช่น Our Story"></div>
+        <div class="fg"><label>📌 หัวข้อหลัก</label><input type="text" id="a-ttl"></div>
+        <div class="fg"><label>📝 เนื้อหาย่อหน้าที่ 1</label><textarea id="a-p1" rows="3"></textarea></div>
+        <div class="fg"><label>📝 เนื้อหาย่อหน้าที่ 2</label><textarea id="a-p2" rows="3"></textarea></div>
       </div>
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-image"></i> Images</div>
-        <div class="fg"><label>Main Image</label>
-          <div class="img-up"><input type="file" accept="image/*" onchange="upImg('aboutMain',this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>เลือกรูป</span></p></div>
+        <div class="card__title"><i class="fa-solid fa-image"></i> รูปภาพส่วนเกี่ยวกับร้าน</div>
+        <div class="fg"><label>🖼️ รูปภาพหลัก (ภาพใหญ่)</label>
+          <div class="img-up"><input type="file" accept="image/*" onchange="upImg('aboutMain',this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>แตะเพื่อเลือกรูปภาพ</span></p></div>
           <div class="img-prev" id="prev-aboutMain"></div>
         </div>
-        <div class="fg"><label>Accent Image</label>
-          <div class="img-up"><input type="file" accept="image/*" onchange="upImg('aboutAccent',this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>เลือกรูป</span></p></div>
+        <div class="fg"><label>🖼️ รูปภาพรอง (ภาพเล็กซ้อนทับด้านล่าง)</label>
+          <div class="img-up"><input type="file" accept="image/*" onchange="upImg('aboutAccent',this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>แตะเพื่อเลือกรูปภาพ</span></p></div>
           <div class="img-prev" id="prev-aboutAccent"></div>
         </div>
       </div>
@@ -206,10 +206,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
     <!-- SERVICES -->
     <div class="panel" id="p-services">
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-spa"></i> Services Header</div>
-        <div class="fg"><label>Eyebrow</label><input type="text" id="s-eye"></div>
-        <div class="fg"><label>Title</label><input type="text" id="s-ttl"></div>
-        <div class="fg"><label>Subtitle</label><textarea id="s-sub" rows="2"></textarea></div>
+        <div class="card__title"><i class="fa-solid fa-spa"></i> ส่วนแนะนำบริการ (Services)</div>
+        <div class="fg"><label>🏷️ ข้อความย่อยด้านบน</label><input type="text" id="s-eye"></div>
+        <div class="fg"><label>📌 หัวข้อหลัก</label><input type="text" id="s-ttl"></div>
+        <div class="fg"><label>📝 รายละเอียดใต้หัวข้อ</label><textarea id="s-sub" rows="2"></textarea></div>
       </div>
       <div id="svc-list"></div>
     </div>
@@ -217,20 +217,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
     <!-- PROMOS -->
     <div class="panel" id="p-promos">
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-tags"></i> Promotions Header</div>
-        <div class="fg"><label>Eyebrow</label><input type="text" id="pm-eye"></div>
-        <div class="fg"><label>Title</label><input type="text" id="pm-ttl"></div>
-        <div class="fg"><label>Subtitle</label><textarea id="pm-sub" rows="2"></textarea></div>
+        <div class="card__title"><i class="fa-solid fa-tags"></i> ส่วนโปรโมชั่น (Promotions)</div>
+        <div class="fg"><label>🏷️ ข้อความย่อยด้านบน</label><input type="text" id="pm-eye"></div>
+        <div class="fg"><label>📌 หัวข้อหลัก</label><input type="text" id="pm-ttl"></div>
+        <div class="fg"><label>📝 รายละเอียดใต้หัวข้อ</label><textarea id="pm-sub" rows="2"></textarea></div>
       </div>
       <div id="pm-list"></div>
-      <button class="btn btn--g btn--block" onclick="addPromo()" style="margin-top:8px"><i class="fa-solid fa-plus"></i> เพิ่ม Package</button>
+      <button class="btn btn--g btn--block" onclick="addPromo()" style="margin-top:8px"><i class="fa-solid fa-plus"></i> เพิ่มแพ็กเกจโปรโมชั่นใหม่</button>
     </div>
 
     <!-- GALLERY -->
     <div class="panel" id="p-gallery">
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-images"></i> Gallery</div>
-        <div class="img-up"><input type="file" accept="image/*" multiple onchange="upGallery(this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>เลือกหลายรูป</span></p></div>
+        <div class="card__title"><i class="fa-solid fa-images"></i> รูปภาพผลงาน (Gallery)</div>
+        <div class="img-up"><input type="file" accept="image/*" multiple onchange="upGallery(this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>แตะเพื่อเลือกรูปภาพ (เลือกได้หลายรูป)</span></p></div>
         <div class="gal-grid" id="gal-grid" style="margin-top:16px"></div>
       </div>
     </div>
@@ -238,38 +238,38 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
     <!-- REVIEWS -->
     <div class="panel" id="p-reviews">
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-star"></i> Reviews</div>
+        <div class="card__title"><i class="fa-solid fa-star"></i> เสียงตอบรับจากลูกค้า (Reviews)</div>
         <div id="rv-list"></div>
-        <button class="btn btn--g btn--block" onclick="addReview()" style="margin-top:8px"><i class="fa-solid fa-plus"></i> เพิ่มรีวิว</button>
+        <button class="btn btn--g btn--block" onclick="addReview()" style="margin-top:8px"><i class="fa-solid fa-plus"></i> เพิ่มรีวิวใหม่</button>
       </div>
     </div>
 
     <!-- BANNER -->
     <div class="panel" id="p-banner">
       <div class="card">
-        <div class="card__title"><i class="fa-brands fa-instagram"></i> Instagram Banner</div>
-        <div class="fg"><label>Eyebrow</label><input type="text" id="b-eye"></div>
-        <div class="fg"><label>Title</label><input type="text" id="b-ttl"></div>
-        <div class="fg"><label>Description</label><textarea id="b-desc" rows="2"></textarea></div>
+        <div class="card__title"><i class="fa-brands fa-instagram"></i> ป้ายแบนเนอร์ชวนติดตาม IG</div>
+        <div class="fg"><label>🏷️ ชื่อไอจี (ด้านบน)</label><input type="text" id="b-eye" placeholder="@lunlalin.th"></div>
+        <div class="fg"><label>📌 หัวข้อชวนติดตาม</label><input type="text" id="b-ttl"></div>
+        <div class="fg"><label>📝 รายละเอียดคำอธิบาย</label><textarea id="b-desc" rows="2"></textarea></div>
       </div>
     </div>
 
     <!-- CONTACT -->
     <div class="panel" id="p-contact">
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-phone"></i> Contact</div>
+        <div class="card__title"><i class="fa-solid fa-phone"></i> ข้อมูลติดต่อร้าน</div>
         <div class="row">
-          <div class="fg"><label>Phone</label><input type="text" id="c-phone"></div>
-          <div class="fg"><label>LINE ID</label><input type="text" id="c-line"></div>
+          <div class="fg"><label>📞 เบอร์โทรศัพท์</label><input type="text" id="c-phone"></div>
+          <div class="fg"><label>💬 LINE ID</label><input type="text" id="c-line"></div>
         </div>
         <div class="row">
-          <div class="fg"><label>Instagram</label><input type="text" id="c-ig"></div>
-          <div class="fg"><label>Location</label><input type="text" id="c-loc"></div>
+          <div class="fg"><label>📷 Instagram</label><input type="text" id="c-ig"></div>
+          <div class="fg"><label>📍 ที่อยู่สั้นๆ</label><input type="text" id="c-loc"></div>
         </div>
-        <div class="fg"><label>Google Maps Embed URL</label><input type="text" id="c-map"></div>
+        <div class="fg"><label>🗺️ ลิงก์ฝังแผนที่ Google Maps (URL แผนที่)</label><input type="text" id="c-map"></div>
       </div>
       <div class="card">
-        <div class="card__title"><i class="fa-solid fa-clock"></i> Hours</div>
+        <div class="card__title"><i class="fa-solid fa-clock"></i> เวลาเปิด-ปิดร้าน</div>
         <div id="hr-list"></div>
       </div>
     </div>
@@ -277,13 +277,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
 
   <!-- Bottom bar -->
   <div class="bottom-bar">
-    <button class="btn btn--p" onclick="saveAll()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
-    <button class="btn btn--s" onclick="pushAll()"><i class="fa-brands fa-github"></i> Push</button>
+    <button class="btn btn--p" onclick="saveAll()"><i class="fa-solid fa-floppy-disk"></i> บันทึกข้อมูลชั่วคราว</button>
+    <button class="btn btn--s" onclick="pushAll()"><i class="fa-solid fa-rocket"></i> อัปเดตขึ้นเว็บจริง!</button>
   </div>
 </div>
 
 <!-- Loading -->
-<div class="ld" id="ld"><i class="fa-solid fa-spinner"></i><p id="ldTxt">Loading...</p></div>
+<div class="ld" id="ld"><i class="fa-solid fa-spinner"></i><p id="ldTxt">กำลังโหลดข้อมูล...</p></div>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
@@ -310,7 +310,7 @@ async function ghPut(path,content64,sha,msg){
 async function doLogin(){
   TOKEN=document.getElementById('tokenInput').value.trim();
   if(!TOKEN){document.getElementById('loginError').textContent='กรุณาใส่ Token';return}
-  showLd('Checking token...');
+  showLd('กำลังตรวจสอบรหัสผ่าน...');
   try{
     const r=await fetch('https://api.github.com/user',{headers:{Authorization:`Bearer ${TOKEN}`}});
     if(!r.ok)throw new Error('Invalid token');
@@ -319,7 +319,7 @@ async function doLogin(){
     document.getElementById('loginPage').style.display='none';
     document.getElementById('appPage').style.display='block';
   }catch(e){
-    document.getElementById('loginError').textContent='Token ไม่ถูกต้อง กรุณาลองใหม่';
+    document.getElementById('loginError').textContent='รหัสไม่ถูกต้อง กรุณาลองใหม่';
   }
   hideLd();
 }
@@ -334,13 +334,13 @@ function logout(){localStorage.removeItem('ll_token');location.reload()}
 
 // ===== Load data =====
 async function loadData(){
-  showLd('Loading content...');
+  showLd('กำลังโหลดข้อมูลหน้าเว็บ...');
   try{
     const file=await ghGet(DATA_PATH);
     dataSha=file.sha;
     content=JSON.parse(atob(file.content.replace(/\n/g,'')));
     populate();
-  }catch(e){toast('Load error: '+e.message,'err')}
+  }catch(e){toast('โหลดข้อมูลล้มเหลว: '+e.message,'err')}
   hideLd();
 }
 
@@ -365,10 +365,10 @@ function populate(){
 function renderSvc(){
   const el=document.getElementById('svc-list');el.innerHTML='';
   (content.services?.items||[]).forEach((s,i)=>{
-    el.innerHTML+=`<div class="card"><div class="card__title"><i class="fa-solid fa-spa"></i> ${esc(s.name)}</div>
-    <div class="fg"><label>Name</label><input type="text" id="sv-n-${i}" value="${esc(s.name)}"></div>
-    <div class="fg"><label>Description</label><textarea id="sv-d-${i}" rows="2">${esc(s.description)}</textarea></div>
-    <div class="fg"><label>Image</label><div class="img-up"><input type="file" accept="image/*" onchange="upSvcImg(${i},this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>Upload</span></p></div>
+    el.innerHTML+=`<div class="card"><div class="card__title"><i class="fa-solid fa-spa"></i> บริการที่ ${i+1}: ${esc(s.name)}</div>
+    <div class="fg"><label>🏷️ ชื่อบริการ</label><input type="text" id="sv-n-${i}" value="${esc(s.name)}"></div>
+    <div class="fg"><label>📝 คำอธิบาย</label><textarea id="sv-d-${i}" rows="2">${esc(s.description)}</textarea></div>
+    <div class="fg"><label>🖼️ รูปประกอบ</label><div class="img-up"><input type="file" accept="image/*" onchange="upSvcImg(${i},this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>อัปโหลดรูปใหม่</span></p></div>
     <div class="img-prev" id="prev-svc-${i}">${s.image?`<div class="img-prev__item"><img src="${s.image}"></div>`:''}</div></div></div>`;
   });
 }
@@ -376,15 +376,15 @@ function renderSvc(){
 function renderPm(){
   const el=document.getElementById('pm-list');el.innerHTML='';
   (content.promotions?.items||[]).forEach((p,i)=>{
-    el.innerHTML+=`<div class="editor-block"><div class="editor-block__head"><h4>${esc(p.name)}</h4><button class="btn btn--d btn--sm" onclick="rmPm(${i})"><i class="fa-solid fa-trash"></i></button></div>
-    <div class="row"><div class="fg"><label>Name</label><input type="text" id="pm-n-${i}" value="${esc(p.name)}"></div><div class="fg"><label>Price</label><input type="text" id="pm-pr-${i}" value="${esc(p.price)}"></div></div>
-    <div class="fg"><label>Description</label><input type="text" id="pm-d-${i}" value="${esc(p.description)}"></div>
-    <div class="fg"><label>Tag (e.g. "Most Popular")</label><input type="text" id="pm-t-${i}" value="${esc(p.tag||'')}"></div>
-    <div class="fg"><label>Featured?</label><select id="pm-f-${i}"><option value="false"${!p.featured?' selected':''}>No</option><option value="true"${p.featured?' selected':''}>Yes</option></select></div>
-    <div class="fg"><label>Features (1 ต่อบรรทัด)</label><textarea id="pm-ft-${i}" rows="3">${(p.features||[]).join('\n')}</textarea></div></div>`;
+    el.innerHTML+=`<div class="editor-block"><div class="editor-block__head"><h4>${esc(p.name)}</h4><button class="btn btn--d btn--sm" onclick="rmPm(${i})"><i class="fa-solid fa-trash"></i> ลบ</button></div>
+    <div class="row"><div class="fg"><label>🏷️ ชื่อแพ็กเกจ</label><input type="text" id="pm-n-${i}" value="${esc(p.name)}"></div><div class="fg"><label>💰 ราคา</label><input type="text" id="pm-pr-${i}" value="${esc(p.price)}"></div></div>
+    <div class="fg"><label>📝 คำอธิบายสั้นๆ</label><input type="text" id="pm-d-${i}" value="${esc(p.description)}"></div>
+    <div class="fg"><label>🏅 ป้ายกำกับ (เช่น "ขายดี" - ถ้าไม่มีให้เว้นว่าง)</label><input type="text" id="pm-t-${i}" value="${esc(p.tag||'')}"></div>
+    <div class="fg"><label>⭐ เน้นแพ็กเกจนี้ไหม? (แสดงกรอบสีเขียวเด่นๆ)</label><select id="pm-f-${i}"><option value="false"${!p.featured?' selected':''}>ไม่เน้น (กรอบใส)</option><option value="true"${p.featured?' selected':''}>เน้น (กรอบสีเขียว)</option></select></div>
+    <div class="fg"><label>✅ สิ่งที่ลูกค้าจะได้รับ (พิมพ์ 1 ข้อต่อบรรทัด)</label><textarea id="pm-ft-${i}" rows="3">${(p.features||[]).join('\n')}</textarea></div></div>`;
   });
 }
-function addPromo(){content.promotions.items.push({name:'New',description:'',price:'0',currency:'฿',features:[],featured:false,tag:''});renderPm()}
+function addPromo(){content.promotions.items.push({name:'แพ็กเกจใหม่',description:'',price:'0',currency:'฿',features:[],featured:false,tag:''});renderPm()}
 function rmPm(i){content.promotions.items.splice(i,1);renderPm()}
 
 function renderGal(){
@@ -398,10 +398,10 @@ function rmGal(i){content.gallery.images.splice(i,1);renderGal()}
 function renderRv(){
   const el=document.getElementById('rv-list');el.innerHTML='';
   (content.reviews?.items||[]).forEach((r,i)=>{
-    el.innerHTML+=`<div class="editor-block"><div class="editor-block__head"><span style="color:var(--mint);font-weight:600">Review ${i+1}</span><button class="btn btn--d btn--sm" onclick="rmRv(${i})"><i class="fa-solid fa-trash"></i></button></div>
-    <div class="row"><div class="fg"><label>Author</label><input type="text" id="rv-a-${i}" value="${esc(r.author)}"></div><div class="fg"><label>Role</label><input type="text" id="rv-r-${i}" value="${esc(r.role)}"></div></div>
-    <div class="fg"><label>Stars (1-5)</label><input type="number" id="rv-s-${i}" value="${r.stars}" min="1" max="5"></div>
-    <div class="fg"><label>Text</label><textarea id="rv-t-${i}" rows="2">${esc(r.text)}</textarea></div></div>`;
+    el.innerHTML+=`<div class="editor-block"><div class="editor-block__head"><span style="color:var(--mint);font-weight:600">รีวิวคนที่ ${i+1}</span><button class="btn btn--d btn--sm" onclick="rmRv(${i})"><i class="fa-solid fa-trash"></i> ลบ</button></div>
+    <div class="row"><div class="fg"><label>👤 ชื่อลูกค้า</label><input type="text" id="rv-a-${i}" value="${esc(r.author)}"></div><div class="fg"><label>บริการที่ทำ</label><input type="text" id="rv-r-${i}" value="${esc(r.role)}" placeholder="เช่น ต่อขนตาสายฝอ"></div></div>
+    <div class="fg"><label>⭐ จำนวนดาว (1-5)</label><input type="number" id="rv-s-${i}" value="${r.stars}" min="1" max="5"></div>
+    <div class="fg"><label>💬 คำวิจารณ์</label><textarea id="rv-t-${i}" rows="2">${esc(r.text)}</textarea></div></div>`;
   });
 }
 function addReview(){content.reviews.items.push({stars:5,text:'',author:'',role:''});renderRv()}
@@ -410,7 +410,7 @@ function rmRv(i){content.reviews.items.splice(i,1);renderRv()}
 function renderHr(){
   const el=document.getElementById('hr-list');el.innerHTML='';
   (content.contact?.hours||[]).forEach((h,i)=>{
-    el.innerHTML+=`<div class="row" style="margin-bottom:10px"><div class="fg"><label>Days</label><input type="text" id="hr-d-${i}" value="${esc(h.days)}"></div><div class="fg"><label>Time</label><input type="text" id="hr-t-${i}" value="${esc(h.time)}"></div></div>`;
+    el.innerHTML+=`<div class="row" style="margin-bottom:10px"><div class="fg"><label>📅 วัน</label><input type="text" id="hr-d-${i}" value="${esc(h.days)}" placeholder="เช่น จันทร์ - ศุกร์"></div><div class="fg"><label>🕒 เวลา</label><input type="text" id="hr-t-${i}" value="${esc(h.time)}" placeholder="เช่น 10:00 - 20:00"></div></div>`;
   });
 }
 
@@ -430,34 +430,34 @@ function collect(){
 
 // ===== Save =====
 async function saveAll(){
-  collect();showLd('Saving...');
+  collect();showLd('กำลังบันทึกข้อมูล...');
   try{
     const json=JSON.stringify(content,null,2);
     const b64=btoa(unescape(encodeURIComponent(json)));
     const res=await ghPut(DATA_PATH,b64,dataSha,'Update content');
     dataSha=res.content.sha;
-    toast('Saved! ✨','ok');
-  }catch(e){toast('Error: '+e.message,'err')}
+    toast('บันทึกเรียบร้อย! ✨','ok');
+  }catch(e){toast('เกิดข้อผิดพลาด: '+e.message,'err')}
   hideLd();
 }
 
 // ===== Push (save = push for GitHub API) =====
 async function pushAll(){
-  collect();showLd('Pushing to GitHub...');
+  collect();showLd('กำลังอัปเดตขึ้นเว็บจริง โปรดรอสักครู่...');
   try{
     const json=JSON.stringify(content,null,2);
     const b64=btoa(unescape(encodeURIComponent(json)));
     const res=await ghPut(DATA_PATH,b64,dataSha,`Update — ${new Date().toLocaleString('th-TH')}`);
     dataSha=res.content.sha;
-    toast('Pushed to GitHub! 🚀','ok');
-  }catch(e){toast('Error: '+e.message,'err')}
+    toast('อัปเดตเว็บไซต์สำเร็จแล้ว! 🚀','ok');
+  }catch(e){toast('เกิดข้อผิดพลาด: '+e.message,'err')}
   hideLd();
 }
 
 // ===== Image upload to GitHub =====
 async function upImg(key,input){
   if(!input.files[0])return;
-  showLd('Uploading...');
+  showLd('กำลังอัปโหลดรูปภาพ...');
   try{
     const file=input.files[0];
     const b64=await fileToBase64(file);
@@ -468,14 +468,14 @@ async function upImg(key,input){
     else if(key==='aboutMain')content.about.imageMain=url;
     else if(key==='aboutAccent')content.about.imageAccent=url;
     showPrev(key,url);
-    toast('Uploaded! ✨','ok');
-  }catch(e){toast('Upload error: '+e.message,'err')}
+    toast('อัปโหลดรูปภาพสำเร็จ! ✨','ok');
+  }catch(e){toast('อัปโหลดล้มเหลว: '+e.message,'err')}
   hideLd();
 }
 
 async function upSvcImg(idx,input){
   if(!input.files[0])return;
-  showLd('Uploading...');
+  showLd('กำลังอัปโหลดรูปภาพ...');
   try{
     const file=input.files[0];
     const b64=await fileToBase64(file);
@@ -485,13 +485,13 @@ async function upSvcImg(idx,input){
     content.services.items[idx].image=url;
     const prev=document.getElementById(`prev-svc-${idx}`);
     if(prev)prev.innerHTML=`<div class="img-prev__item"><img src="${url}"></div>`;
-    toast('Uploaded! ✨','ok');
-  }catch(e){toast('Upload error: '+e.message,'err')}
+    toast('อัปโหลดรูปภาพสำเร็จ! ✨','ok');
+  }catch(e){toast('อัปโหลดล้มเหลว: '+e.message,'err')}
   hideLd();
 }
 
 async function upGallery(input){
-  showLd('Uploading...');
+  showLd('กำลังอัปโหลดรูปภาพ...');
   for(const file of input.files){
     try{
       const b64=await fileToBase64(file);
@@ -500,10 +500,10 @@ async function upGallery(input){
       const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${fname}`;
       if(!content.gallery.images)content.gallery.images=[];
       content.gallery.images.push(url);
-    }catch(e){toast('Upload error','err')}
+    }catch(e){toast('อัปโหลดล้มเหลว','err')}
   }
   renderGal();
-  toast('Gallery updated! ✨','ok');
+  toast('เพิ่มรูปลงแกลเลอรี่สำเร็จ! ✨','ok');
   hideLd();
 }
 
