@@ -1,231 +1,558 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // ========== SET CURRENT YEAR IN FOOTER ==========
-    const yearElement = document.getElementById('year');
-    if (yearElement) {
-        yearElement.textContent = new Date().getFullYear();
+/* =========================================================
+   LUNLALIN — UI behaviour
+   ---------------------------------------------------------
+   dynamic.js replaces large parts of the DOM after fetching
+   data/content.json. Anything bound before that injection is
+   bound to detached nodes, so this file exposes an explicit
+   init() that dynamic.js calls once the real DOM exists.
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var chromeReady = false;      // one-time page chrome
+  var revealObserver = null;
+  var counterObserver = null;
+  var navObserver = null;
+  var reviewsApi = null;
+
+  /* ---------------------------------------------------------
+     Helpers
+     --------------------------------------------------------- */
+  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+  function onRaf(fn) {
+    var ticking = false;
+    return function () {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () { ticking = false; fn(); });
+    };
+  }
+
+  /* Keeps overlay scroll-locking from fighting between the mobile menu and
+     the lightbox: the lock lifts only when nothing holds it. */
+  var scrollLocks = 0;
+  function lockScroll() {
+    scrollLocks++;
+    document.body.classList.add('is-locked');
+  }
+  function unlockScroll() {
+    scrollLocks = Math.max(0, scrollLocks - 1);
+    if (scrollLocks === 0) document.body.classList.remove('is-locked');
+  }
+
+  var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+  function trapFocus(container, event) {
+    var items = $$(FOCUSABLE, container).filter(function (el) {
+      return el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement;
+    });
+    if (!items.length) return;
+    var first = items[0];
+    var last = items[items.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault(); last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault(); first.focus();
     }
+  }
 
-    // ========== NAVBAR SCROLL & ACTIVE LINK ==========
-    const navbar = document.getElementById('navbar');
-    const backToTop = document.getElementById('backToTop');
-    const navLinks = document.querySelectorAll('[data-nav]');
-    const sections = Array.from(navLinks).map(link => {
-        const id = link.getAttribute('href').substring(1);
-        return document.getElementById(id);
-    }).filter(Boolean);
+  /* =========================================================
+     PAGE CHROME — bound once, survives content injection
+     ========================================================= */
+  function initChrome() {
+    if (chromeReady) return;
+    chromeReady = true;
 
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        
-        // Navbar styling
-        if (scrollY > 50) {
-            navbar.classList.add('scrolled');
-            if(backToTop) backToTop.classList.add('show');
-        } else {
-            navbar.classList.remove('scrolled');
-            if(backToTop) backToTop.classList.remove('show');
-        }
+    document.documentElement.classList.remove('no-js');
 
-        // Active link highlighting
-        let currentSectionId = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop - 100;
-            const sectionHeight = section.offsetHeight;
-            if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-                currentSectionId = section.getAttribute('id');
-            }
-        });
+    var yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${currentSectionId}`) {
-                link.classList.add('active');
-            }
-        });
+    initNavbarScroll();
+    initMobileMenu();
+    initLightbox();
+    initBookingForm();
+  }
+
+  /* ---------- Navbar shrink + back-to-top ---------- */
+  function initNavbarScroll() {
+    var navbar = document.getElementById('navbar');
+    var backToTop = document.getElementById('backToTop');
+
+    var onScroll = onRaf(function () {
+      var past = window.scrollY > 50;
+      if (navbar) navbar.classList.toggle('scrolled', past);
+      if (backToTop) backToTop.classList.toggle('show', window.scrollY > 400);
     });
 
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
     if (backToTop) {
-        backToTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+      backToTop.addEventListener('click', function () {
+        window.scrollTo({
+          top: 0,
+          behavior: prefersReducedMotion.matches ? 'auto' : 'smooth'
         });
+        var brand = $('.navbar .brand');
+        if (brand) brand.focus({ preventScroll: true });
+      });
+    }
+  }
+
+  /* ---------- Mobile menu ---------- */
+  function initMobileMenu() {
+    var hamburger = document.getElementById('hamburger');
+    var menu = document.getElementById('mobileMenu');
+    if (!hamburger || !menu) return;
+
+    function setOpen(open) {
+      var isOpen = menu.classList.contains('open');
+      if (open === isOpen) return;
+
+      menu.classList.toggle('open', open);
+      hamburger.setAttribute('aria-expanded', String(open));
+      /* inert removes the closed menu from the tab order and the a11y tree;
+         the CSS visibility transition alone would leave links focusable. */
+      if ('inert' in HTMLElement.prototype) menu.inert = !open;
+      menu.setAttribute('aria-hidden', String(!open));
+
+      if (open) {
+        lockScroll();
+        var firstLink = $('a', menu);
+        if (firstLink) firstLink.focus();
+      } else {
+        unlockScroll();
+        hamburger.focus();
+      }
     }
 
-    // ========== MOBILE MENU ==========
-    const hamburger = document.getElementById('hamburger');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const mobileLinks = mobileMenu?.querySelectorAll('a');
+    setOpen(false);
+    if ('inert' in HTMLElement.prototype) menu.inert = true;
+    menu.setAttribute('aria-hidden', 'true');
 
-    if (hamburger && mobileMenu) {
-        hamburger.addEventListener('click', () => {
-            const isOpen = hamburger.classList.contains('open');
-            hamburger.classList.toggle('open');
-            mobileMenu.classList.toggle('open');
-            hamburger.setAttribute('aria-expanded', !isOpen);
-        });
+    hamburger.addEventListener('click', function () {
+      setOpen(!menu.classList.contains('open'));
+    });
 
-        mobileLinks?.forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('open');
-                mobileMenu.classList.remove('open');
-                hamburger.setAttribute('aria-expanded', 'false');
-            });
-        });
+    $$('a', menu).forEach(function (link) {
+      link.addEventListener('click', function () { setOpen(false); });
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!menu.classList.contains('open')) return;
+      if (e.key === 'Escape') { setOpen(false); return; }
+      if (e.key === 'Tab') trapFocus(menu, e);
+    });
+
+    /* Resizing past the nav breakpoint must not leave a locked, hidden menu. */
+    window.addEventListener('resize', onRaf(function () {
+      if (window.innerWidth > 860) setOpen(false);
+    }), { passive: true });
+  }
+
+  /* ---------- Gallery lightbox ---------- */
+  function initLightbox() {
+    var lightbox = document.getElementById('lightbox');
+    var img = document.getElementById('lightboxImg');
+    var counter = document.getElementById('lightboxCounter');
+    if (!lightbox || !img) return;
+
+    var closeBtn = document.getElementById('lightboxClose');
+    var prevBtn = document.getElementById('lightboxPrev');
+    var nextBtn = document.getElementById('lightboxNext');
+    var items = [];
+    var index = 0;
+    var lastFocused = null;
+
+    function show(i) {
+      if (!items.length) return;
+      index = (i + items.length) % items.length;
+      var item = items[index];
+      img.src = item.getAttribute('data-full') || '';
+      img.alt = item.getAttribute('data-alt') || 'Gallery image ' + (index + 1);
+      if (counter) counter.textContent = (index + 1) + ' / ' + items.length;
+      if (prevBtn) prevBtn.hidden = items.length < 2;
+      if (nextBtn) nextBtn.hidden = items.length < 2;
+      if (counter) counter.hidden = items.length < 2;
     }
 
-    // ========== SCROLL REVEAL ANIMATIONS ==========
-    const revealElements = document.querySelectorAll('[data-reveal]');
-    const revealOptions = {
-        threshold: 0.1,
-        rootMargin: "0px 0px -50px 0px"
+    function open(target) {
+      /* Read the gallery at open time — dynamic.js may have replaced it. */
+      items = $$('.gallery-item');
+      var i = items.indexOf(target);
+      if (i < 0) return;
+      lastFocused = document.activeElement;
+      show(i);
+      lightbox.classList.add('open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      lockScroll();
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function close() {
+      if (!lightbox.classList.contains('open')) return;
+      lightbox.classList.remove('open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      unlockScroll();
+      window.setTimeout(function () {
+        if (!lightbox.classList.contains('open')) img.removeAttribute('src');
+      }, 400);
+      if (lastFocused && lastFocused.focus) lastFocused.focus();
+    }
+
+    /* Delegated: gallery items are re-rendered from content.json. */
+    document.addEventListener('click', function (e) {
+      var item = e.target.closest ? e.target.closest('.gallery-item') : null;
+      if (item) { e.preventDefault(); open(item); }
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', close);
+    if (prevBtn) prevBtn.addEventListener('click', function () { show(index - 1); });
+    if (nextBtn) nextBtn.addEventListener('click', function () { show(index + 1); });
+
+    lightbox.addEventListener('click', function (e) {
+      if (e.target === lightbox) close();
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') show(index - 1);
+      else if (e.key === 'ArrowRight') show(index + 1);
+      else if (e.key === 'Tab') trapFocus(lightbox, e);
+    });
+  }
+
+  /* ---------- Booking form ---------- */
+  function initBookingForm() {
+    var form = document.getElementById('bookingForm');
+    var note = document.getElementById('formNote');
+    if (!form) return;
+
+    function fieldOf(input) { return input.closest('.form-field'); }
+
+    function messageFor(input) {
+      if (input.validity.valueMissing) return 'This field is required.';
+      if (input.validity.typeMismatch) return 'Please check the format.';
+      if (input.validity.patternMismatch) return 'Please use a valid format.';
+      return input.validationMessage || 'Please check this field.';
+    }
+
+    function validate(input) {
+      var wrap = fieldOf(input);
+      if (!wrap) return true;
+      var errorEl = $('.form-error', wrap);
+      var ok = input.checkValidity();
+      wrap.setAttribute('data-invalid', String(!ok));
+      input.setAttribute('aria-invalid', String(!ok));
+      if (errorEl) errorEl.textContent = ok ? '' : messageFor(input);
+      return ok;
+    }
+
+    var fields = $$('input, select, textarea', form);
+    fields.forEach(function (input) {
+      /* Validate on blur, then live-correct once the field is already marked. */
+      input.addEventListener('blur', function () { validate(input); });
+      input.addEventListener('input', function () {
+        var wrap = fieldOf(input);
+        if (wrap && wrap.getAttribute('data-invalid') === 'true') validate(input);
+      });
+    });
+
+    /* A past appointment date is never valid. */
+    var dateInput = document.getElementById('date');
+    if (dateInput && !dateInput.min) {
+      dateInput.min = new Date().toISOString().split('T')[0];
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      var invalid = fields.filter(function (input) { return !validate(input); });
+      if (invalid.length) {
+        if (note) {
+          note.textContent = 'Please complete the highlighted fields.';
+          note.setAttribute('data-state', 'error');
+        }
+        invalid[0].focus();
+        return;
+      }
+
+      var submitBtn = $('button[type="submit"]', form);
+      var label = submitBtn ? $('.btn__label', submitBtn) : null;
+      var original = label ? label.textContent : '';
+
+      if (submitBtn) submitBtn.disabled = true;
+      if (label) label.textContent = 'Sending…';
+      if (note) { note.textContent = ''; note.removeAttribute('data-state'); }
+
+      /* Placeholder for a real endpoint — the UI states around it are real. */
+      window.setTimeout(function () {
+        if (note) {
+          note.textContent = 'Thank you! We will confirm your appointment shortly.';
+          note.setAttribute('data-state', 'ok');
+        }
+        form.reset();
+        $$('.form-field', form).forEach(function (wrap) {
+          wrap.setAttribute('data-invalid', 'false');
+          var err = $('.form-error', wrap);
+          if (err) err.textContent = '';
+        });
+        if (submitBtn) submitBtn.disabled = false;
+        if (label) label.textContent = original;
+      }, 1200);
+    });
+  }
+
+  /* =========================================================
+     CONTENT-DEPENDENT — re-runnable after DOM injection
+     ========================================================= */
+  function initContent() {
+    initReveal();
+    initCounters();
+    initScrollSpy();
+    initReviews();
+  }
+
+  /* ---------- Scroll reveal ---------- */
+  function initReveal() {
+    var els = $$('[data-reveal]');
+
+    if (prefersReducedMotion.matches || !('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+
+    if (revealObserver) revealObserver.disconnect();
+    revealObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    els.forEach(function (el) {
+      if (!el.classList.contains('is-visible')) revealObserver.observe(el);
+    });
+  }
+
+  /* ---------- Stat counters ---------- */
+  function initCounters() {
+    var els = $$('[data-counter]');
+
+    function finalValue(el) {
+      return parseFloat(el.getAttribute('data-counter')) || 0;
+    }
+    function render(el, value) {
+      el.textContent = Math.round(value).toLocaleString('en-US');
+    }
+
+    if (prefersReducedMotion.matches || !('IntersectionObserver' in window)) {
+      els.forEach(function (el) { render(el, finalValue(el)); });
+      return;
+    }
+
+    if (counterObserver) counterObserver.disconnect();
+    counterObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        obs.unobserve(el);
+
+        var target = finalValue(el);
+        var duration = 1400;
+        var start = null;
+
+        function step(ts) {
+          if (start === null) start = ts;
+          var p = Math.min((ts - start) / duration, 1);
+          /* easeOutCubic — decelerates into the final number */
+          render(el, target * (1 - Math.pow(1 - p, 3)));
+          if (p < 1) window.requestAnimationFrame(step);
+          else render(el, target);
+        }
+        window.requestAnimationFrame(step);
+      });
+    }, { threshold: 0.4 });
+
+    els.forEach(function (el) { counterObserver.observe(el); });
+  }
+
+  /* ---------- Nav scrollspy ---------- */
+  function initScrollSpy() {
+    var links = $$('.nav-links [data-nav]');
+    if (!links.length || !('IntersectionObserver' in window)) return;
+
+    var map = {};
+    var sections = [];
+    links.forEach(function (link) {
+      var id = (link.getAttribute('href') || '').replace('#', '');
+      var section = id && document.getElementById(id);
+      if (!section) return;
+      map[id] = link;
+      sections.push(section);
+    });
+    if (!sections.length) return;
+
+    function setCurrent(id) {
+      links.forEach(function (link) {
+        var active = link === map[id];
+        if (active) link.setAttribute('aria-current', 'true');
+        else link.removeAttribute('aria-current');
+      });
+    }
+
+    if (navObserver) navObserver.disconnect();
+    /* Marks the section occupying the band just under the fixed navbar,
+       instead of recomputing offsets on every scroll event. */
+    navObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) setCurrent(entry.target.id);
+      });
+    }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+
+    sections.forEach(function (s) { navObserver.observe(s); });
+    setCurrent('home');
+  }
+
+  /* ---------- Reviews carousel ---------- */
+  function initReviews() {
+    var track = document.getElementById('reviewsTrack');
+    var dotsWrap = document.getElementById('reviewsDots');
+    if (!track) return;
+
+    var cards = $$('.review-card', track);
+    if (!cards.length) return;
+
+    if (reviewsApi) reviewsApi.destroy();
+
+    var prevBtn = document.getElementById('reviewPrev');
+    var nextBtn = document.getElementById('reviewNext');
+    var index = 0;
+    var timer = null;
+    var handlers = [];
+
+    function on(el, type, fn, opts) {
+      if (!el) return;
+      el.addEventListener(type, fn, opts);
+      handlers.push([el, type, fn, opts]);
+    }
+
+    /* Dots are rebuilt here from the live cards, so a content.json with a
+       different number of reviews can never desync them. */
+    var dots = [];
+    if (dotsWrap) {
+      dotsWrap.innerHTML = '';
+      dotsWrap.setAttribute('role', 'tablist');
+      dotsWrap.setAttribute('aria-label', 'Choose a review');
+      cards.forEach(function (_, i) {
+        var dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('role', 'tab');
+        dot.setAttribute('aria-label', 'Review ' + (i + 1) + ' of ' + cards.length);
+        dot.addEventListener('click', function () { go(i, true); });
+        dotsWrap.appendChild(dot);
+        dots.push(dot);
+      });
+    }
+
+    function go(i, userInitiated) {
+      index = (i + cards.length) % cards.length;
+      cards.forEach(function (card, n) {
+        var active = n === index;
+        card.classList.toggle('active', active);
+        card.setAttribute('aria-hidden', String(!active));
+      });
+      dots.forEach(function (dot, n) {
+        dot.setAttribute('aria-selected', String(n === index));
+        dot.tabIndex = n === index ? 0 : -1;
+      });
+      if (userInitiated) restart();
+    }
+
+    function stop() { if (timer) { window.clearInterval(timer); timer = null; } }
+    function restart() {
+      stop();
+      if (prefersReducedMotion.matches || cards.length < 2) return;
+      timer = window.setInterval(function () { go(index + 1); }, 7000);
+    }
+
+    on(prevBtn, 'click', function () { go(index - 1, true); });
+    on(nextBtn, 'click', function () { go(index + 1, true); });
+
+    var carousel = track.closest('.reviews-carousel') || track;
+    on(carousel, 'mouseenter', stop);
+    on(carousel, 'mouseleave', restart);
+    on(carousel, 'focusin', stop);
+    on(carousel, 'focusout', restart);
+
+    on(carousel, 'keydown', function (e) {
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(index - 1, true); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); go(index + 1, true); }
+    });
+
+    /* Touch swipe */
+    var startX = 0;
+    var startY = 0;
+    var tracking = false;
+    on(track, 'touchstart', function (e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      tracking = true;
+    }, { passive: true });
+    on(track, 'touchend', function (e) {
+      if (!tracking) return;
+      tracking = false;
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+      /* Ignore mostly-vertical drags so page scrolling still feels normal. */
+      if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) go(index + (dx < 0 ? 1 : -1), true);
+    }, { passive: true });
+
+    /* Pause while the tab is hidden — a background timer is wasted work. */
+    var onVisibility = function () {
+      if (document.hidden) stop(); else restart();
+    };
+    on(document, 'visibilitychange', onVisibility);
+
+    reviewsApi = {
+      destroy: function () {
+        stop();
+        handlers.forEach(function (h) { h[0].removeEventListener(h[1], h[2], h[3]); });
+        handlers = [];
+      }
     };
 
-    const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, revealOptions);
+    go(0);
+    restart();
+  }
 
-    revealElements.forEach(el => revealOnScroll.observe(el));
+  /* =========================================================
+     BOOTSTRAP
+     ========================================================= */
+  function init() {
+    initChrome();
+    initContent();
+    /* Tells the inline watchdog in index.html that booting succeeded. */
+    window.Lunlalin.initialised = true;
+  }
 
-    // ========== STATS COUNTER ANIMATION ==========
-    const counterElements = document.querySelectorAll('[data-counter]');
-    const counterObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = entry.target;
-                const targetValue = parseInt(target.getAttribute('data-counter'), 10);
-                let current = 0;
-                const increment = Math.max(1, Math.ceil(targetValue / 40));
-                
-                const updateCounter = () => {
-                    current += increment;
-                    if (current < targetValue) {
-                        target.textContent = current;
-                        requestAnimationFrame(updateCounter);
-                    } else {
-                        target.textContent = targetValue;
-                    }
-                };
-                
-                updateCounter();
-                observer.unobserve(target);
-            }
-        });
-    }, { threshold: 0.5 });
+  window.Lunlalin = window.Lunlalin || {};
+  window.Lunlalin.init = init;
 
-    counterElements.forEach(el => counterObserver.observe(el));
+  document.addEventListener('DOMContentLoaded', function () {
+    /* dynamic.js sets deferInit synchronously on load and calls init() itself
+       once content.json has been injected. If it never loaded, boot anyway so
+       the static markup is still fully interactive. */
+    if (!window.Lunlalin.deferInit) init();
+  });
 
-    // ========== REVIEWS CAROUSEL ==========
-    const reviewsTrack = document.getElementById('reviewsTrack');
-    const reviewCards = document.querySelectorAll('.review-card');
-    const prevBtn = document.getElementById('reviewPrev');
-    const nextBtn = document.getElementById('reviewNext');
-    const dotsContainer = document.getElementById('reviewsDots');
-    let currentReview = 0;
-
-    if (reviewsTrack && reviewCards.length > 0) {
-        // Create dots
-        reviewCards.forEach((_, index) => {
-            const dot = document.createElement('span');
-            if (index === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToReview(index));
-            dotsContainer.appendChild(dot);
-        });
-
-        const dots = dotsContainer.querySelectorAll('span');
-
-        const goToReview = (index) => {
-            reviewCards[currentReview].classList.remove('active');
-            dots[currentReview].classList.remove('active');
-            
-            currentReview = index;
-            
-            reviewCards[currentReview].classList.add('active');
-            dots[currentReview].classList.add('active');
-        };
-
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                let prevIndex = currentReview - 1;
-                if (prevIndex < 0) prevIndex = reviewCards.length - 1;
-                goToReview(prevIndex);
-            });
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                let nextIndex = currentReview + 1;
-                if (nextIndex >= reviewCards.length) nextIndex = 0;
-                goToReview(nextIndex);
-            });
-        }
-
-        // Initialize first review
-        reviewCards[0].classList.add('active');
-    }
-
-    // ========== GALLERY LIGHTBOX ==========
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightboxImg');
-    const lightboxClose = document.getElementById('lightboxClose');
-
-    if (lightbox && lightboxImg) {
-        galleryItems.forEach(item => {
-            item.addEventListener('click', () => {
-                const fullImgSrc = item.getAttribute('data-full');
-                if (fullImgSrc) {
-                    lightboxImg.src = fullImgSrc;
-                    lightbox.classList.add('open');
-                    document.body.style.overflow = 'hidden'; // Prevent scrolling
-                }
-            });
-        });
-
-        const closeLightbox = () => {
-            lightbox.classList.remove('open');
-            setTimeout(() => { lightboxImg.src = ''; }, 400); // Clear image after transition
-            document.body.style.overflow = ''; // Restore scrolling
-        };
-
-        lightboxClose?.addEventListener('click', closeLightbox);
-        lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox) closeLightbox();
-        });
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && lightbox.classList.contains('open')) closeLightbox();
-        });
-    }
-
-    // ========== BOOKING FORM MOCK SUBMIT ==========
-    const bookingForm = document.getElementById('bookingForm');
-    const formNote = document.getElementById('formNote');
-
-    if (bookingForm) {
-        bookingForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const submitBtn = bookingForm.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.innerHTML;
-            
-            submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Sending...';
-            submitBtn.disabled = true;
-
-            // Mock API call
-            setTimeout(() => {
-                formNote.textContent = 'Thank you! We will confirm your appointment shortly.';
-                formNote.style.color = 'var(--rose-gold-dark)';
-                bookingForm.reset();
-                
-                submitBtn.innerHTML = originalBtnText;
-                submitBtn.disabled = false;
-                
-                setTimeout(() => {
-                    formNote.textContent = '';
-                }, 5000);
-            }, 1500);
-        });
-    }
-});
+  prefersReducedMotion.addEventListener('change', function () {
+    if (chromeReady) initContent();
+  });
+})();

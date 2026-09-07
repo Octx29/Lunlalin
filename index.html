@@ -1,10 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lunlalin — Lash | Nail | Waxing</title>
-<meta name="description" content="Lunlalin is a premium salon in Bangkok offering eyelash extensions, nails, and waxing services.">
+<title>Lunlalin — Eyelash Extensions, Nails &amp; Waxing in Bangkok</title>
+<meta name="description" content="Lunlalin is a premium Bangkok beauty studio offering eyelash extensions, nail services and waxing — precision technique, certified materials, immaculate hygiene.">
+<meta name="theme-color" content="#0E1912">
+
+<!-- Drops .no-js before first paint so revealed sections never flash in.
+     The watchdog restores it if the scripts never boot: [data-reveal] starts at
+     opacity 0, so a failed script load would otherwise blank the whole page. -->
+<script>
+(function () {
+  var root = document.documentElement;
+  root.classList.remove('no-js');
+  setTimeout(function () {
+    if (!(window.Lunlalin && window.Lunlalin.initialised)) root.classList.add('no-js');
+  }, 4000);
+})();
+</script>
+
+<!-- Social preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Lunlalin — Eyelash Extensions, Nails & Waxing in Bangkok">
+<meta property="og:description" content="Premium lashes, nails and waxing in Bangkok. Precision technique, certified materials, immaculate hygiene.">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Lash-fan favicon, inlined so it costs no request -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 44'%3E%3Cg fill='none' stroke='%23C1EBE9' stroke-width='4' stroke-linecap='round'%3E%3Cpath d='M4 40 Q12 12 8 4'/%3E%3Cpath d='M4 40 Q22 8 24 2'/%3E%3Cpath d='M4 40 Q34 12 40 6'/%3E%3Cpath d='M4 40 Q44 20 54 16'/%3E%3Cpath d='M4 40 Q48 30 62 32'/%3E%3C/g%3E%3C/svg%3E">
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,11 +39,17 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <link rel="stylesheet" href="css/style.css">
+
+<script src="js/script.js" defer></script>
+<!-- Loaded after script.js: it injects content, then calls Lunlalin.init(). -->
+<script src="js/dynamic.js" defer></script>
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <!-- ========== SVG SPRITE: signature lash-fan mark, reused across the site ========== -->
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <symbol id="lash-fan" viewBox="0 0 64 40">
     <path d="M2,38 Q10,10 6,2" />
     <path d="M2,38 Q20,6 22,-2" />
@@ -32,13 +62,13 @@
 <!-- ========== NAVBAR ========== -->
 <header class="navbar" id="navbar">
   <div class="container navbar__inner">
-    <a href="#home" class="brand">
-      <svg class="brand__mark" viewBox="0 0 64 40"><use href="#lash-fan"/></svg>
+    <a href="#home" class="brand" aria-label="Lunlalin — home">
+      <svg class="brand__mark" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
       <span class="brand__name">Lunlalin</span>
     </a>
 
-    <nav class="nav-links" id="navLinks">
-      <a href="#home" class="nav-link active" data-nav>Home</a>
+    <nav class="nav-links" id="navLinks" aria-label="Main">
+      <a href="#home" class="nav-link" data-nav>Home</a>
       <a href="#about" class="nav-link" data-nav>About</a>
       <a href="#services" class="nav-link" data-nav>Services</a>
       <a href="#promotions" class="nav-link" data-nav>Promotions</a>
@@ -47,7 +77,8 @@
       <a href="#contact" class="nav-link nav-link--cta" data-nav>Book Now</a>
     </nav>
 
-    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+    <button class="hamburger" id="hamburger" type="button"
+            aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -55,31 +86,31 @@
 
 <!-- Mobile menu overlay -->
 <div class="mobile-menu" id="mobileMenu">
-  <nav class="mobile-menu__links">
-    <a href="#home" data-nav>Home</a>
-    <a href="#about" data-nav>About</a>
-    <a href="#services" data-nav>Services</a>
-    <a href="#promotions" data-nav>Promotions</a>
-    <a href="#gallery" data-nav>Gallery</a>
-    <a href="#reviews" data-nav>Reviews</a>
-    <a href="#contact" class="mobile-menu__cta" data-nav>Book Now</a>
+  <nav class="mobile-menu__links" aria-label="Mobile">
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#promotions">Promotions</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact" class="mobile-menu__cta">Book Now</a>
   </nav>
   <div class="mobile-menu__social">
-    <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-    <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" aria-label="Line"><i class="fa-brands fa-line"></i></a>
-    <a href="tel:0899889896" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+    <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" aria-label="Lunlalin on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+    <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" aria-label="Lunlalin on LINE"><i class="fa-brands fa-line" aria-hidden="true"></i></a>
+    <a href="tel:0899889896" aria-label="Call Lunlalin"><i class="fa-solid fa-phone" aria-hidden="true"></i></a>
   </div>
 </div>
 
-<main>
+<main id="main">
 
   <!-- ========== HERO ========== -->
-  <section class="hero" id="home">
-    <svg class="hero__fan-bg" viewBox="0 0 64 40" aria-hidden="true"><use href="#lash-fan"/></svg>
+  <section class="hero" id="home" aria-labelledby="heroTitle">
+    <svg class="hero__fan-bg" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
     <div class="container hero__inner">
       <div class="hero__text" data-reveal>
         <span class="eyebrow">Bangkok's Premium Studio</span>
-        <h1 class="hero__title">Lashes, Nails & <em>Waxing</em></h1>
+        <h1 class="hero__title" id="heroTitle">Lashes, Nails &amp; <em>Waxing</em></h1>
         <p class="hero__desc">At Lunlalin, every service is hand-crafted with premium materials and meticulous technique — for a look that feels effortless and beautiful.</p>
         <div class="hero__actions">
           <a href="#contact" class="btn btn--primary">Book an Appointment</a>
@@ -87,46 +118,49 @@
         </div>
         <div class="hero__trust">
           <div class="hero__trust-item"><strong>5,000+</strong><span>Happy Clients</span></div>
-          <div class="hero__trust-divider"></div>
+          <div class="hero__trust-divider" aria-hidden="true"></div>
           <div class="hero__trust-item"><strong>4.9</strong><span>Average Rating</span></div>
-          <div class="hero__trust-divider"></div>
+          <div class="hero__trust-divider" aria-hidden="true"></div>
           <div class="hero__trust-item"><strong>100%</strong><span>Safe Materials</span></div>
         </div>
       </div>
       <div class="hero__media" data-reveal>
         <div class="hero__image-frame">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Hero image">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000'><rect width='100%25' height='100%25' fill='%232E4B39'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23A8CDB5'>Studio image</text></svg>"
+               alt="Lash artistry at the Lunlalin studio" width="800" height="1000" fetchpriority="high" decoding="async">
         </div>
         <div class="hero__badge">
           <span>Est. Bangkok</span>
         </div>
       </div>
     </div>
-    <a href="#about" class="hero__scroll" aria-label="Scroll to About"><i class="fa-solid fa-chevron-down"></i></a>
+    <a href="#about" class="hero__scroll" aria-label="Scroll to About"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></a>
   </section>
 
   <!-- ========== ABOUT ========== -->
-  <section class="about" id="about">
+  <section class="about section-band" id="about" aria-labelledby="aboutTitle">
     <div class="container about__inner">
       <div class="about__media" data-reveal>
         <div class="about__image-main">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="About Image Main">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000'><rect width='100%25' height='100%25' fill='%232E4B39'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23A8CDB5'>Studio image</text></svg>"
+               alt="The Lunlalin studio interior" width="800" height="1000" loading="lazy" decoding="async">
         </div>
         <div class="about__image-accent">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='800'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="About Image Accent">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='800'><rect width='100%25' height='100%25' fill='%232E4B39'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23A8CDB5'>Detail</text></svg>"
+               alt="Close-up of a completed lash set" width="800" height="800" loading="lazy" decoding="async">
         </div>
       </div>
 
       <div class="about__content" data-reveal>
         <span class="eyebrow">Our Story</span>
-        <h2 class="section-title">Crafted with care, worn with confidence</h2>
+        <h2 class="section-title" id="aboutTitle">Crafted with care, worn with confidence</h2>
         <p>Lunlalin began with a simple belief: artistry should feel like a ritual of care, not just a beauty transaction. From a single studio chair in Bangkok, we built a reputation on precision technique and immaculate hygiene.</p>
         <p>Every technician at Lunlalin is trained to high-quality standards. We use only certified, hypoallergenic materials, because your comfort is as important to us as how beautiful you look walking out the door.</p>
 
         <ul class="value-list">
-          <li><svg class="value-list__icon" viewBox="0 0 64 40"><use href="#lash-fan"/></svg> Premium technique & standards</li>
-          <li><svg class="value-list__icon" viewBox="0 0 64 40"><use href="#lash-fan"/></svg> Certified, high-quality materials</li>
-          <li><svg class="value-list__icon" viewBox="0 0 64 40"><use href="#lash-fan"/></svg> Sterile tools & single-use consumables</li>
+          <li><svg class="value-list__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg> Premium technique &amp; standards</li>
+          <li><svg class="value-list__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg> Certified, high-quality materials</li>
+          <li><svg class="value-list__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg> Sterile tools &amp; single-use consumables</li>
         </ul>
 
         <div class="stats-grid">
@@ -152,48 +186,51 @@
   </section>
 
   <!-- ========== SERVICES ========== -->
-  <section class="services" id="services">
+  <section class="services" id="services" aria-labelledby="servicesTitle">
     <div class="container">
-      <div class="section-head" data-reveal>
+      <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">What We Do</span>
-        <h2 class="section-title">Signature Services</h2>
+        <h2 class="section-title" id="servicesTitle">Signature Services</h2>
         <p class="section-sub">Each treatment is tailored to your lifestyle and desired look — designed to enhance your natural beauty.</p>
       </div>
 
       <div class="services-grid">
         <article class="service-card" data-reveal>
           <div class="service-card__img">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Eyelash extensions">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%25' height='100%25' fill='%232E4B39'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23A8CDB5'>Eyelash Extensions</text></svg>"
+                 alt="Eyelash extensions" width="800" height="600" loading="lazy" decoding="async">
           </div>
           <div class="service-card__body">
-            <svg class="service-card__icon" viewBox="0 0 64 40"><use href="#lash-fan"/></svg>
+            <svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
             <h3>Eyelash Extensions</h3>
             <p>Classic, hybrid or volume sets built lash-by-lash with ultra-fine fibers for a full, feather-light finish.</p>
-            <a href="#promotions" class="service-card__link">View Pricing <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="#promotions" class="service-card__link">View Pricing <i class="fa-solid fa-arrow-right" aria-hidden="true"></i><span class="visually-hidden"> for eyelash extensions</span></a>
           </div>
         </article>
 
         <article class="service-card" data-reveal>
           <div class="service-card__img">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Nails service">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%25' height='100%25' fill='%232E4B39'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23A8CDB5'>Nail Services</text></svg>"
+                 alt="Nail services" width="800" height="600" loading="lazy" decoding="async">
           </div>
           <div class="service-card__body">
-            <svg class="service-card__icon" viewBox="0 0 64 40"><use href="#lash-fan"/></svg>
+            <svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
             <h3>Nail Services</h3>
             <p>Beautiful, long-lasting gel polish, nail art, and spa manicures to keep your hands looking flawless.</p>
-            <a href="#promotions" class="service-card__link">View Pricing <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="#promotions" class="service-card__link">View Pricing <i class="fa-solid fa-arrow-right" aria-hidden="true"></i><span class="visually-hidden"> for nail services</span></a>
           </div>
         </article>
 
         <article class="service-card" data-reveal>
           <div class="service-card__img">
-            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Waxing">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='600'><rect width='100%25' height='100%25' fill='%232E4B39'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23A8CDB5'>Waxing</text></svg>"
+                 alt="Waxing treatments" width="800" height="600" loading="lazy" decoding="async">
           </div>
           <div class="service-card__body">
-            <svg class="service-card__icon" viewBox="0 0 64 40"><use href="#lash-fan"/></svg>
+            <svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
             <h3>Waxing</h3>
             <p>Gentle and precise waxing treatments for smooth, hair-free skin using high-quality wax products.</p>
-            <a href="#promotions" class="service-card__link">View Pricing <i class="fa-solid fa-arrow-right"></i></a>
+            <a href="#promotions" class="service-card__link">View Pricing <i class="fa-solid fa-arrow-right" aria-hidden="true"></i><span class="visually-hidden"> for waxing</span></a>
           </div>
         </article>
       </div>
@@ -201,11 +238,11 @@
   </section>
 
   <!-- ========== PROMOTIONS ========== -->
-  <section class="promotions" id="promotions">
+  <section class="promotions section-band" id="promotions" aria-labelledby="promotionsTitle">
     <div class="container">
-      <div class="section-head" data-reveal>
+      <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">Limited-Time Offers</span>
-        <h2 class="section-title">Promotions & Packages</h2>
+        <h2 class="section-title" id="promotionsTitle">Promotions &amp; Packages</h2>
         <p class="section-sub">Curated packages that pair our most-loved treatments at a graceful price.</p>
       </div>
 
@@ -215,24 +252,24 @@
           <p class="pricing-card__desc">Natural-looking, one-to-one classic lash set.</p>
           <div class="pricing-card__price"><span>฿</span>1,500</div>
           <ul class="pricing-card__features">
-            <li><i class="fa-solid fa-check"></i> Classic 1:1 application</li>
-            <li><i class="fa-solid fa-check"></i> Free lash bath & aftercare kit</li>
-            <li><i class="fa-solid fa-check"></i> 90-minute session</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Classic 1:1 application</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Free lash bath &amp; aftercare kit</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> 90-minute session</li>
           </ul>
-          <a href="#contact" class="btn btn--outline">Book This Package</a>
+          <a href="#contact" class="btn btn--outline">Book This Package<span class="visually-hidden">: Signature Classic</span></a>
         </article>
 
         <article class="pricing-card pricing-card--featured" data-reveal>
           <span class="pricing-card__tag">Most Popular</span>
-          <h3 class="pricing-card__name">Lash & Nails Combo</h3>
+          <h3 class="pricing-card__name">Lash &amp; Nails Combo</h3>
           <p class="pricing-card__desc">Full lash set + gel manicure.</p>
           <div class="pricing-card__price"><span>฿</span>2,500</div>
           <ul class="pricing-card__features">
-            <li><i class="fa-solid fa-check"></i> Volume lash set</li>
-            <li><i class="fa-solid fa-check"></i> Gel polish on hands</li>
-            <li><i class="fa-solid fa-check"></i> 150-minute session</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Volume lash set</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Gel polish on hands</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> 150-minute session</li>
           </ul>
-          <a href="#contact" class="btn btn--primary">Book This Package</a>
+          <a href="#contact" class="btn btn--primary">Book This Package<span class="visually-hidden">: Lash &amp; Nails Combo</span></a>
         </article>
 
         <article class="pricing-card" data-reveal>
@@ -240,122 +277,93 @@
           <p class="pricing-card__desc">Silky smooth skin treatment.</p>
           <div class="pricing-card__price"><span>฿</span>1,800</div>
           <ul class="pricing-card__features">
-            <li><i class="fa-solid fa-check"></i> Full leg and arm wax</li>
-            <li><i class="fa-solid fa-check"></i> Gentle skin soothing lotion</li>
-            <li><i class="fa-solid fa-check"></i> Priority booking</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Full leg and arm wax</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Gentle skin soothing lotion</li>
+            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Priority booking</li>
           </ul>
-          <a href="#contact" class="btn btn--outline">Book This Package</a>
+          <a href="#contact" class="btn btn--outline">Book This Package<span class="visually-hidden">: Full Waxing Spa</span></a>
         </article>
       </div>
     </div>
   </section>
 
   <!-- ========== GALLERY ========== -->
-  <section class="gallery" id="gallery">
+  <section class="gallery" id="gallery" aria-labelledby="galleryTitle">
     <div class="container">
-      <div class="section-head" data-reveal>
+      <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">Our Work</span>
-        <h2 class="section-title">Gallery</h2>
+        <h2 class="section-title" id="galleryTitle">Gallery</h2>
         <p class="section-sub">A closer look at the artistry behind every Lunlalin appointment.</p>
       </div>
 
+      <!-- Populated from content.json; this markup is the no-content fallback. -->
       <div class="gallery-grid" id="galleryGrid" data-reveal>
-        <div class="gallery-item" data-full="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Gallery Image">
-          <span class="gallery-item__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-        </div>
-        <div class="gallery-item gallery-item--tall" data-full="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Gallery Image">
-          <span class="gallery-item__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-        </div>
-        <div class="gallery-item" data-full="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Gallery Image">
-          <span class="gallery-item__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-        </div>
-        <div class="gallery-item" data-full="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Gallery Image">
-          <span class="gallery-item__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-        </div>
-        <div class="gallery-item gallery-item--tall" data-full="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Gallery Image">
-          <span class="gallery-item__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-        </div>
-        <div class="gallery-item" data-full="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Gallery Image">
-          <span class="gallery-item__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-        </div>
-        <div class="gallery-item" data-full="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Gallery Image">
-          <span class="gallery-item__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-        </div>
-        <div class="gallery-item" data-full="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1400' height='1400'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>">
-          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='600' height='600'><rect width='100%' height='100%' fill='%23EDE0D3'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='24' fill='%23C59C8D'>Your IG Image Here</text></svg>" alt="Gallery Image">
-          <span class="gallery-item__zoom"><i class="fa-solid fa-magnifying-glass-plus"></i></span>
-        </div>
+        <p class="gallery-empty">Our gallery is being updated — follow
+          <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener">@lunlalin.th</a>
+          for the latest work.</p>
       </div>
     </div>
   </section>
 
   <!-- ========== REVIEWS ========== -->
-  <section class="reviews" id="reviews">
+  <section class="reviews section-band" id="reviews" aria-labelledby="reviewsTitle">
     <div class="container">
-      <div class="section-head" data-reveal>
+      <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">Kind Words</span>
-        <h2 class="section-title">What Our Clients Say</h2>
-      </div>
-    </div>
-
-    <div class="reviews-carousel" data-reveal>
-      <button class="reviews-carousel__arrow reviews-carousel__arrow--prev" id="reviewPrev" aria-label="Previous review"><i class="fa-solid fa-chevron-left"></i></button>
-
-      <div class="reviews-track" id="reviewsTrack">
-        <article class="review-card">
-          <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__text">The most natural volume set I've ever had. My technician took the time to design lashes for my exact eye shape — I get compliments every day.</p>
-          <div class="review-card__author"><strong>Pim S.</strong><span>Classic Set Client</span></div>
-        </article>
-        <article class="review-card">
-          <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__text">Incredibly clean studio and gentle technique. My eyes are sensitive and I never once felt discomfort. Retention lasted a full four weeks.</p>
-          <div class="review-card__author"><strong>Nicha T.</strong><span>Volume Deluxe Client</span></div>
-        </article>
-        <article class="review-card">
-          <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__text">Love my new gel nails! The nail artists here are so precise and the spa manicure made my hands so soft.</p>
-          <div class="review-card__author"><strong>Ammy K.</strong><span>Nail Spa Client</span></div>
-        </article>
-        <article class="review-card">
-          <div class="review-card__stars">★★★★★</div>
-          <p class="review-card__text">Lunlalin feels more like a spa ritual than a beauty errand. Booking on LINE was effortless and the team is genuinely warm.</p>
-          <div class="review-card__author"><strong>Warisa P.</strong><span>Waxing Client</span></div>
-        </article>
+        <h2 class="section-title" id="reviewsTitle">What Our Clients Say</h2>
       </div>
 
-      <button class="reviews-carousel__arrow reviews-carousel__arrow--next" id="reviewNext" aria-label="Next review"><i class="fa-solid fa-chevron-right"></i></button>
-    </div>
+      <div class="reviews-carousel" data-reveal role="group" aria-roledescription="carousel" aria-label="Client reviews">
+        <button class="reviews-carousel__arrow reviews-carousel__arrow--prev" id="reviewPrev" type="button" aria-label="Previous review"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
 
-    <div class="reviews-dots" id="reviewsDots"></div>
+        <div class="reviews-track" id="reviewsTrack" aria-live="polite">
+          <article class="review-card">
+            <div class="review-card__stars" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="review-card__text">The most natural volume set I've ever had. My technician took the time to design lashes for my exact eye shape — I get compliments every day.</p>
+            <div class="review-card__author"><strong>Pim S.</strong><span>Classic Set Client</span></div>
+          </article>
+          <article class="review-card">
+            <div class="review-card__stars" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="review-card__text">Incredibly clean studio and gentle technique. My eyes are sensitive and I never once felt discomfort. Retention lasted a full four weeks.</p>
+            <div class="review-card__author"><strong>Nicha T.</strong><span>Volume Deluxe Client</span></div>
+          </article>
+          <article class="review-card">
+            <div class="review-card__stars" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="review-card__text">Love my new gel nails! The nail artists here are so precise and the spa manicure made my hands so soft.</p>
+            <div class="review-card__author"><strong>Ammy K.</strong><span>Nail Spa Client</span></div>
+          </article>
+          <article class="review-card">
+            <div class="review-card__stars" role="img" aria-label="5 out of 5 stars">★★★★★</div>
+            <p class="review-card__text">Lunlalin feels more like a spa ritual than a beauty errand. Booking on LINE was effortless and the team is genuinely warm.</p>
+            <div class="review-card__author"><strong>Warisa P.</strong><span>Waxing Client</span></div>
+          </article>
+        </div>
+
+        <button class="reviews-carousel__arrow reviews-carousel__arrow--next" id="reviewNext" type="button" aria-label="Next review"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+      </div>
+
+      <div class="reviews-dots" id="reviewsDots"></div>
+    </div>
   </section>
 
   <!-- ========== INSTAGRAM BANNER / CTA ========== -->
-  <section class="banner">
-    <div class="banner__overlay"></div>
+  <section class="banner" aria-labelledby="bannerTitle">
     <div class="container banner__inner" data-reveal>
       <span class="eyebrow eyebrow--light">@lunlalin.th</span>
-      <h2 class="banner__title">Follow our latest lash artistry</h2>
-      <p class="banner__desc">New sets, before & afters, and behind-the-scenes moments — every week on Instagram.</p>
+      <h2 class="banner__title" id="bannerTitle">Follow our latest lash artistry</h2>
+      <p class="banner__desc">New sets, before &amp; afters, and behind-the-scenes moments — every week on Instagram.</p>
       <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" class="btn btn--primary">
-        <i class="fa-brands fa-instagram"></i> Follow @lunlalin.th
+        <i class="fa-brands fa-instagram" aria-hidden="true"></i> Follow @lunlalin.th
       </a>
     </div>
   </section>
 
   <!-- ========== CONTACT / BOOKING ========== -->
-  <section class="contact" id="contact">
+  <section class="contact section-band" id="contact" aria-labelledby="contactTitle">
     <div class="container">
-      <div class="section-head" data-reveal>
+      <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">Get In Touch</span>
-        <h2 class="section-title">Book Your Appointment</h2>
+        <h2 class="section-title" id="contactTitle">Book Your Appointment</h2>
         <p class="section-sub">Tell us a little about what you're after and we'll confirm your slot within 24 hours.</p>
       </div>
 
@@ -363,60 +371,69 @@
         <form class="booking-form" id="bookingForm" data-reveal novalidate>
           <div class="form-row">
             <div class="form-field">
-              <label for="fullName">Full Name</label>
-              <input type="text" id="fullName" name="fullName" placeholder="Your name" required>
+              <label for="fullName">Full Name <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="fullName" name="fullName" placeholder="Your name"
+                     autocomplete="name" required aria-describedby="fullNameError">
+              <span class="form-error" id="fullNameError"></span>
             </div>
             <div class="form-field">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone" placeholder="089-988-9896" required>
+              <label for="phone">Phone Number <span class="req" aria-hidden="true">*</span></label>
+              <input type="tel" id="phone" name="phone" placeholder="089-988-9896"
+                     autocomplete="tel" inputmode="tel" pattern="[0-9()+\-\s]{6,}" required aria-describedby="phoneError">
+              <span class="form-error" id="phoneError"></span>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-field">
-              <label for="email">LINE ID</label>
-              <input type="text" id="email" name="line" placeholder="@yourlineid" required>
+              <label for="line">LINE ID <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="line" name="line" placeholder="@yourlineid" required aria-describedby="lineError">
+              <span class="form-error" id="lineError"></span>
             </div>
             <div class="form-field">
-              <label for="service">Service</label>
-              <select id="service" name="service" required>
+              <label for="service">Service <span class="req" aria-hidden="true">*</span></label>
+              <select id="service" name="service" required aria-describedby="serviceError">
                 <option value="" disabled selected>Select a service</option>
                 <option value="Eyelash Extensions">Eyelash Extensions</option>
                 <option value="Nails">Nails</option>
                 <option value="Waxing">Waxing</option>
                 <option value="Other">Other</option>
               </select>
+              <span class="form-error" id="serviceError"></span>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-field">
-              <label for="date">Preferred Date</label>
-              <input type="date" id="date" name="date" required>
+              <label for="date">Preferred Date <span class="req" aria-hidden="true">*</span></label>
+              <input type="date" id="date" name="date" required aria-describedby="dateError">
+              <span class="form-error" id="dateError"></span>
             </div>
             <div class="form-field">
               <label for="time">Preferred Time</label>
-              <input type="time" id="time" name="time">
+              <input type="time" id="time" name="time" aria-describedby="timeError">
+              <span class="form-error" id="timeError"></span>
             </div>
           </div>
 
           <div class="form-field">
             <label for="message">Message</label>
-            <textarea id="message" name="message" rows="4" placeholder="Tell us about your desired look, any allergies, or questions..."></textarea>
+            <textarea id="message" name="message" rows="4" placeholder="Tell us about your desired look, any allergies, or questions…" aria-describedby="messageError"></textarea>
+            <span class="form-error" id="messageError"></span>
           </div>
 
           <button type="submit" class="btn btn--primary btn--block">
             <span class="btn__label">Request Appointment</span>
-            <i class="fa-solid fa-paper-plane"></i>
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
           </button>
 
-          <p class="form-note" id="formNote" role="status"></p>
+          <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
         </form>
 
         <div class="contact-side" data-reveal>
           <div class="contact-map">
             <iframe
-              title="Lunlalin salon location map"
+              title="Map showing the Lunlalin salon location in Bangkok"
               src="https://www.google.com/maps?q=Sukhumvit+Bangkok+Thailand&output=embed"
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade">
@@ -425,15 +442,15 @@
 
           <div class="contact-cards">
             <a href="tel:0899889896" class="contact-card">
-              <i class="fa-solid fa-phone"></i>
+              <i class="fa-solid fa-phone" aria-hidden="true"></i>
               <div><strong>Call Us</strong><span>089-988-9896</span></div>
             </a>
             <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" class="contact-card">
-              <i class="fa-brands fa-line"></i>
+              <i class="fa-brands fa-line" aria-hidden="true"></i>
               <div><strong>LINE</strong><span>@lunlalin</span></div>
             </a>
             <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" class="contact-card">
-              <i class="fa-brands fa-instagram"></i>
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
               <div><strong>Instagram</strong><span>@lunlalin.th</span></div>
             </a>
           </div>
@@ -454,19 +471,19 @@
 <footer class="footer">
   <div class="container footer__inner">
     <div class="footer__col footer__brand">
-      <a href="#home" class="brand brand--footer">
-        <svg class="brand__mark" viewBox="0 0 64 40"><use href="#lash-fan"/></svg>
+      <a href="#home" class="brand brand--footer" aria-label="Lunlalin — home">
+        <svg class="brand__mark" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
         <span class="brand__name">Lunlalin</span>
       </a>
       <p>Premium eyelash extensions, nails, and waxing studio in Bangkok.</p>
       <div class="footer__social">
-        <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" aria-label="Line"><i class="fa-brands fa-line"></i></a>
-        <a href="tel:0899889896" aria-label="Phone"><i class="fa-solid fa-phone"></i></a>
+        <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" aria-label="Lunlalin on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
+        <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" aria-label="Lunlalin on LINE"><i class="fa-brands fa-line" aria-hidden="true"></i></a>
+        <a href="tel:0899889896" aria-label="Call Lunlalin"><i class="fa-solid fa-phone" aria-hidden="true"></i></a>
       </div>
     </div>
 
-    <div class="footer__col">
+    <nav class="footer__col" aria-label="Footer">
       <h4>Quick Links</h4>
       <a href="#about">About</a>
       <a href="#services">Services</a>
@@ -474,33 +491,34 @@
       <a href="#gallery">Gallery</a>
       <a href="#reviews">Reviews</a>
       <a href="#contact">Book Now</a>
-    </div>
+    </nav>
 
     <div class="footer__col">
       <h4>Contact</h4>
-      <p><i class="fa-solid fa-location-dot"></i> Bangkok, Thailand</p>
-      <p><i class="fa-solid fa-phone"></i> 089-988-9896</p>
-      <p><i class="fa-brands fa-line"></i> @lunlalin</p>
-      <p><i class="fa-brands fa-instagram"></i> @lunlalin.th</p>
+      <p data-contact="location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Bangkok, Thailand</p>
+      <p data-contact="phone"><i class="fa-solid fa-phone" aria-hidden="true"></i> 089-988-9896</p>
+      <p data-contact="line"><i class="fa-brands fa-line" aria-hidden="true"></i> @lunlalin</p>
+      <p data-contact="instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @lunlalin.th</p>
     </div>
   </div>
 
   <div class="footer__bottom">
     <div class="container footer__bottom-inner">
-      <p>&copy; <span id="year"></span> Lunlalin Beauty Salon. All rights reserved.</p>
+      <p>&copy; <span id="year">2026</span> Lunlalin Beauty Salon. All rights reserved.</p>
     </div>
   </div>
 </footer>
 
 <!-- ========== LIGHTBOX ========== -->
-<div class="lightbox" id="lightbox">
-  <button class="lightbox__close" id="lightboxClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Gallery image viewer" aria-hidden="true">
+  <button class="lightbox__btn lightbox__close" id="lightboxClose" type="button" aria-label="Close viewer"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  <button class="lightbox__btn lightbox__prev" id="lightboxPrev" type="button" aria-label="Previous image"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
   <img src="" alt="" id="lightboxImg">
+  <button class="lightbox__btn lightbox__next" id="lightboxNext" type="button" aria-label="Next image"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+  <span class="lightbox__counter" id="lightboxCounter"></span>
 </div>
 
-<button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fa-solid fa-arrow-up"></i></button>
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
 
-<script src="js/dynamic.js"></script>
-<script src="js/script.js"></script>
 </body>
 </html>

@@ -292,6 +292,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
 const OWNER='Octx29', REPO='Lunlalin', BRANCH='main', DATA_PATH='data/content.json';
 let TOKEN='', content={}, dataSha='';
 
+// ===== Encoding helpers =====
+// atob() yields Latin-1, so decoding UTF-8 JSON with it mangles every non-ASCII
+// character (— ฿ ★) a little more on each load->save round trip. Decode bytes properly.
+function b64ToUtf8(b64){
+  const bin=atob(b64.replace(/\s/g,''));
+  const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0));
+  return new TextDecoder('utf-8').decode(bytes);
+}
+function utf8ToB64(str){
+  const bytes=new TextEncoder().encode(str);
+  let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b));
+  return btoa(bin);
+}
+
 // ===== GitHub API =====
 async function ghGet(path){
   const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`,{headers:{Authorization:`Bearer ${TOKEN}`,'Accept':'application/vnd.github.v3+json'}});
@@ -338,7 +352,7 @@ async function loadData(){
   try{
     const file=await ghGet(DATA_PATH);
     dataSha=file.sha;
-    content=JSON.parse(atob(file.content.replace(/\n/g,'')));
+    content=JSON.parse(b64ToUtf8(file.content));
     populate();
   }catch(e){toast('โหลดข้อมูลล้มเหลว: '+e.message,'err')}
   hideLd();
@@ -433,7 +447,7 @@ async function saveAll(){
   collect();showLd('กำลังบันทึกข้อมูล...');
   try{
     const json=JSON.stringify(content,null,2);
-    const b64=btoa(unescape(encodeURIComponent(json)));
+    const b64=utf8ToB64(json);
     const res=await ghPut(DATA_PATH,b64,dataSha,'Update content');
     dataSha=res.content.sha;
     toast('บันทึกเรียบร้อย! ✨','ok');
@@ -446,7 +460,7 @@ async function pushAll(){
   collect();showLd('กำลังอัปเดตขึ้นเว็บจริง โปรดรอสักครู่...');
   try{
     const json=JSON.stringify(content,null,2);
-    const b64=btoa(unescape(encodeURIComponent(json)));
+    const b64=utf8ToB64(json);
     const res=await ghPut(DATA_PATH,b64,dataSha,`Update — ${new Date().toLocaleString('th-TH')}`);
     dataSha=res.content.sha;
     toast('อัปเดตเว็บไซต์สำเร็จแล้ว! 🚀','ok');
