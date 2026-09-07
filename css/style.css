@@ -110,6 +110,21 @@ body::before {
 }
 
 img, svg, video, iframe { max-width: 100%; display: block; }
+
+/* Inline icon sprite (see the <symbol> block in index.html). Scales with
+   font-size and inherits colour, so it needs no per-icon styling. */
+.icon {
+  display: inline-block;
+  vertical-align: -0.125em;
+  width: 1em;
+  height: 1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
 img { height: auto; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
@@ -647,7 +662,7 @@ body.is-locked { overflow: hidden; }
 .pricing-card__price span { font-size: var(--fs-lg); margin-top: 0.3em; }
 .pricing-card__features { margin-bottom: var(--sp-8); display: flex; flex-direction: column; gap: var(--sp-3); flex: 1; }
 .pricing-card__features li { display: flex; align-items: flex-start; gap: var(--sp-3); font-size: var(--fs-sm); color: var(--text); }
-.pricing-card__features i { color: var(--accent); margin-top: 0.42em; font-size: var(--fs-2xs); flex-shrink: 0; }
+.pricing-card__features .icon { color: var(--accent); margin-top: 0.28em; font-size: var(--fs-sm); stroke-width: 2.6; }
 
 /* =========================================================
    11. GALLERY
@@ -914,7 +929,7 @@ body.is-locked { overflow: hidden; }
               border-color var(--dur) var(--ease);
 }
 .contact-card:hover { transform: translateY(-4px); background: var(--surface-3); border-color: var(--border-accent); }
-.contact-card i { font-size: var(--fs-lg); color: var(--accent); }
+.contact-card .icon { font-size: var(--fs-lg); color: var(--accent); }
 .contact-card strong { font-size: var(--fs-xs); display: block; color: var(--text-strong); }
 .contact-card span { font-size: var(--fs-2xs); color: var(--text-muted); word-break: break-word; }
 
@@ -969,7 +984,7 @@ body.is-locked { overflow: hidden; }
   transition: color var(--dur-fast) var(--ease);
 }
 .footer__col a:hover { color: var(--text-strong); }
-.footer__col p i { width: 18px; color: var(--accent); margin-right: var(--sp-2); }
+.footer__col p .icon { color: var(--accent); margin-right: var(--sp-2); font-size: 1.05em; }
 
 .footer__brand .brand__name { color: var(--text-strong); }
 .footer__brand > p { max-width: 34ch; margin: var(--sp-5) 0 var(--sp-6); }
@@ -1108,7 +1123,7 @@ body.is-locked { overflow: hidden; }
 
   .contact-cards { grid-template-columns: 1fr; }
   .contact-card { flex-direction: row; text-align: left; padding: var(--sp-4) var(--sp-5); justify-content: flex-start; gap: var(--sp-4); }
-  .contact-card i { font-size: var(--fs-xl); }
+  .contact-card .icon { font-size: var(--fs-xl); }
 
   .footer__inner { grid-template-columns: 1fr; text-align: center; }
   .footer__brand { grid-column: span 1; }

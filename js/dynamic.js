@@ -141,7 +141,7 @@
             '<h3>' + esc(item.name || '') + '</h3>' +
             '<p>' + esc(item.description || '') + '</p>' +
             '<a href="#promotions" class="service-card__link">View Pricing ' +
-              '<i class="fa-solid fa-arrow-right" aria-hidden="true"></i>' +
+              '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg>' +
               '<span class="visually-hidden"> for ' + esc(item.name || 'this service') + '</span>' +
             '</a>' +
           '</div>' +
@@ -162,7 +162,7 @@
 
     grid.innerHTML = data.items.map(function (item) {
       var features = (item.features || []).map(function (f) {
-        return '<li><i class="fa-solid fa-check" aria-hidden="true"></i> ' + esc(f) + '</li>';
+        return '<li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> ' + esc(f) + '</li>';
       }).join('');
 
       return '' +
@@ -212,7 +212,7 @@
                 'data-full="' + esc(src) + '" data-alt="' + esc(alt) + '" ' +
                 'aria-label="Open ' + esc(alt) + ' in full size">' +
           '<img src="' + esc(src) + '" alt="' + esc(alt) + '" loading="lazy" decoding="async">' +
-          '<span class="gallery-item__zoom" aria-hidden="true"><i class="fa-solid fa-magnifying-glass-plus"></i></span>' +
+          '<span class="gallery-item__zoom" aria-hidden="true"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-zoom-in"/></svg></span>' +
         '</button>';
     }).join('');
   }
@@ -278,12 +278,13 @@
 
     /* Footer contact lines, addressed by a stable hook rather than by walking
        up from an icon — a missing icon used to throw and abort the injection. */
-    var footerFields = { phone: 'fa-solid fa-phone', line: 'fa-brands fa-line',
-                         instagram: 'fa-brands fa-instagram', location: 'fa-solid fa-location-dot' };
-    Object.keys(footerFields).forEach(function (key) {
+    var footerIcons = { phone: 'i-phone', line: 'i-line',
+                        instagram: 'i-instagram', location: 'i-location' };
+    Object.keys(footerIcons).forEach(function (key) {
       var el = document.querySelector('[data-contact="' + key + '"]');
       if (el && data[key]) {
-        el.innerHTML = '<i class="' + footerFields[key] + '" aria-hidden="true"></i> ' + esc(data[key]);
+        el.innerHTML = '<svg class="icon" aria-hidden="true" focusable="false"><use href="#' +
+                       footerIcons[key] + '"/></svg> ' + esc(data[key]);
       }
     });
   }

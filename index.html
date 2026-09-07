@@ -33,10 +33,54 @@
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- FontAwesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!-- Local-business structured data: what Google reads to place the studio in
+     local results, Maps and the knowledge panel. Keep in sync with data/content.json. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BeautySalon",
+  "name": "Lunlalin",
+  "description": "Premium eyelash extensions, nail services and waxing studio in Bangkok.",
+  "image": "https://lunlalin.vercel.app/images/og-cover.jpg",
+  "telephone": "+66899889896",
+  "priceRange": "\u0e3f\u0e3f",
+  "currenciesAccepted": "THB",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bangkok",
+    "addressCountry": "TH"
+  },
+  "sameAs": [
+    "https://instagram.com/lunlalin.th",
+    "https://line.me/R/ti/p/@lunlalin"
+  ],
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "10:00",
+      "closes": "20:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday", "Sunday"],
+      "opens": "10:00",
+      "closes": "19:00"
+    }
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Services",
+    "itemListElement": [
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Eyelash Extensions" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Nail Services" } },
+      { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Waxing" } }
+    ]
+  }
+}
+</script>
 
 <link rel="stylesheet" href="css/style.css">
 
@@ -56,6 +100,38 @@
     <path d="M2,38 Q32,10 38,4" />
     <path d="M2,38 Q42,18 52,14" />
     <path d="M2,38 Q46,28 62,30" />
+  </symbol>
+
+  <!-- Icon set: one consistent 24px stroke grid, drawn in-house so the UI
+       carries no icon-CDN dependency. Sized with font-size via .icon. -->
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5 9.5 18 20 6.5"/></symbol>
+  <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4 12h15M13.5 6l6 6-6 6"/></symbol>
+  <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 20V5M6 11l6-6 6 6"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="M6 9.5 12 15.5 18 9.5"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="M14.5 6 8.5 12l6 6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M9.5 6 15.5 12l-6 6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-zoom-in" viewBox="0 0 24 24">
+    <circle cx="10.5" cy="10.5" r="6.75"/><path d="M15.4 15.4 21 21M10.5 7.6v5.8M7.6 10.5h5.8"/>
+  </symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24">
+    <path d="M15.5 21A13.5 13.5 0 0 1 3 8.5V5.6A1.6 1.6 0 0 1 4.6 4h2.6a1 1 0 0 1 1 .78l.85 3.7a1 1 0 0 1-.5 1.1l-1.7.92a11.4 11.4 0 0 0 5.25 5.25l.92-1.7a1 1 0 0 1 1.1-.5l3.7.85a1 1 0 0 1 .78 1v2.6A1.6 1.6 0 0 1 18.4 21z"/>
+  </symbol>
+  <symbol id="i-location" viewBox="0 0 24 24">
+    <path d="M12 21.5s7-6.4 7-11.2a7 7 0 1 0-14 0c0 4.8 7 11.2 7 11.2z"/><circle cx="12" cy="10.2" r="2.6"/>
+  </symbol>
+  <symbol id="i-send" viewBox="0 0 24 24">
+    <path d="M21.4 2.6 2.9 9.7a.5.5 0 0 0 0 .93l7.3 2.85a.5.5 0 0 1 .29.29l2.85 7.3a.5.5 0 0 0 .93 0z"/>
+    <path d="M10.6 13.4 21.4 2.6"/>
+  </symbol>
+  <symbol id="i-instagram" viewBox="0 0 24 24">
+    <rect x="2.8" y="2.8" width="18.4" height="18.4" rx="5.4"/>
+    <circle cx="12" cy="12" r="4.3"/>
+    <circle cx="17.2" cy="6.8" r="1.15" fill="currentColor" stroke="none"/>
+  </symbol>
+  <symbol id="i-line" viewBox="0 0 24 24">
+    <path d="M12 3.2c-5.3 0-9.6 3.45-9.6 7.7 0 3.8 3.4 7 8 7.6.31.06.74.2.85.47.1.24.06.6.03.85l-.14.83c-.04.25-.2.97.85.53s5.65-3.33 7.7-5.7c1.42-1.56 2.1-3.14 2.1-4.58 0-4.25-4.3-7.7-9.6-7.7z"/>
+    <path d="M9.15 9.35v3.4M9.15 9.35 11.4 12.75V9.35M6.6 9.35v3.4h1.5M13.3 9.35v3.4M14.9 12.75v-3.4l2.3 3.4v-3.4" stroke-width="1.3"/>
   </symbol>
 </svg>
 
@@ -96,9 +172,9 @@
     <a href="#contact" class="mobile-menu__cta">Book Now</a>
   </nav>
   <div class="mobile-menu__social">
-    <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" aria-label="Lunlalin on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
-    <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" aria-label="Lunlalin on LINE"><i class="fa-brands fa-line" aria-hidden="true"></i></a>
-    <a href="tel:0899889896" aria-label="Call Lunlalin"><i class="fa-solid fa-phone" aria-hidden="true"></i></a>
+    <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" aria-label="Lunlalin on Instagram"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg></a>
+    <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" aria-label="Lunlalin on LINE"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-line"/></svg></a>
+    <a href="tel:0899889896" aria-label="Call Lunlalin"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
   </div>
 </div>
 
@@ -134,7 +210,7 @@
         </div>
       </div>
     </div>
-    <a href="#about" class="hero__scroll" aria-label="Scroll to About"><i class="fa-solid fa-chevron-down" aria-hidden="true"></i></a>
+    <a href="#about" class="hero__scroll" aria-label="Scroll to About"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron-down"/></svg></a>
   </section>
 
   <!-- ========== ABOUT ========== -->
@@ -204,7 +280,7 @@
             <svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
             <h3>Eyelash Extensions</h3>
             <p>Classic, hybrid or volume sets built lash-by-lash with ultra-fine fibers for a full, feather-light finish.</p>
-            <a href="#promotions" class="service-card__link">View Pricing <i class="fa-solid fa-arrow-right" aria-hidden="true"></i><span class="visually-hidden"> for eyelash extensions</span></a>
+            <a href="#promotions" class="service-card__link">View Pricing <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> for eyelash extensions</span></a>
           </div>
         </article>
 
@@ -217,7 +293,7 @@
             <svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
             <h3>Nail Services</h3>
             <p>Beautiful, long-lasting gel polish, nail art, and spa manicures to keep your hands looking flawless.</p>
-            <a href="#promotions" class="service-card__link">View Pricing <i class="fa-solid fa-arrow-right" aria-hidden="true"></i><span class="visually-hidden"> for nail services</span></a>
+            <a href="#promotions" class="service-card__link">View Pricing <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> for nail services</span></a>
           </div>
         </article>
 
@@ -230,7 +306,7 @@
             <svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
             <h3>Waxing</h3>
             <p>Gentle and precise waxing treatments for smooth, hair-free skin using high-quality wax products.</p>
-            <a href="#promotions" class="service-card__link">View Pricing <i class="fa-solid fa-arrow-right" aria-hidden="true"></i><span class="visually-hidden"> for waxing</span></a>
+            <a href="#promotions" class="service-card__link">View Pricing <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> for waxing</span></a>
           </div>
         </article>
       </div>
@@ -252,9 +328,9 @@
           <p class="pricing-card__desc">Natural-looking, one-to-one classic lash set.</p>
           <div class="pricing-card__price"><span>฿</span>1,500</div>
           <ul class="pricing-card__features">
-            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Classic 1:1 application</li>
-            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Free lash bath &amp; aftercare kit</li>
-            <li><i class="fa-solid fa-check" aria-hidden="true"></i> 90-minute session</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Classic 1:1 application</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Free lash bath &amp; aftercare kit</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> 90-minute session</li>
           </ul>
           <a href="#contact" class="btn btn--outline">Book This Package<span class="visually-hidden">: Signature Classic</span></a>
         </article>
@@ -265,9 +341,9 @@
           <p class="pricing-card__desc">Full lash set + gel manicure.</p>
           <div class="pricing-card__price"><span>฿</span>2,500</div>
           <ul class="pricing-card__features">
-            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Volume lash set</li>
-            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Gel polish on hands</li>
-            <li><i class="fa-solid fa-check" aria-hidden="true"></i> 150-minute session</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Volume lash set</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Gel polish on hands</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> 150-minute session</li>
           </ul>
           <a href="#contact" class="btn btn--primary">Book This Package<span class="visually-hidden">: Lash &amp; Nails Combo</span></a>
         </article>
@@ -277,9 +353,9 @@
           <p class="pricing-card__desc">Silky smooth skin treatment.</p>
           <div class="pricing-card__price"><span>฿</span>1,800</div>
           <ul class="pricing-card__features">
-            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Full leg and arm wax</li>
-            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Gentle skin soothing lotion</li>
-            <li><i class="fa-solid fa-check" aria-hidden="true"></i> Priority booking</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Full leg and arm wax</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Gentle skin soothing lotion</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> Priority booking</li>
           </ul>
           <a href="#contact" class="btn btn--outline">Book This Package<span class="visually-hidden">: Full Waxing Spa</span></a>
         </article>
@@ -314,7 +390,7 @@
       </div>
 
       <div class="reviews-carousel" data-reveal role="group" aria-roledescription="carousel" aria-label="Client reviews">
-        <button class="reviews-carousel__arrow reviews-carousel__arrow--prev" id="reviewPrev" type="button" aria-label="Previous review"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+        <button class="reviews-carousel__arrow reviews-carousel__arrow--prev" id="reviewPrev" type="button" aria-label="Previous review"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron-left"/></svg></button>
 
         <div class="reviews-track" id="reviewsTrack" aria-live="polite">
           <article class="review-card">
@@ -339,7 +415,7 @@
           </article>
         </div>
 
-        <button class="reviews-carousel__arrow reviews-carousel__arrow--next" id="reviewNext" type="button" aria-label="Next review"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+        <button class="reviews-carousel__arrow reviews-carousel__arrow--next" id="reviewNext" type="button" aria-label="Next review"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron-right"/></svg></button>
       </div>
 
       <div class="reviews-dots" id="reviewsDots"></div>
@@ -353,7 +429,7 @@
       <h2 class="banner__title" id="bannerTitle">Follow our latest lash artistry</h2>
       <p class="banner__desc">New sets, before &amp; afters, and behind-the-scenes moments — every week on Instagram.</p>
       <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" class="btn btn--primary">
-        <i class="fa-brands fa-instagram" aria-hidden="true"></i> Follow @lunlalin.th
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg> Follow @lunlalin.th
       </a>
     </div>
   </section>
@@ -424,7 +500,7 @@
 
           <button type="submit" class="btn btn--primary btn--block">
             <span class="btn__label">Request Appointment</span>
-            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-send"/></svg>
           </button>
 
           <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
@@ -442,15 +518,15 @@
 
           <div class="contact-cards">
             <a href="tel:0899889896" class="contact-card">
-              <i class="fa-solid fa-phone" aria-hidden="true"></i>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>
               <div><strong>Call Us</strong><span>089-988-9896</span></div>
             </a>
             <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" class="contact-card">
-              <i class="fa-brands fa-line" aria-hidden="true"></i>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-line"/></svg>
               <div><strong>LINE</strong><span>@lunlalin</span></div>
             </a>
             <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" class="contact-card">
-              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+              <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg>
               <div><strong>Instagram</strong><span>@lunlalin.th</span></div>
             </a>
           </div>
@@ -477,9 +553,9 @@
       </a>
       <p>Premium eyelash extensions, nails, and waxing studio in Bangkok.</p>
       <div class="footer__social">
-        <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" aria-label="Lunlalin on Instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i></a>
-        <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" aria-label="Lunlalin on LINE"><i class="fa-brands fa-line" aria-hidden="true"></i></a>
-        <a href="tel:0899889896" aria-label="Call Lunlalin"><i class="fa-solid fa-phone" aria-hidden="true"></i></a>
+        <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" aria-label="Lunlalin on Instagram"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg></a>
+        <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener" aria-label="Lunlalin on LINE"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-line"/></svg></a>
+        <a href="tel:0899889896" aria-label="Call Lunlalin"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg></a>
       </div>
     </div>
 
@@ -495,10 +571,10 @@
 
     <div class="footer__col">
       <h4>Contact</h4>
-      <p data-contact="location"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> Bangkok, Thailand</p>
-      <p data-contact="phone"><i class="fa-solid fa-phone" aria-hidden="true"></i> 089-988-9896</p>
-      <p data-contact="line"><i class="fa-brands fa-line" aria-hidden="true"></i> @lunlalin</p>
-      <p data-contact="instagram"><i class="fa-brands fa-instagram" aria-hidden="true"></i> @lunlalin.th</p>
+      <p data-contact="location"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-location"/></svg> Bangkok, Thailand</p>
+      <p data-contact="phone"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg> 089-988-9896</p>
+      <p data-contact="line"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-line"/></svg> @lunlalin</p>
+      <p data-contact="instagram"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg> @lunlalin.th</p>
     </div>
   </div>
 
@@ -511,14 +587,14 @@
 
 <!-- ========== LIGHTBOX ========== -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Gallery image viewer" aria-hidden="true">
-  <button class="lightbox__btn lightbox__close" id="lightboxClose" type="button" aria-label="Close viewer"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
-  <button class="lightbox__btn lightbox__prev" id="lightboxPrev" type="button" aria-label="Previous image"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+  <button class="lightbox__btn lightbox__close" id="lightboxClose" type="button" aria-label="Close viewer"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
+  <button class="lightbox__btn lightbox__prev" id="lightboxPrev" type="button" aria-label="Previous image"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron-left"/></svg></button>
   <img src="" alt="" id="lightboxImg">
-  <button class="lightbox__btn lightbox__next" id="lightboxNext" type="button" aria-label="Next image"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+  <button class="lightbox__btn lightbox__next" id="lightboxNext" type="button" aria-label="Next image"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron-right"/></svg></button>
   <span class="lightbox__counter" id="lightboxCounter"></span>
 </div>
 
-<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i></button>
+<button class="back-to-top" id="backToTop" type="button" aria-label="Back to top"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-up"/></svg></button>
 
 </body>
 </html>
