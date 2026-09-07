@@ -121,6 +121,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
 /* Bottom save bar (mobile) */
 .bottom-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(22,33,25,.95);backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.05);padding:10px 16px;display:flex;gap:8px;z-index:90}
 .bottom-bar .btn{flex:1;justify-content:center}
+
+/* Language switch in the top bar */
+.lang-switch{display:inline-flex;gap:2px;padding:3px;border:1px solid rgba(255,255,255,.16);border-radius:999px;margin-right:8px}
+.lang-btn{padding:6px 12px;border:0;border-radius:999px;background:transparent;color:rgba(255,255,255,.65);
+  font-size:12px;font-weight:700;cursor:pointer;transition:background .2s,color .2s;font-family:inherit}
+.lang-btn:hover{color:#fff}
+.lang-btn--on{background:var(--mint,#C1EBE9);color:#12241a}
+.lang-hint{font-size:12px;color:rgba(255,255,255,.55);margin:0 0 14px}
 </style>
 </head>
 <body>
@@ -146,6 +154,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
       <span class="topbar__branch" id="branchBadge" style="display:none">admin</span>
     </div>
     <div class="topbar__actions">
+      <!-- Which language the fields below edit. Switching keeps unsaved edits. -->
+      <div class="lang-switch" role="group" aria-label="ภาษาที่กำลังแก้ไข">
+        <button type="button" class="lang-btn lang-btn--on" data-alang="th" onclick="switchLang('th')">🇹🇭 ไทย</button>
+        <button type="button" class="lang-btn" data-alang="en" onclick="switchLang('en')">🇬🇧 EN</button>
+      </div>
       <button class="btn btn--g btn--sm" onclick="logout()" title="ออกจากระบบ"><i class="fa-solid fa-right-from-bracket"></i></button>
     </div>
   </div>
@@ -292,6 +305,33 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
 const OWNER='Octx29', REPO='Lunlalin', BRANCH='main', DATA_PATH='data/content.json';
 let TOKEN='', content={}, dataSha='';
 
+// ===== Bilingual field helpers =====
+// Translatable fields in content.json are {th, en}; plain strings are still
+// accepted and are treated as shared by both languages. ADMIN_LANG decides
+// which side these inputs read and write, so the other side is never lost.
+let ADMIN_LANG='th';
+function L(v){
+  if(v==null)return '';
+  if(typeof v==='object')return v[ADMIN_LANG]??'';
+  return String(v);
+}
+function setL(prev,val){
+  const base=(prev&&typeof prev==='object')?Object.assign({},prev)
+            :{th:typeof prev==='string'?prev:'',en:typeof prev==='string'?prev:''};
+  base[ADMIN_LANG]=val;
+  return base;
+}
+function switchLang(lang){
+  if(lang===ADMIN_LANG)return;
+  collect();                       // keep edits to the language being left
+  ADMIN_LANG=lang;
+  document.querySelectorAll('[data-alang]').forEach(b=>{
+    b.classList.toggle('lang-btn--on',b.dataset.alang===lang);
+  });
+  populate();
+  toast(lang==='th'?'กำลังแก้ไขภาษาไทย 🇹🇭':'Now editing English 🇬🇧','info');
+}
+
 // ===== Encoding helpers =====
 // atob() yields Latin-1, so decoding UTF-8 JSON with it mangles every non-ASCII
 // character (— ฿ ★) a little more on each load->save round trip. Decode bytes properly.
@@ -379,9 +419,9 @@ function populate(){
 function renderSvc(){
   const el=document.getElementById('svc-list');el.innerHTML='';
   (content.services?.items||[]).forEach((s,i)=>{
-    el.innerHTML+=`<div class="card"><div class="card__title"><i class="fa-solid fa-spa"></i> บริการที่ ${i+1}: ${esc(s.name)}</div>
-    <div class="fg"><label>🏷️ ชื่อบริการ</label><input type="text" id="sv-n-${i}" value="${esc(s.name)}"></div>
-    <div class="fg"><label>📝 คำอธิบาย</label><textarea id="sv-d-${i}" rows="2">${esc(s.description)}</textarea></div>
+    el.innerHTML+=`<div class="card"><div class="card__title"><i class="fa-solid fa-spa"></i> บริการที่ ${i+1}: ${esc(L(s.name))}</div>
+    <div class="fg"><label>🏷️ ชื่อบริการ</label><input type="text" id="sv-n-${i}" value="${esc(L(s.name))}"></div>
+    <div class="fg"><label>📝 คำอธิบาย</label><textarea id="sv-d-${i}" rows="2">${esc(L(s.description))}</textarea></div>
     <div class="fg"><label>🖼️ รูปประกอบ</label><div class="img-up"><input type="file" accept="image/*" onchange="upSvcImg(${i},this)"><i class="fa-solid fa-cloud-arrow-up"></i><p><span>อัปโหลดรูปใหม่</span></p></div>
     <div class="img-prev" id="prev-svc-${i}">${s.image?`<div class="img-prev__item"><img src="${s.image}"></div>`:''}</div></div></div>`;
   });
@@ -390,12 +430,12 @@ function renderSvc(){
 function renderPm(){
   const el=document.getElementById('pm-list');el.innerHTML='';
   (content.promotions?.items||[]).forEach((p,i)=>{
-    el.innerHTML+=`<div class="editor-block"><div class="editor-block__head"><h4>${esc(p.name)}</h4><button class="btn btn--d btn--sm" onclick="rmPm(${i})"><i class="fa-solid fa-trash"></i> ลบ</button></div>
-    <div class="row"><div class="fg"><label>🏷️ ชื่อแพ็กเกจ</label><input type="text" id="pm-n-${i}" value="${esc(p.name)}"></div><div class="fg"><label>💰 ราคา</label><input type="text" id="pm-pr-${i}" value="${esc(p.price)}"></div></div>
-    <div class="fg"><label>📝 คำอธิบายสั้นๆ</label><input type="text" id="pm-d-${i}" value="${esc(p.description)}"></div>
-    <div class="fg"><label>🏅 ป้ายกำกับ (เช่น "ขายดี" - ถ้าไม่มีให้เว้นว่าง)</label><input type="text" id="pm-t-${i}" value="${esc(p.tag||'')}"></div>
+    el.innerHTML+=`<div class="editor-block"><div class="editor-block__head"><h4>${esc(L(p.name))}</h4><button class="btn btn--d btn--sm" onclick="rmPm(${i})"><i class="fa-solid fa-trash"></i> ลบ</button></div>
+    <div class="row"><div class="fg"><label>🏷️ ชื่อแพ็กเกจ</label><input type="text" id="pm-n-${i}" value="${esc(L(p.name))}"></div><div class="fg"><label>💰 ราคา</label><input type="text" id="pm-pr-${i}" value="${esc(p.price)}"></div></div>
+    <div class="fg"><label>📝 คำอธิบายสั้นๆ</label><input type="text" id="pm-d-${i}" value="${esc(L(p.description))}"></div>
+    <div class="fg"><label>🏅 ป้ายกำกับ (เช่น "ขายดี" - ถ้าไม่มีให้เว้นว่าง)</label><input type="text" id="pm-t-${i}" value="${esc(L(p.tag))}"></div>
     <div class="fg"><label>⭐ เน้นแพ็กเกจนี้ไหม? (แสดงกรอบสีเขียวเด่นๆ)</label><select id="pm-f-${i}"><option value="false"${!p.featured?' selected':''}>ไม่เน้น (กรอบใส)</option><option value="true"${p.featured?' selected':''}>เน้น (กรอบสีเขียว)</option></select></div>
-    <div class="fg"><label>✅ สิ่งที่ลูกค้าจะได้รับ (พิมพ์ 1 ข้อต่อบรรทัด)</label><textarea id="pm-ft-${i}" rows="3">${(p.features||[]).join('\n')}</textarea></div></div>`;
+    <div class="fg"><label>✅ สิ่งที่ลูกค้าจะได้รับ (พิมพ์ 1 ข้อต่อบรรทัด)</label><textarea id="pm-ft-${i}" rows="3">${(p.features||[]).map(f=>esc(L(f))).join('\n')}</textarea></div></div>`;
   });
 }
 function addPromo(){content.promotions.items.push({name:'แพ็กเกจใหม่',description:'',price:'0',currency:'฿',features:[],featured:false,tag:''});renderPm()}
@@ -413,9 +453,9 @@ function renderRv(){
   const el=document.getElementById('rv-list');el.innerHTML='';
   (content.reviews?.items||[]).forEach((r,i)=>{
     el.innerHTML+=`<div class="editor-block"><div class="editor-block__head"><span style="color:var(--mint);font-weight:600">รีวิวคนที่ ${i+1}</span><button class="btn btn--d btn--sm" onclick="rmRv(${i})"><i class="fa-solid fa-trash"></i> ลบ</button></div>
-    <div class="row"><div class="fg"><label>👤 ชื่อลูกค้า</label><input type="text" id="rv-a-${i}" value="${esc(r.author)}"></div><div class="fg"><label>บริการที่ทำ</label><input type="text" id="rv-r-${i}" value="${esc(r.role)}" placeholder="เช่น ต่อขนตาสายฝอ"></div></div>
+    <div class="row"><div class="fg"><label>👤 ชื่อลูกค้า</label><input type="text" id="rv-a-${i}" value="${esc(L(r.author))}"></div><div class="fg"><label>บริการที่ทำ</label><input type="text" id="rv-r-${i}" value="${esc(L(r.role))}" placeholder="เช่น ต่อขนตาสายฝอ"></div></div>
     <div class="fg"><label>⭐ จำนวนดาว (1-5)</label><input type="number" id="rv-s-${i}" value="${r.stars}" min="1" max="5"></div>
-    <div class="fg"><label>💬 คำวิจารณ์</label><textarea id="rv-t-${i}" rows="2">${esc(r.text)}</textarea></div></div>`;
+    <div class="fg"><label>💬 คำวิจารณ์</label><textarea id="rv-t-${i}" rows="2">${esc(L(r.text))}</textarea></div></div>`;
   });
 }
 function addReview(){content.reviews.items.push({stars:5,text:'',author:'',role:''});renderRv()}
@@ -424,22 +464,53 @@ function rmRv(i){content.reviews.items.splice(i,1);renderRv()}
 function renderHr(){
   const el=document.getElementById('hr-list');el.innerHTML='';
   (content.contact?.hours||[]).forEach((h,i)=>{
-    el.innerHTML+=`<div class="row" style="margin-bottom:10px"><div class="fg"><label>📅 วัน</label><input type="text" id="hr-d-${i}" value="${esc(h.days)}" placeholder="เช่น จันทร์ - ศุกร์"></div><div class="fg"><label>🕒 เวลา</label><input type="text" id="hr-t-${i}" value="${esc(h.time)}" placeholder="เช่น 10:00 - 20:00"></div></div>`;
+    el.innerHTML+=`<div class="row" style="margin-bottom:10px"><div class="fg"><label>📅 วัน</label><input type="text" id="hr-d-${i}" value="${esc(L(h.days))}" placeholder="เช่น จันทร์ - ศุกร์"></div><div class="fg"><label>🕒 เวลา</label><input type="text" id="hr-t-${i}" value="${esc(L(h.time))}" placeholder="เช่น 10:00 - 20:00"></div></div>`;
   });
 }
 
 // ===== Collect =====
+// Translatable fields go through setL so editing Thai never clears English
+// (and vice versa). Shared fields — phone, LINE ID, prices, URLs — stay plain.
 function collect(){
-  content.hero.eyebrow=gv('h-eye');content.hero.title=gv('h-ttl');content.hero.description=gv('h-desc');content.hero.badge=gv('h-badge');
-  content.about.eyebrow=gv('a-eye');content.about.title=gv('a-ttl');content.about.paragraphs=[gv('a-p1'),gv('a-p2')];
-  content.services.eyebrow=gv('s-eye');content.services.title=gv('s-ttl');content.services.subtitle=gv('s-sub');
-  content.services.items.forEach((s,i)=>{s.name=gv(`sv-n-${i}`);s.description=gv(`sv-d-${i}`)});
-  content.promotions.eyebrow=gv('pm-eye');content.promotions.title=gv('pm-ttl');content.promotions.subtitle=gv('pm-sub');
-  content.promotions.items.forEach((p,i)=>{p.name=gv(`pm-n-${i}`);p.price=gv(`pm-pr-${i}`);p.description=gv(`pm-d-${i}`);p.tag=gv(`pm-t-${i}`);p.featured=gv(`pm-f-${i}`)==='true';const ft=gv(`pm-ft-${i}`);p.features=ft?ft.split('\n').filter(Boolean):[]});
-  content.reviews.items.forEach((r,i)=>{r.author=gv(`rv-a-${i}`);r.role=gv(`rv-r-${i}`);r.stars=parseInt(gv(`rv-s-${i}`))||5;r.text=gv(`rv-t-${i}`)});
-  content.banner.eyebrow=gv('b-eye');content.banner.title=gv('b-ttl');content.banner.description=gv('b-desc');
-  content.contact.phone=gv('c-phone');content.contact.line=gv('c-line');content.contact.instagram=gv('c-ig');content.contact.location=gv('c-loc');content.contact.mapUrl=gv('c-map');
-  content.contact.hours=(content.contact.hours||[]).map((h,i)=>({days:gv(`hr-d-${i}`),time:gv(`hr-t-${i}`)}));
+  const h=content.hero;
+  h.eyebrow=setL(h.eyebrow,gv('h-eye'));h.title=setL(h.title,gv('h-ttl'));
+  h.description=setL(h.description,gv('h-desc'));h.badge=setL(h.badge,gv('h-badge'));
+
+  const a=content.about;
+  a.eyebrow=setL(a.eyebrow,gv('a-eye'));a.title=setL(a.title,gv('a-ttl'));
+  a.paragraphs=[setL(a.paragraphs?.[0],gv('a-p1')),setL(a.paragraphs?.[1],gv('a-p2'))];
+
+  const s=content.services;
+  s.eyebrow=setL(s.eyebrow,gv('s-eye'));s.title=setL(s.title,gv('s-ttl'));s.subtitle=setL(s.subtitle,gv('s-sub'));
+  s.items.forEach((it,i)=>{it.name=setL(it.name,gv(`sv-n-${i}`));it.description=setL(it.description,gv(`sv-d-${i}`))});
+
+  const pm=content.promotions;
+  pm.eyebrow=setL(pm.eyebrow,gv('pm-eye'));pm.title=setL(pm.title,gv('pm-ttl'));pm.subtitle=setL(pm.subtitle,gv('pm-sub'));
+  pm.items.forEach((it,i)=>{
+    it.name=setL(it.name,gv(`pm-n-${i}`));
+    it.description=setL(it.description,gv(`pm-d-${i}`));
+    it.tag=setL(it.tag,gv(`pm-t-${i}`));
+    it.price=gv(`pm-pr-${i}`);
+    it.featured=gv(`pm-f-${i}`)==='true';
+    const prev=it.features||[];
+    const ft=gv(`pm-ft-${i}`);
+    it.features=ft?ft.split('\n').filter(Boolean).map((line,fi)=>setL(prev[fi],line)):[];
+  });
+
+  content.reviews.items.forEach((r,i)=>{
+    r.author=setL(r.author,gv(`rv-a-${i}`));
+    r.role=setL(r.role,gv(`rv-r-${i}`));
+    r.text=setL(r.text,gv(`rv-t-${i}`));
+    r.stars=parseInt(gv(`rv-s-${i}`))||5;
+  });
+
+  const b=content.banner;
+  b.eyebrow=setL(b.eyebrow,gv('b-eye'));b.title=setL(b.title,gv('b-ttl'));b.description=setL(b.description,gv('b-desc'));
+
+  const c=content.contact;
+  c.phone=gv('c-phone');c.line=gv('c-line');c.instagram=gv('c-ig');c.mapUrl=gv('c-map');
+  c.location=setL(c.location,gv('c-loc'));
+  c.hours=(c.hours||[]).map((hr,i)=>({days:setL(hr.days,gv(`hr-d-${i}`)),time:gv(`hr-t-${i}`)}));
 }
 
 // ===== Save =====
@@ -541,7 +612,7 @@ document.getElementById('tabs').addEventListener('click',e=>{
 });
 
 // ===== Utils =====
-function sv(id,v){const el=document.getElementById(id);if(el)el.value=v||''}
+function sv(id,v){const el=document.getElementById(id);if(el)el.value=L(v)}
 function gv(id){const el=document.getElementById(id);return el?el.value:''}
 function esc(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function fileToBase64(f){return new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(f)})}

@@ -36,8 +36,8 @@
   --text-muted:      #B3C6B8;
 
   /* --- Type --- */
-  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'Playfair Display', 'Noto Serif Thai', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   --fs-2xs:  0.75rem;    /* 12 */
   --fs-xs:   0.8125rem;  /* 13 */
@@ -342,6 +342,37 @@ h1, h2, h3, h4, h5 {
 .nav-link--cta::after { display: none; }
 .nav-link--cta:hover { background: var(--accent-strong); color: var(--on-accent); transform: translateY(-2px); }
 .nav-link--cta[aria-current="true"] { color: var(--on-accent); }
+
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-1);
+}
+.lang-toggle button {
+  padding: 6px 12px;
+  min-height: 34px;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-2xs);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.lang-toggle button:hover { color: var(--text-strong); }
+.lang-toggle button[aria-pressed="true"] { background: var(--accent); color: var(--on-accent); }
+
+/* Thai runs taller than Latin at the same size, so give it a little more room. */
+:root[lang="th"] { --fs-2xs: 0.8125rem; --fs-xs: 0.875rem; }
+:root[lang="th"] body { line-height: 1.75; }
+:root[lang="th"] .eyebrow { letter-spacing: 0.08em; }
+:root[lang="th"] h1, :root[lang="th"] h2, :root[lang="th"] h3 { line-height: 1.35; }
+:root[lang="th"] .review-card__text { font-style: normal; }
+
+.lang-toggle--mobile { align-self: center; }
 
 .hamburger {
   display: none;
@@ -899,6 +930,31 @@ body.is-locked { overflow: hidden; }
 }
 .form-note[data-state="error"] { color: #F2A0A0; }
 
+/* --- Booking hand-off panel --- */
+.booking-result {
+  border-top: 1px solid var(--border);
+  padding-top: var(--sp-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.booking-result__lead { font-size: var(--fs-sm); color: var(--accent); font-weight: 600; }
+.booking-result__actions { display: flex; gap: var(--sp-3); flex-wrap: wrap; }
+.booking-result__actions .btn { flex: 1 1 200px; }
+.booking-result__summary {
+  width: 100%;
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  line-height: 1.7;
+  resize: vertical;
+}
+.booking-result__fallback { font-size: var(--fs-xs); color: var(--text-muted); }
+.booking-result__fallback a { color: var(--accent); font-weight: 600; }
+
 .contact-side { display: flex; flex-direction: column; gap: var(--sp-5); }
 .contact-map {
   border-radius: var(--radius-lg);
@@ -1099,6 +1155,7 @@ body.is-locked { overflow: hidden; }
 
 @media (max-width: 860px) {
   .nav-links { display: none; }
+  .navbar__inner > .lang-toggle { display: none; }
   .hamburger { display: flex; }
   .footer__inner { grid-template-columns: 1fr 1fr; gap: var(--sp-8); }
   .footer__brand { grid-column: span 2; }

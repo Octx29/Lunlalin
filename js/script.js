@@ -19,6 +19,9 @@
   /* ---------------------------------------------------------
      Helpers
      --------------------------------------------------------- */
+  function i18n() { return window.Lunlalin && window.Lunlalin.i18n; }
+  function t(key, vars) { var m = i18n(); return m ? m.t(key, vars) : key; }
+
   function $(sel, root) { return (root || document).querySelector(sel); }
   function $$(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
 
@@ -71,10 +74,26 @@
     var yearEl = document.getElementById('year');
     if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
+    initLanguageToggle();
     initNavbarScroll();
     initMobileMenu();
     initLightbox();
     initBookingForm();
+  }
+
+  /* ---------- Language toggle ---------- */
+  function initLanguageToggle() {
+    var m = i18n();
+    if (!m) return;
+
+    $$('[data-lang-btn]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        m.setLang(btn.getAttribute('data-lang-btn'));
+      });
+    });
+
+    /* Paint the stored language over the Thai markup the page ships with. */
+    m.setLang(m.lang, { persist: false });
   }
 
   /* ---------- Navbar shrink + back-to-top ---------- */
@@ -115,6 +134,7 @@
 
       menu.classList.toggle('open', open);
       hamburger.setAttribute('aria-expanded', String(open));
+      hamburger.setAttribute('aria-label', t(open ? 'nav.closeMenu' : 'nav.openMenu'));
       /* inert removes the closed menu from the tab order and the a11y tree;
          the CSS visibility transition alone would leave links focusable. */
       if ('inert' in HTMLElement.prototype) menu.inert = !open;
@@ -173,7 +193,7 @@
       index = (i + items.length) % items.length;
       var item = items[index];
       img.src = item.getAttribute('data-full') || '';
-      img.alt = item.getAttribute('data-alt') || 'Gallery image ' + (index + 1);
+      img.alt = item.getAttribute('data-alt') || t('gallery.alt', { n: index + 1 });
       if (counter) counter.textContent = (index + 1) + ' / ' + items.length;
       if (prevBtn) prevBtn.hidden = items.length < 2;
       if (nextBtn) nextBtn.hidden = items.length < 2;
@@ -236,10 +256,9 @@
     function fieldOf(input) { return input.closest('.form-field'); }
 
     function messageFor(input) {
-      if (input.validity.valueMissing) return 'This field is required.';
-      if (input.validity.typeMismatch) return 'Please check the format.';
-      if (input.validity.patternMismatch) return 'Please use a valid format.';
-      return input.validationMessage || 'Please check this field.';
+      if (input.validity.valueMissing) return t('form.required');
+      if (input.validity.typeMismatch || input.validity.patternMismatch) return t('form.invalidFormat');
+      return input.validationMessage || t('form.invalidFormat');
     }
 
     function validate(input) {
@@ -269,42 +288,106 @@
       dateInput.min = new Date().toISOString().split('T')[0];
     }
 
+    /* --- Compose the booking and hand it to LINE ---------------------- */
+
+    var result = document.getElementById('bookingResult');
+    var lineBtn = document.getElementById('bookingLine');
+    var copyBtn = document.getElementById('bookingCopy');
+    var summaryBox = document.getElementById('bookingSummary');
+
+    function lineId() {
+      /* Read the studio's LINE handle off the page so it follows content.json. */
+      var el = $('.contact-card[href*="line.me"] span') || $('[data-contact="line"]');
+      var raw = el ? el.textContent.trim() : '';
+      return /^@?[\w.\-]+$/.test(raw) ? (raw[0] === '@' ? raw : '@' + raw) : '@lunlalin';
+    }
+
+    function fieldValue(id) {
+      var el = document.getElementById(id);
+      if (!el) return '';
+      if (el.tagName === 'SELECT') {
+        var opt = el.options[el.selectedIndex];
+        return opt ? opt.textContent.trim() : '';
+      }
+      return el.value.trim();
+    }
+
+    function composeMessage() {
+      var lines = [t('msg.title') + ' — Lunlalin', ''];
+      [['msg.name', 'fullName'], ['msg.phone', 'phone'], ['msg.line', 'line'],
+       ['msg.service', 'service'], ['msg.date', 'date'], ['msg.time', 'time'],
+       ['msg.note', 'message']].forEach(function (pair) {
+        var value = fieldValue(pair[1]);
+        if (value) lines.push(t(pair[0]) + ': ' + value);
+      });
+      return lines.join('\n');
+    }
+
+    function showHandoff(message) {
+      if (summaryBox) summaryBox.value = message;
+      if (lineBtn) {
+        /* oaMessage opens a chat with the official account, pre-filled. */
+        lineBtn.href = 'https://line.me/R/oaMessage/' +
+                       encodeURIComponent(lineId()) + '/?' + encodeURIComponent(message);
+      }
+      if (result) {
+        result.hidden = false;
+        result.scrollIntoView({
+          behavior: prefersReducedMotion.matches ? 'auto' : 'smooth',
+          block: 'nearest'
+        });
+      }
+      if (lineBtn) lineBtn.focus({ preventScroll: true });
+    }
+
+    if (copyBtn) {
+      copyBtn.addEventListener('click', function () {
+        var label = $('span', copyBtn);
+        var text = summaryBox ? summaryBox.value : '';
+
+        function done() {
+          if (!label) return;
+          label.textContent = t('booking.copied');
+          window.setTimeout(function () { label.textContent = t('booking.copy'); }, 2000);
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(done, function () {
+            if (summaryBox) { summaryBox.select(); }
+          });
+        } else if (summaryBox) {
+          /* Older mobile browsers: select so the user can copy manually. */
+          summaryBox.select();
+          try { document.execCommand('copy'); done(); } catch (err) { /* leave selected */ }
+        }
+      });
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
       var invalid = fields.filter(function (input) { return !validate(input); });
       if (invalid.length) {
         if (note) {
-          note.textContent = 'Please complete the highlighted fields.';
+          note.textContent = t('form.checkFields');
           note.setAttribute('data-state', 'error');
         }
+        if (result) result.hidden = true;
         invalid[0].focus();
         return;
       }
 
-      var submitBtn = $('button[type="submit"]', form);
-      var label = submitBtn ? $('.btn__label', submitBtn) : null;
-      var original = label ? label.textContent : '';
-
-      if (submitBtn) submitBtn.disabled = true;
-      if (label) label.textContent = 'Sending…';
       if (note) { note.textContent = ''; note.removeAttribute('data-state'); }
 
-      /* Placeholder for a real endpoint — the UI states around it are real. */
-      window.setTimeout(function () {
-        if (note) {
-          note.textContent = 'Thank you! We will confirm your appointment shortly.';
-          note.setAttribute('data-state', 'ok');
-        }
-        form.reset();
-        $$('.form-field', form).forEach(function (wrap) {
-          wrap.setAttribute('data-invalid', 'false');
-          var err = $('.form-error', wrap);
-          if (err) err.textContent = '';
-        });
-        if (submitBtn) submitBtn.disabled = false;
-        if (label) label.textContent = original;
-      }, 1200);
+      var message = composeMessage();
+      showHandoff(message);
+
+      /* Opening here keeps the call inside the click gesture, so it is not
+         treated as a pop-up. If the browser blocks it anyway, the panel above
+         still carries the LINE button, the copy action and the phone number. */
+      try {
+        window.open(lineBtn.href, '_blank', 'noopener');
+      } catch (err) { /* the panel is the fallback */ }
     });
   }
 
@@ -449,12 +532,12 @@
     if (dotsWrap) {
       dotsWrap.innerHTML = '';
       dotsWrap.setAttribute('role', 'tablist');
-      dotsWrap.setAttribute('aria-label', 'Choose a review');
+      dotsWrap.setAttribute('aria-label', t('reviews.pick'));
       cards.forEach(function (_, i) {
         var dot = document.createElement('button');
         dot.type = 'button';
         dot.setAttribute('role', 'tab');
-        dot.setAttribute('aria-label', 'Review ' + (i + 1) + ' of ' + cards.length);
+        dot.setAttribute('aria-label', t('reviews.dot', { n: i + 1, total: cards.length }));
         dot.addEventListener('click', function () { go(i, true); });
         dotsWrap.appendChild(dot);
         dots.push(dot);
