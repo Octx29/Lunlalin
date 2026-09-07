@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# The admin panel is a private editor — keep it out of search results.
+Disallow: /admin.html
+Disallow: /admin/
+
+Sitemap: https://lunlalin.vercel.app/sitemap.xml
