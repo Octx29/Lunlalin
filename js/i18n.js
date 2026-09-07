@@ -14,7 +14,7 @@
   var STRINGS = {
     th: {
       'skip': 'ข้ามไปยังเนื้อหาหลัก',
-      'brand.home': 'ลันลาลิน — หน้าแรก',
+      'brand.home': 'ลัลล์ลลิล — หน้าแรก',
 
       'nav.home': 'หน้าแรก',
       'nav.about': 'เกี่ยวกับเรา',
@@ -46,7 +46,7 @@
       'gallery.empty': 'กำลังอัปเดตผลงานใหม่ — ติดตามได้ที่',
       'gallery.emptyTail': 'เพื่อชมผลงานล่าสุด',
       'gallery.open': 'เปิดดูภาพขนาดเต็ม',
-      'gallery.alt': 'ผลงานของลันลาลิน ภาพที่ {n}',
+      'gallery.alt': 'ผลงานของลัลล์ลลิล ภาพที่ {n}',
 
       'lightbox.label': 'ตัวดูรูปภาพ',
       'lightbox.close': 'ปิด',
@@ -91,7 +91,7 @@
 
       'contact.callUs': 'โทรหาเรา',
       'contact.hours': 'เวลาทำการ',
-      'contact.mapTitle': 'แผนที่ร้านลันลาลิน กรุงเทพฯ',
+      'contact.mapTitle': 'แผนที่ร้านลัลล์ลลิล กรุงเทพฯ',
 
       'footer.links': 'ลิงก์ด่วน',
       'footer.contact': 'ติดต่อเรา',
@@ -99,9 +99,9 @@
       'footer.rights': 'สงวนลิขสิทธิ์',
       'footer.nav': 'เมนูส่วนท้าย',
 
-      'social.instagram': 'ลันลาลินบนอินสตาแกรม',
-      'social.line': 'ลันลาลินบนไลน์',
-      'social.phone': 'โทรหาลันลาลิน',
+      'social.instagram': 'ลัลล์ลลิลบนอินสตาแกรม',
+      'social.line': 'ลัลล์ลลิลบนไลน์',
+      'social.phone': 'โทรหาลัลล์ลลิล',
       'backToTop': 'กลับขึ้นด้านบน'
     },
 

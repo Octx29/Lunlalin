@@ -9,57 +9,127 @@
       "en": "Lashes, Nails & <em>Waxing</em>"
     },
     "description": {
-      "th": "ที่ลันลาลิน ทุกบริการรังสรรค์ด้วยมือ ด้วยวัสดุคุณภาพพรีเมียมและเทคนิคที่ประณีต เพื่อลุคที่สวยอย่างเป็นธรรมชาติ",
+      "th": "ที่ลัลล์ลลิล ทุกบริการรังสรรค์ด้วยมือ ด้วยวัสดุคุณภาพพรีเมียมและเทคนิคที่ประณีต เพื่อลุคที่สวยอย่างเป็นธรรมชาติ",
       "en": "At Lunlalin, every service is hand-crafted with premium materials and meticulous technique — for a look that feels effortless and beautiful."
     },
     "heroImage": "",
-    "badge": { "th": "ก่อตั้งในกรุงเทพฯ", "en": "Est. Bangkok" },
+    "badge": {
+      "th": "ก่อตั้งในกรุงเทพฯ",
+      "en": "Est. Bangkok"
+    },
     "stats": [
-      { "value": "5,000+", "label": { "th": "ลูกค้าที่ไว้วางใจ", "en": "Happy Clients" } },
-      { "value": "4.9", "label": { "th": "คะแนนเฉลี่ย", "en": "Average Rating" } },
-      { "value": "100%", "label": { "th": "วัสดุปลอดภัย", "en": "Safe Materials" } }
+      {
+        "value": "5,000+",
+        "label": {
+          "th": "ลูกค้าที่ไว้วางใจ",
+          "en": "Happy Clients"
+        }
+      },
+      {
+        "value": "4.9",
+        "label": {
+          "th": "คะแนนเฉลี่ย",
+          "en": "Average Rating"
+        }
+      },
+      {
+        "value": "100%",
+        "label": {
+          "th": "วัสดุปลอดภัย",
+          "en": "Safe Materials"
+        }
+      }
     ]
   },
   "about": {
-    "eyebrow": { "th": "เรื่องราวของเรา", "en": "Our Story" },
+    "eyebrow": {
+      "th": "เรื่องราวของเรา",
+      "en": "Our Story"
+    },
     "title": {
       "th": "ใส่ใจในทุกรายละเอียด เพื่อความมั่นใจของคุณ",
       "en": "Crafted with care, worn with confidence"
     },
     "paragraphs": [
       {
-        "th": "ลันลาลินเริ่มต้นจากความเชื่อง่าย ๆ ว่างานความงามควรเป็นช่วงเวลาแห่งการดูแลตัวเอง ไม่ใช่เพียงการซื้อบริการ จากเก้าอี้ตัวเดียวในกรุงเทพฯ เราสร้างชื่อด้วยเทคนิคที่แม่นยำและความสะอาดที่ไร้ที่ติ",
+        "th": "ลัลล์ลลิลเริ่มต้นจากความเชื่อง่าย ๆ ว่างานความงามควรเป็นช่วงเวลาแห่งการดูแลตัวเอง ไม่ใช่เพียงการซื้อบริการ จากเก้าอี้ตัวเดียวในกรุงเทพฯ เราสร้างชื่อด้วยเทคนิคที่แม่นยำและความสะอาดที่ไร้ที่ติ",
         "en": "Lunlalin began with a simple belief: artistry should feel like a ritual of care, not just a beauty transaction. From a single studio chair in Bangkok, we built a reputation on precision technique and immaculate hygiene."
       },
       {
-        "th": "ช่างทุกคนของลันลาลินผ่านการฝึกอบรมตามมาตรฐานระดับสูง เราเลือกใช้เฉพาะวัสดุที่ได้รับการรับรองและไม่ก่อให้เกิดอาการแพ้ เพราะความสบายใจของคุณสำคัญไม่แพ้ความสวยที่คุณได้กลับบ้าน",
+        "th": "ช่างทุกคนของลัลล์ลลิลผ่านการฝึกอบรมตามมาตรฐานระดับสูง เราเลือกใช้เฉพาะวัสดุที่ได้รับการรับรองและไม่ก่อให้เกิดอาการแพ้ เพราะความสบายใจของคุณสำคัญไม่แพ้ความสวยที่คุณได้กลับบ้าน",
         "en": "Every technician at Lunlalin is trained to high-quality standards. We use only certified, hypoallergenic materials, because your comfort is as important to us as how beautiful you look walking out the door."
       }
     ],
     "values": [
-      { "th": "เทคนิคและมาตรฐานระดับพรีเมียม", "en": "Premium technique & standards" },
-      { "th": "วัสดุคุณภาพสูงที่ได้รับการรับรอง", "en": "Certified, high-quality materials" },
-      { "th": "อุปกรณ์ปลอดเชื้อและของใช้แบบใช้ครั้งเดียว", "en": "Sterile tools & single-use consumables" }
+      {
+        "th": "เทคนิคและมาตรฐานระดับพรีเมียม",
+        "en": "Premium technique & standards"
+      },
+      {
+        "th": "วัสดุคุณภาพสูงที่ได้รับการรับรอง",
+        "en": "Certified, high-quality materials"
+      },
+      {
+        "th": "อุปกรณ์ปลอดเชื้อและของใช้แบบใช้ครั้งเดียว",
+        "en": "Sterile tools & single-use consumables"
+      }
     ],
     "imageMain": "",
     "imageAccent": "",
     "counters": [
-      { "value": 5000, "suffix": "+", "label": { "th": "ลูกค้าที่ไว้วางใจ", "en": "Happy Clients" } },
-      { "value": 100, "suffix": "%", "label": { "th": "วัสดุปลอดภัย", "en": "Safe Materials" } },
-      { "value": 12, "suffix": "+", "label": { "th": "ช่างผู้เชี่ยวชาญ", "en": "Expert Technicians" } },
-      { "value": 4, "suffix": ".9★", "label": { "th": "คะแนนจากลูกค้า", "en": "Client Rating" } }
+      {
+        "value": 5000,
+        "suffix": "+",
+        "label": {
+          "th": "ลูกค้าที่ไว้วางใจ",
+          "en": "Happy Clients"
+        }
+      },
+      {
+        "value": 100,
+        "suffix": "%",
+        "label": {
+          "th": "วัสดุปลอดภัย",
+          "en": "Safe Materials"
+        }
+      },
+      {
+        "value": 12,
+        "suffix": "+",
+        "label": {
+          "th": "ช่างผู้เชี่ยวชาญ",
+          "en": "Expert Technicians"
+        }
+      },
+      {
+        "value": 4,
+        "suffix": ".9★",
+        "label": {
+          "th": "คะแนนจากลูกค้า",
+          "en": "Client Rating"
+        }
+      }
     ]
   },
   "services": {
-    "eyebrow": { "th": "บริการของเรา", "en": "What We Do" },
-    "title": { "th": "บริการซิกเนเจอร์", "en": "Signature Services" },
+    "eyebrow": {
+      "th": "บริการของเรา",
+      "en": "What We Do"
+    },
+    "title": {
+      "th": "บริการซิกเนเจอร์",
+      "en": "Signature Services"
+    },
     "subtitle": {
       "th": "ทุกบริการออกแบบเฉพาะให้เข้ากับไลฟ์สไตล์และลุคที่คุณต้องการ เพื่อขับความงามตามธรรมชาติของคุณ",
       "en": "Each treatment is tailored to your lifestyle and desired look — designed to enhance your natural beauty."
     },
     "items": [
       {
-        "name": { "th": "ต่อขนตา", "en": "Eyelash Extensions" },
+        "name": {
+          "th": "ต่อขนตา",
+          "en": "Eyelash Extensions"
+        },
         "description": {
           "th": "ต่อทีละเส้นทั้งแบบคลาสสิก ไฮบริด และวอลลุ่ม ด้วยเส้นใยละเอียดพิเศษ ให้ขนตาฟูแน่นแต่เบาสบาย",
           "en": "Classic, hybrid or volume sets built lash-by-lash with ultra-fine fibers for a full, feather-light finish."
@@ -67,7 +137,10 @@
         "image": ""
       },
       {
-        "name": { "th": "ทำเล็บ", "en": "Nail Services" },
+        "name": {
+          "th": "ทำเล็บ",
+          "en": "Nail Services"
+        },
         "description": {
           "th": "เจลสีติดทน เพ้นท์เล็บ และสปามือ ให้มือของคุณดูสวยเนี้ยบอยู่เสมอ",
           "en": "Beautiful, long-lasting gel polish, nail art, and spa manicures to keep your hands looking flawless."
@@ -75,7 +148,10 @@
         "image": ""
       },
       {
-        "name": { "th": "แว็กซ์ขน", "en": "Waxing" },
+        "name": {
+          "th": "แว็กซ์ขน",
+          "en": "Waxing"
+        },
         "description": {
           "th": "แว็กซ์อย่างนุ่มนวลและแม่นยำ ด้วยแว็กซ์คุณภาพสูง เพื่อผิวเนียนเรียบไร้ขน",
           "en": "Gentle and precise waxing treatments for smooth, hair-free skin using high-quality wax products."
@@ -85,15 +161,24 @@
     ]
   },
   "promotions": {
-    "eyebrow": { "th": "โปรโมชั่นพิเศษ", "en": "Limited-Time Offers" },
-    "title": { "th": "โปรโมชั่น & แพ็กเกจ", "en": "Promotions & Packages" },
+    "eyebrow": {
+      "th": "โปรโมชั่นพิเศษ",
+      "en": "Limited-Time Offers"
+    },
+    "title": {
+      "th": "โปรโมชั่น & แพ็กเกจ",
+      "en": "Promotions & Packages"
+    },
     "subtitle": {
       "th": "แพ็กเกจที่คัดสรรมาจับคู่บริการยอดนิยมของเรา ในราคาที่คุ้มค่า",
       "en": "Curated packages that pair our most-loved treatments at a graceful price."
     },
     "items": [
       {
-        "name": { "th": "คลาสสิกซิกเนเจอร์", "en": "Signature Classic" },
+        "name": {
+          "th": "คลาสสิกซิกเนเจอร์",
+          "en": "Signature Classic"
+        },
         "description": {
           "th": "ต่อขนตาคลาสสิกแบบเส้นต่อเส้น ลุคธรรมชาติ",
           "en": "Natural-looking, one-to-one classic lash set."
@@ -101,15 +186,27 @@
         "price": "1,500",
         "currency": "฿",
         "features": [
-          { "th": "ต่อแบบ 1 ต่อ 1", "en": "Classic 1:1 application" },
-          { "th": "ฟรี! ล้างขนตา + ชุดดูแลหลังทำ", "en": "Free lash bath & aftercare kit" },
-          { "th": "ใช้เวลา 90 นาที", "en": "90-minute session" }
+          {
+            "th": "ต่อแบบ 1 ต่อ 1",
+            "en": "Classic 1:1 application"
+          },
+          {
+            "th": "ฟรี! ล้างขนตา + ชุดดูแลหลังทำ",
+            "en": "Free lash bath & aftercare kit"
+          },
+          {
+            "th": "ใช้เวลา 90 นาที",
+            "en": "90-minute session"
+          }
         ],
         "featured": false,
         "tag": ""
       },
       {
-        "name": { "th": "เซ็ตขนตา + เล็บ", "en": "Lash & Nails Combo" },
+        "name": {
+          "th": "เซ็ตขนตา + เล็บ",
+          "en": "Lash & Nails Combo"
+        },
         "description": {
           "th": "ต่อขนตาเต็มเซ็ต + ทำเล็บเจล",
           "en": "Full lash set + gel manicure."
@@ -117,15 +214,30 @@
         "price": "2,500",
         "currency": "฿",
         "features": [
-          { "th": "ต่อขนตาแบบวอลลุ่ม", "en": "Volume lash set" },
-          { "th": "ทาเจลสีที่มือ", "en": "Gel polish on hands" },
-          { "th": "ใช้เวลา 150 นาที", "en": "150-minute session" }
+          {
+            "th": "ต่อขนตาแบบวอลลุ่ม",
+            "en": "Volume lash set"
+          },
+          {
+            "th": "ทาเจลสีที่มือ",
+            "en": "Gel polish on hands"
+          },
+          {
+            "th": "ใช้เวลา 150 นาที",
+            "en": "150-minute session"
+          }
         ],
         "featured": true,
-        "tag": { "th": "ยอดนิยม", "en": "Most Popular" }
+        "tag": {
+          "th": "ยอดนิยม",
+          "en": "Most Popular"
+        }
       },
       {
-        "name": { "th": "แว็กซ์สปาเต็มรูปแบบ", "en": "Full Waxing Spa" },
+        "name": {
+          "th": "แว็กซ์สปาเต็มรูปแบบ",
+          "en": "Full Waxing Spa"
+        },
         "description": {
           "th": "ทรีตเมนต์เพื่อผิวเนียนนุ่ม",
           "en": "Silky smooth skin treatment."
@@ -133,9 +245,18 @@
         "price": "1,800",
         "currency": "฿",
         "features": [
-          { "th": "แว็กซ์ขาและแขนเต็มส่วน", "en": "Full leg and arm wax" },
-          { "th": "โลชั่นบำรุงผิวสูตรอ่อนโยน", "en": "Gentle skin soothing lotion" },
-          { "th": "สิทธิ์จองคิวก่อนใคร", "en": "Priority booking" }
+          {
+            "th": "แว็กซ์ขาและแขนเต็มส่วน",
+            "en": "Full leg and arm wax"
+          },
+          {
+            "th": "โลชั่นบำรุงผิวสูตรอ่อนโยน",
+            "en": "Gentle skin soothing lotion"
+          },
+          {
+            "th": "สิทธิ์จองคิวก่อนใคร",
+            "en": "Priority booking"
+          }
         ],
         "featured": false,
         "tag": ""
@@ -143,17 +264,29 @@
     ]
   },
   "gallery": {
-    "eyebrow": { "th": "ผลงานของเรา", "en": "Our Work" },
-    "title": { "th": "ผลงาน", "en": "Gallery" },
+    "eyebrow": {
+      "th": "ผลงานของเรา",
+      "en": "Our Work"
+    },
+    "title": {
+      "th": "ผลงาน",
+      "en": "Gallery"
+    },
     "subtitle": {
-      "th": "ชมความประณีตเบื้องหลังทุกคิวของลันลาลินอย่างใกล้ชิด",
+      "th": "ชมความประณีตเบื้องหลังทุกคิวของลัลล์ลลิลอย่างใกล้ชิด",
       "en": "A closer look at the artistry behind every Lunlalin appointment."
     },
     "images": []
   },
   "reviews": {
-    "eyebrow": { "th": "เสียงจากลูกค้า", "en": "Kind Words" },
-    "title": { "th": "ลูกค้าพูดถึงเรา", "en": "What Our Clients Say" },
+    "eyebrow": {
+      "th": "เสียงจากลูกค้า",
+      "en": "Kind Words"
+    },
+    "title": {
+      "th": "ลูกค้าพูดถึงเรา",
+      "en": "What Our Clients Say"
+    },
     "items": [
       {
         "stars": 5,
@@ -161,8 +294,14 @@
           "th": "วอลลุ่มที่ธรรมชาติที่สุดเท่าที่เคยทำมา ช่างใช้เวลาออกแบบขนตาให้เข้ากับรูปตาของเราจริง ๆ มีคนชมทุกวันเลย",
           "en": "The most natural volume set I've ever had. My technician took the time to design lashes for my exact eye shape — I get compliments every day."
         },
-        "author": { "th": "พิม ส.", "en": "Pim S." },
-        "role": { "th": "ลูกค้าเซ็ตคลาสสิก", "en": "Classic Set Client" }
+        "author": {
+          "th": "พิม ส.",
+          "en": "Pim S."
+        },
+        "role": {
+          "th": "ลูกค้าเซ็ตคลาสสิก",
+          "en": "Classic Set Client"
+        }
       },
       {
         "stars": 5,
@@ -170,8 +309,14 @@
           "th": "ร้านสะอาดมากและช่างทำนุ่มนวลสุด ๆ ตาเราแพ้ง่ายแต่ไม่รู้สึกระคายเคืองเลยสักครั้ง ขนตาอยู่ทนครบสี่สัปดาห์",
           "en": "Incredibly clean studio and gentle technique. My eyes are sensitive and I never once felt discomfort. Retention lasted a full four weeks."
         },
-        "author": { "th": "ณิชา ท.", "en": "Nicha T." },
-        "role": { "th": "ลูกค้าวอลลุ่มดีลักซ์", "en": "Volume Deluxe Client" }
+        "author": {
+          "th": "ณิชา ท.",
+          "en": "Nicha T."
+        },
+        "role": {
+          "th": "ลูกค้าวอลลุ่มดีลักซ์",
+          "en": "Volume Deluxe Client"
+        }
       },
       {
         "stars": 5,
@@ -179,17 +324,29 @@
           "th": "ชอบเล็บเจลใหม่มาก! ช่างทำเล็บที่นี่ละเอียดมาก แล้วสปามือทำให้มือนุ่มขึ้นเยอะเลย",
           "en": "Love my new gel nails! The nail artists here are so precise and the spa manicure made my hands so soft."
         },
-        "author": { "th": "แอมมี่ ก.", "en": "Ammy K." },
-        "role": { "th": "ลูกค้าสปาเล็บ", "en": "Nail Spa Client" }
+        "author": {
+          "th": "แอมมี่ ก.",
+          "en": "Ammy K."
+        },
+        "role": {
+          "th": "ลูกค้าสปาเล็บ",
+          "en": "Nail Spa Client"
+        }
       },
       {
         "stars": 5,
         "text": {
-          "th": "มาลันลาลินเหมือนได้มาสปามากกว่ามาทำความสวยตามหน้าที่ จองผ่านไลน์ง่ายมาก แล้วทีมงานก็อบอุ่นจริง ๆ",
+          "th": "มาลัลล์ลลิลเหมือนได้มาสปามากกว่ามาทำความสวยตามหน้าที่ จองผ่านไลน์ง่ายมาก แล้วทีมงานก็อบอุ่นจริง ๆ",
           "en": "Lunlalin feels more like a spa ritual than a beauty errand. Booking on LINE was effortless and the team is genuinely warm."
         },
-        "author": { "th": "วริศา พ.", "en": "Warisa P." },
-        "role": { "th": "ลูกค้าแว็กซ์ขน", "en": "Waxing Client" }
+        "author": {
+          "th": "วริศา พ.",
+          "en": "Warisa P."
+        },
+        "role": {
+          "th": "ลูกค้าแว็กซ์ขน",
+          "en": "Waxing Client"
+        }
       }
     ]
   },
@@ -208,11 +365,26 @@
     "phone": "089-988-9896",
     "line": "@lunlalin",
     "instagram": "@lunlalin.th",
-    "location": { "th": "กรุงเทพมหานคร ประเทศไทย", "en": "Bangkok, Thailand" },
-    "mapUrl": "https://www.google.com/maps?q=Sukhumvit+Bangkok+Thailand&output=embed",
+    "location": {
+      "th": "กรุงเทพมหานคร ประเทศไทย",
+      "en": "Bangkok, Thailand"
+    },
+    "mapUrl": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.989170150211!2d100.54650757488115!3d13.719105386669323!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30e29fdd10de98bf%3A0xe1104daf85976660!2zTHVubGFsaW4g4Lil4Lix4Lil4Lil4LmM4Lil4Lil4Li04Lil!5e0!3m2!1sth!2sth!4v1788785761768!5m2!1sth!2sth",
     "hours": [
-      { "days": { "th": "จันทร์ – ศุกร์", "en": "Mon – Fri" }, "time": "10:00 – 20:00" },
-      { "days": { "th": "เสาร์ – อาทิตย์", "en": "Sat – Sun" }, "time": "10:00 – 19:00" }
+      {
+        "days": {
+          "th": "จันทร์ – ศุกร์",
+          "en": "Mon – Fri"
+        },
+        "time": "10:00 – 20:00"
+      },
+      {
+        "days": {
+          "th": "เสาร์ – อาทิตย์",
+          "en": "Sat – Sun"
+        },
+        "time": "10:00 – 19:00"
+      }
     ]
   }
 }
