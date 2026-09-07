@@ -212,7 +212,9 @@
 
     var images = data.images || [];
     if (!images.length) {
-      /* An empty gallery previously rendered as a blank void. */
+      /* An empty gallery previously rendered as a blank void. The modifier
+         drops the fixed row height so the message cannot overflow it. */
+      grid.classList.add('gallery-grid--empty');
       grid.innerHTML = '<p class="gallery-empty">' +
         '<span data-i18n="gallery.empty">' + esc(T('gallery.empty')) + '</span> ' +
         '<a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener">@lunlalin.th</a> ' +
@@ -220,6 +222,7 @@
       return;
     }
 
+    grid.classList.remove('gallery-grid--empty');
     grid.innerHTML = images.map(function (src, i) {
       /* A 4-column rhythm: every 5th and 8th tile runs tall. The previous
          `i % 4 === 4` test could never be true, so nothing ever spanned. */
@@ -275,12 +278,20 @@
     var contact = document.querySelector('.contact');
 
     if (contact) {
-      setText(contact, 'a[href^="tel:"] span', data.phone);
-      setText(contact, 'a[href*="line.me"] span', data.line);
-      setText(contact, 'a[href*="instagram.com"] span', data.instagram);
+      /* Scoped to the contact cards: the booking hand-off panel also holds a
+         tel: link and would otherwise be the first match in the section. */
+      setText(contact, '.contact-card[href^="tel:"] span', data.phone);
+      setText(contact, '.contact-card[href*="line.me"] span', data.line);
+      setText(contact, '.contact-card[href*="instagram.com"] span', data.instagram);
 
-      var tel = contact.querySelector('a[href^="tel:"]');
-      if (tel && data.phone) tel.href = 'tel:' + String(L(data.phone)).replace(/[^\d+]/g, '');
+      var phone = L(data.phone);
+      var telHref = 'tel:' + String(phone).replace(/[^\d+]/g, '');
+      var telCard = contact.querySelector('.contact-card[href^="tel:"]');
+      if (telCard && phone) telCard.href = telHref;
+
+      /* Keep the booking fallback's number and href in step with it. */
+      var telFallback = contact.querySelector('.booking-result__fallback a[href^="tel:"]');
+      if (telFallback && phone) { telFallback.href = telHref; telFallback.textContent = phone; }
 
       var map = contact.querySelector('.contact-map iframe');
       if (map && data.mapUrl) map.src = data.mapUrl;

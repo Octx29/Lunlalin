@@ -92,8 +92,9 @@
       });
     });
 
-    /* Paint the stored language over the Thai markup the page ships with. */
-    m.setLang(m.lang, { persist: false });
+    /* Paint the stored language over the Thai markup the page ships with.
+       silent: content is already hydrated in this language by dynamic.js. */
+    m.setLang(m.lang, { persist: false, silent: true });
   }
 
   /* ---------- Navbar shrink + back-to-top ---------- */
@@ -285,7 +286,11 @@
     /* A past appointment date is never valid. */
     var dateInput = document.getElementById('date');
     if (dateInput && !dateInput.min) {
-      dateInput.min = new Date().toISOString().split('T')[0];
+      /* Local date, not toISOString(): in UTC+7 that would still read
+         yesterday until 07:00 and let a past date through. */
+      var now = new Date();
+      var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+      dateInput.min = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
     }
 
     /* --- Compose the booking and hand it to LINE ---------------------- */

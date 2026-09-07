@@ -275,8 +275,13 @@
     });
 
     /* Content rendered from content.json has to be rebuilt in the new
-       language; dynamic.js owns that and re-runs the UI init afterwards. */
-    document.dispatchEvent(new CustomEvent('lunlalin:langchange', { detail: { lang: lang } }));
+       language; dynamic.js owns that and re-runs the UI init afterwards.
+       Skipped on the boot call: dynamic.js has already hydrated in the
+       stored language, and firing here would force-reveal every section
+       before the scroll observer ever runs. */
+    if (!opts || opts.silent !== true) {
+      document.dispatchEvent(new CustomEvent('lunlalin:langchange', { detail: { lang: lang } }));
+    }
   }
 
   window.Lunlalin = window.Lunlalin || {};

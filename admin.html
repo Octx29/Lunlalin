@@ -323,6 +323,9 @@ function setL(prev,val){
 }
 function switchLang(lang){
   if(lang===ADMIN_LANG)return;
+  // loadData() swallows its own errors but still shows the editor, so content
+  // can be {} here; collect() would throw and the toggle would silently die.
+  if(!content||!content.hero){toast('ยังโหลดข้อมูลไม่สำเร็จ ลองรีเฟรชหน้านี้','err');return}
   collect();                       // keep edits to the language being left
   ADMIN_LANG=lang;
   document.querySelectorAll('[data-alang]').forEach(b=>{
@@ -471,7 +474,9 @@ function renderHr(){
 // ===== Collect =====
 // Translatable fields go through setL so editing Thai never clears English
 // (and vice versa). Shared fields — phone, LINE ID, prices, URLs — stay plain.
+let featureShift=false;
 function collect(){
+  featureShift=false;
   const h=content.hero;
   h.eyebrow=setL(h.eyebrow,gv('h-eye'));h.title=setL(h.title,gv('h-ttl'));
   h.description=setL(h.description,gv('h-desc'));h.badge=setL(h.badge,gv('h-badge'));
@@ -494,7 +499,12 @@ function collect(){
     it.featured=gv(`pm-f-${i}`)==='true';
     const prev=it.features||[];
     const ft=gv(`pm-ft-${i}`);
-    it.features=ft?ft.split('\n').filter(Boolean).map((line,fi)=>setL(prev[fi],line)):[];
+    const lines=ft?ft.split('\n').filter(Boolean):[];
+    // Features are paired to their translations by line position, so adding or
+    // removing a line shifts every translation below it. Flag that rather than
+    // let it happen silently.
+    if(prev.length&&lines.length!==prev.length)featureShift=true;
+    it.features=lines.map((line,fi)=>setL(prev[fi],line));
   });
 
   content.reviews.items.forEach((r,i)=>{
@@ -511,6 +521,8 @@ function collect(){
   c.phone=gv('c-phone');c.line=gv('c-line');c.instagram=gv('c-ig');c.mapUrl=gv('c-map');
   c.location=setL(c.location,gv('c-loc'));
   c.hours=(c.hours||[]).map((hr,i)=>({days:setL(hr.days,gv(`hr-d-${i}`)),time:gv(`hr-t-${i}`)}));
+
+  if(featureShift)toast('จำนวนบรรทัดใน "สิ่งที่ลูกค้าจะได้รับ" เปลี่ยนไป — โปรดตรวจสอบอีกภาษาด้วย','err');
 }
 
 // ===== Save =====

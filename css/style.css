@@ -109,6 +109,11 @@ body::before {
     linear-gradient(160deg, var(--bg-deep) 0%, var(--bg-mid) 46%, var(--bg-far) 100%);
 }
 
+/* Component rules set display on these elements, which would otherwise
+   out-rank the UA [hidden] rule and leave hidden panels and disabled
+   lightbox arrows on screen. */
+[hidden] { display: none !important; }
+
 img, svg, video, iframe { max-width: 100%; display: block; }
 
 /* Inline icon sprite (see the <symbol> block in index.html). Scales with
@@ -278,6 +283,11 @@ h1, h2, h3, h4, h5 {
 
 /* Safety net: if scripting is unavailable, content must still be readable. */
 .no-js [data-reveal] { opacity: 1; transform: none; }
+/* Carousel cards are stacked in one grid cell and hidden until activated, so
+   without JS they need to fall back to ordinary vertical flow. */
+.no-js .reviews-track { display: block; }
+.no-js .review-card { opacity: 1; transform: none; pointer-events: auto; margin-bottom: var(--sp-5); }
+.no-js .reviews-carousel__arrow, .no-js .reviews-dots { display: none; }
 
 /* =========================================================
    6. NAVBAR
@@ -743,6 +753,9 @@ body.is-locked { overflow: hidden; }
 .gallery-item:hover .gallery-item__zoom,
 .gallery-item:focus-visible .gallery-item__zoom { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 
+/* The placeholder is taller than one image row, so the grid drops to
+   auto rows whenever it is the only child. */
+.gallery-grid--empty { grid-auto-rows: auto; }
 .gallery-empty {
   grid-column: 1 / -1;
   padding: var(--sp-16) var(--sp-6);

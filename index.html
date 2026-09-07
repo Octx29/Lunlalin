@@ -20,13 +20,27 @@
 })();
 </script>
 
-<!-- Social preview -->
+<!-- Social preview (LINE, Facebook, X).
+     NOTE: og:image and og:url must be absolute — crawlers do not resolve
+     relative paths. They assume the Vercel default domain below; if the
+     studio moves to a custom domain, update these three URLs and the
+     "image" field in the JSON-LD block. -->
+<link rel="canonical" href="https://lunlalin.vercel.app/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Lunlalin — Eyelash Extensions, Nails & Waxing in Bangkok">
-<meta property="og:description" content="Premium lashes, nails and waxing in Bangkok. Precision technique, certified materials, immaculate hygiene.">
+<meta property="og:site_name" content="Lunlalin">
+<meta property="og:url" content="https://lunlalin.vercel.app/">
+<meta property="og:title" content="ลันลาลิน — ต่อขนตา ทำเล็บ แว็กซ์ ย่านกรุงเทพฯ">
+<meta property="og:description" content="สตูดิโอความงามพรีเมียมใจกลางกรุงเทพฯ บริการต่อขนตา ทำเล็บ และแว็กซ์ — Premium lashes, nails and waxing in Bangkok.">
 <meta property="og:locale" content="th_TH">
 <meta property="og:locale:alternate" content="en_US">
+<meta property="og:image" content="https://lunlalin.vercel.app/images/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Lunlalin — สตูดิโอต่อขนตา ทำเล็บ และแว็กซ์ ในกรุงเทพฯ">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ลันลาลิน — ต่อขนตา ทำเล็บ แว็กซ์ ย่านกรุงเทพฯ">
+<meta name="twitter:description" content="สตูดิโอความงามพรีเมียมใจกลางกรุงเทพฯ บริการต่อขนตา ทำเล็บ และแว็กซ์">
+<meta name="twitter:image" content="https://lunlalin.vercel.app/images/og-cover.jpg">
 
 <!-- Lash-fan favicon, inlined so it costs no request -->
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 44'%3E%3Cg fill='none' stroke='%23C1EBE9' stroke-width='4' stroke-linecap='round'%3E%3Cpath d='M4 40 Q12 12 8 4'/%3E%3Cpath d='M4 40 Q22 8 24 2'/%3E%3Cpath d='M4 40 Q34 12 40 6'/%3E%3Cpath d='M4 40 Q44 20 54 16'/%3E%3Cpath d='M4 40 Q48 30 62 32'/%3E%3C/g%3E%3C/svg%3E">
@@ -35,8 +49,19 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Latin display/body plus Thai faces; browsers resolve per glyph, so Thai
-     text stays properly shaped while Latin keeps Playfair/Inter. -->
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@500;700&display=swap" rel="stylesheet">
+     text stays properly shaped while Latin keeps Playfair/Inter.
+     Loaded non-blocking (media="print" flipped on load): the stylesheet is a
+     third-party round trip, and blocking first paint on it is a poor trade on
+     the mobile connections most of these customers are on. font-display:swap
+     is already in the URL, so text paints immediately in the fallback face. -->
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@500;700&display=swap">
+<link rel="stylesheet" media="print" onload="this.media='all';this.onload=null"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@500;700&display=swap">
+<noscript>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Inter:wght@400;500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@500;700&display=swap">
+</noscript>
 
 <!-- Local-business structured data: what Google reads to place the studio in
      local results, Maps and the knowledge panel. Keep in sync with data/content.json. -->
@@ -388,7 +413,7 @@
       </div>
 
       <!-- Populated from content.json; this markup is the no-content fallback. -->
-      <div class="gallery-grid" id="galleryGrid" data-reveal>
+      <div class="gallery-grid gallery-grid--empty" id="galleryGrid" data-reveal>
         <p class="gallery-empty"><span data-i18n="gallery.empty">กำลังอัปเดตผลงานใหม่ — ติดตามได้ที่</span>
           <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener">@lunlalin.th</a>
           <span data-i18n="gallery.emptyTail">เพื่อชมผลงานล่าสุด</span></p>
