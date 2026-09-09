@@ -14,17 +14,31 @@
   window.Lunlalin = window.Lunlalin || {};
   window.Lunlalin.deferInit = true;
 
-  var PLACEHOLDER_BG = '%232E4B39';
-  var PLACEHOLDER_FG = '%23A8CDB5';
-
-  function placeholder(w, h, label) {
-    return 'data:image/svg+xml;utf8,' +
-      "<svg xmlns='http://www.w3.org/2000/svg' width='" + w + "' height='" + h + "'>" +
-      "<rect width='100%25' height='100%25' fill='" + PLACEHOLDER_BG + "'/>" +
-      "<text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' " +
-      "font-family='sans-serif' font-size='22' fill='" + PLACEHOLDER_FG + "'>" +
-      encodeURIComponent(label || 'Image') + '</text></svg>';
+  /* Brand gradient plus the lash-fan mark. Deliberately text-free: a label
+     reading "Image" announces a missing file, where the motif reads as a
+     design choice until a real photograph is uploaded. */
+  function placeholder(w, h) {
+    var fan = 'M2,38 Q10,10 6,2 M2,38 Q20,6 22,-2 M2,38 Q32,10 38,4 ' +
+              'M2,38 Q42,18 52,14 M2,38 Q46,28 62,30';
+    var sc = Math.min(w, h) * 0.62 / 64;
+    var tx = (w / 2 - 32 * sc).toFixed(1), ty = (h / 2 - 18 * sc).toFixed(1);
+    return "data:image/svg+xml;utf8," +
+      "<svg xmlns='http://www.w3.org/2000/svg' width='" + w + "' height='" + h +
+      "' viewBox='0 0 " + w + " " + h + "'>" +
+      "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>" +
+      "<stop offset='0' stop-color='%23233A2C'/>" +
+      "<stop offset='.55' stop-color='%232E4A38'/>" +
+      "<stop offset='1' stop-color='%233C5D47'/></linearGradient>" +
+      "<radialGradient id='v' cx='.5' cy='.44' r='.75'>" +
+      "<stop offset='.45' stop-color='%23000000' stop-opacity='0'/>" +
+      "<stop offset='1' stop-color='%23000000' stop-opacity='.22'/>" +
+      "</radialGradient></defs>" +
+      "<rect width='" + w + "' height='" + h + "' fill='url(%23g)'/>" +
+      "<g transform='translate(" + tx + " " + ty + ") scale(" + sc.toFixed(3) + ")' " +
+      "fill='%23C1EBE9' fill-opacity='.30'><path d='" + fan + "'/></g>" +
+      "<rect width='" + w + "' height='" + h + "' fill='url(%23v)'/></svg>";
   }
+
 
   /* Values reaching an HTML attribute or plain-text slot are escaped. The
      rich-text fields (hero title, descriptions, paragraphs) intentionally
@@ -144,7 +158,7 @@
 
     grid.innerHTML = data.items.map(function (item) {
       var name = L(item.name);
-      var img = item.image || placeholder(800, 600, name || 'Service');
+      var img = item.image || placeholder(800, 600);
       return '' +
         '<article class="service-card" data-reveal>' +
           '<div class="service-card__img">' +
