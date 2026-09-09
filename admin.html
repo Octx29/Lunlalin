@@ -290,7 +290,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);min-he
 
   <!-- Bottom bar -->
   <div class="bottom-bar">
-    <button class="btn btn--p" onclick="saveAll()"><i class="fa-solid fa-floppy-disk"></i> บันทึกข้อมูลชั่วคราว</button>
+    <button class="btn btn--p" onclick="saveAll()"><i class="fa-solid fa-floppy-disk"></i> บันทึกและอัปเดตเว็บ</button>
     <button class="btn btn--s" onclick="pushAll()"><i class="fa-solid fa-rocket"></i> อัปเดตขึ้นเว็บจริง!</button>
   </div>
 </div>
@@ -557,15 +557,15 @@ async function upImg(key,input){
   showLd('กำลังอัปโหลดรูปภาพ...');
   try{
     const file=input.files[0];
-    const b64=await fileToBase64(file);
-    const fname=`images/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
-    await ghPut(fname,b64.split(',')[1],null,`Upload ${fname}`);
+    const img=await prepImage(file);
+    const fname=`images/${Date.now()}_${img.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+    await ghPut(fname,img.b64,null,`Upload ${fname}`);
     const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${fname}`;
     if(key==='heroImage')content.hero.heroImage=url;
     else if(key==='aboutMain')content.about.imageMain=url;
     else if(key==='aboutAccent')content.about.imageAccent=url;
     showPrev(key,url);
-    toast('อัปโหลดรูปภาพสำเร็จ! ✨','ok');
+    toast('อัปโหลดรูปภาพสำเร็จ! ✨'+img.note,'ok');
   }catch(e){toast('อัปโหลดล้มเหลว: '+e.message,'err')}
   hideLd();
 }
@@ -575,14 +575,14 @@ async function upSvcImg(idx,input){
   showLd('กำลังอัปโหลดรูปภาพ...');
   try{
     const file=input.files[0];
-    const b64=await fileToBase64(file);
-    const fname=`images/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
-    await ghPut(fname,b64.split(',')[1],null,`Upload ${fname}`);
+    const img=await prepImage(file);
+    const fname=`images/${Date.now()}_${img.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+    await ghPut(fname,img.b64,null,`Upload ${fname}`);
     const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${fname}`;
     content.services.items[idx].image=url;
     const prev=document.getElementById(`prev-svc-${idx}`);
     if(prev)prev.innerHTML=`<div class="img-prev__item"><img src="${url}"></div>`;
-    toast('อัปโหลดรูปภาพสำเร็จ! ✨','ok');
+    toast('อัปโหลดรูปภาพสำเร็จ! ✨'+img.note,'ok');
   }catch(e){toast('อัปโหลดล้มเหลว: '+e.message,'err')}
   hideLd();
 }
@@ -591,9 +591,9 @@ async function upGallery(input){
   showLd('กำลังอัปโหลดรูปภาพ...');
   for(const file of input.files){
     try{
-      const b64=await fileToBase64(file);
-      const fname=`images/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
-      await ghPut(fname,b64.split(',')[1],null,`Upload ${fname}`);
+      const img=await prepImage(file);
+      const fname=`images/${Date.now()}_${img.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+      await ghPut(fname,img.b64,null,`Upload ${fname}`);
       const url=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/${fname}`;
       if(!content.gallery.images)content.gallery.images=[];
       content.gallery.images.push(url);
@@ -628,6 +628,68 @@ function sv(id,v){const el=document.getElementById(id);if(el)el.value=L(v)}
 function gv(id){const el=document.getElementById(id);return el?el.value:''}
 function esc(s){return(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function fileToBase64(f){return new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(r.result);r.onerror=no;r.readAsDataURL(f)})}
+
+// ===== Image preparation =====
+// Uploads go straight to GitHub and are served at whatever size they arrive,
+// so a raw phone photo (often 4000px / 5MB) would be downloaded in full by
+// every visitor. Shrink and re-encode in the browser before uploading.
+// Measured on a 4624x3468 phone photo: 1400/0.82 -> 251KB, which is 2-3x the
+// resolution any slot on the site actually renders at. 1600 gained nothing
+// visible and cost ~70KB more per image.
+const IMG_MAX_EDGE = 1400;
+const IMG_QUALITY  = 0.82;
+const IMG_PASSTHROUGH = 300 * 1024;  // already small: leave it untouched
+
+async function decodeImage(file){
+  // createImageBitmap honours EXIF rotation, so portrait phone photos do not
+  // come out sideways. Fall back to <img> where it is unsupported.
+  if(window.createImageBitmap){
+    try{ return await createImageBitmap(file,{imageOrientation:'from-image'}) }catch(e){}
+  }
+  return await new Promise((ok,no)=>{
+    const img=new Image(), url=URL.createObjectURL(file);
+    img.onload=()=>{URL.revokeObjectURL(url);ok(img)};
+    img.onerror=()=>{URL.revokeObjectURL(url);no(new Error('อ่านไฟล์รูปไม่ได้'))};
+    img.src=url;
+  });
+}
+
+// -> { b64, name, note }  ready for ghPut
+async function prepImage(file){
+  const raw = await fileToBase64(file);
+  const keep = () => ({ b64: raw.split(',')[1], name: file.name, note: '' });
+
+  if(!/^image\//.test(file.type) || /svg/.test(file.type)) return keep();
+
+  let bmp;
+  try{ bmp = await decodeImage(file) }catch(e){ return keep() }
+
+  const w = bmp.width, h = bmp.height;
+  // Small enough already, and re-encoding a PNG would flatten transparency.
+  if(w <= IMG_MAX_EDGE && h <= IMG_MAX_EDGE && file.size <= IMG_PASSTHROUGH) return keep();
+
+  const scale = Math.min(1, IMG_MAX_EDGE / Math.max(w, h));
+  const c = document.createElement('canvas');
+  c.width = Math.round(w * scale);
+  c.height = Math.round(h * scale);
+  const ctx = c.getContext('2d');
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(bmp, 0, 0, c.width, c.height);
+  if(bmp.close) bmp.close();
+
+  const out = c.toDataURL('image/jpeg', IMG_QUALITY);
+  const outBytes = Math.round((out.length - out.indexOf(',') - 1) * 3 / 4);
+
+  // Never make a file bigger than it started.
+  if(outBytes >= file.size) return keep();
+
+  const kb = n => Math.round(n / 1024).toLocaleString();
+  return {
+    b64: out.split(',')[1],
+    name: file.name.replace(/\.[^.]+$/, '') + '.jpg',
+    note: ` (${w}\u00d7${h} ${kb(file.size)}KB \u2192 ${c.width}\u00d7${c.height} ${kb(outBytes)}KB)`
+  };
+}
 function showLd(t){document.getElementById('ldTxt').textContent=t;document.getElementById('ld').classList.add('show')}
 function hideLd(){document.getElementById('ld').classList.remove('show')}
 function toast(m,t='info'){const el=document.getElementById('toast');el.textContent=m;el.className=`toast toast--${t} show`;setTimeout(()=>el.classList.remove('show'),3000)}
