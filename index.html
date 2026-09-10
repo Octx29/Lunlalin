@@ -122,6 +122,10 @@
 <!-- i18n first: it resolves the language before the other scripts run. -->
 <script src="js/i18n.js" defer></script>
 <script src="js/script.js" defer></script>
+<!-- Signature motion. Registers Lunlalin.motion and lazily imports the
+     vendored anime.js; init() calls it. Kept in its own file so a parse
+     or import failure here cannot take the rest of the page down. -->
+<script src="js/motion.js" defer></script>
 <!-- Loaded after script.js: it injects content, then calls Lunlalin.init(). -->
 <script src="js/dynamic.js" defer></script>
 </head>
@@ -231,7 +235,14 @@
 
   <!-- ========== HERO ========== -->
   <section class="hero" id="home" aria-labelledby="heroTitle">
-    <svg class="hero__fan-bg" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
+    <!-- The signature mark. The filled group is the backdrop motif the hero
+         has always shown; the stroked twin is drawn stroke-by-stroke by
+         js/motion.js and then dissolves back into it. The twin ships [hidden],
+         so with motion.js absent or still loading the hero is complete. -->
+    <svg class="hero__fan-bg" viewBox="0 -3 64 44" aria-hidden="true" focusable="false" data-signature>
+      <g class="hero__fan-fill" data-signature-fill><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></g>
+      <g class="hero__fan-line" data-signature-line hidden><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></g>
+    </svg>
     <div class="container hero__inner">
       <div class="hero__text" data-reveal>
         <span class="eyebrow">สตูดิโอพรีเมียมใจกลางกรุงเทพฯ</span>
@@ -279,6 +290,7 @@
       <div class="about__content" data-reveal>
         <span class="eyebrow">เรื่องราวของเรา</span>
         <h2 class="section-title" id="aboutTitle">ใส่ใจในทุกรายละเอียด เพื่อความมั่นใจของคุณ</h2>
+        <span class="section-flourish" aria-hidden="true"><svg viewBox="0 -3 64 44" focusable="false"><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></svg></span>
         <p>ลัลล์ลลิลเริ่มต้นจากความเชื่อง่าย ๆ ว่างานความงามควรเป็นช่วงเวลาแห่งการดูแลตัวเอง ไม่ใช่เพียงการซื้อบริการ จากเก้าอี้ตัวเดียวในกรุงเทพฯ เราสร้างชื่อด้วยเทคนิคที่แม่นยำและความสะอาดที่ไร้ที่ติ</p>
         <p>ช่างทุกคนของลัลล์ลลิลผ่านการฝึกอบรมตามมาตรฐานระดับสูง เราเลือกใช้เฉพาะวัสดุที่ได้รับการรับรองและไม่ก่อให้เกิดอาการแพ้ เพราะความสบายใจของคุณสำคัญไม่แพ้ความสวยที่คุณได้กลับบ้าน</p>
 
@@ -316,6 +328,7 @@
       <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">บริการของเรา</span>
         <h2 class="section-title" id="servicesTitle">บริการซิกเนเจอร์</h2>
+        <span class="section-flourish" aria-hidden="true"><svg viewBox="0 -3 64 44" focusable="false"><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></svg></span>
         <p class="section-sub">ทุกบริการออกแบบเฉพาะให้เข้ากับไลฟ์สไตล์และลุคที่คุณต้องการ เพื่อขับความงามตามธรรมชาติของคุณ</p>
       </div>
 
@@ -370,6 +383,7 @@
       <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow" data-i18n="lash.eyebrow">ลองก่อนจอง</span>
         <h2 class="section-title" id="lashStudioTitle" data-i18n="lash.title">ออกแบบลุคขนตาของคุณ</h2>
+        <span class="section-flourish" aria-hidden="true"><svg viewBox="0 -3 64 44" focusable="false"><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></svg></span>
         <p class="section-sub" data-i18n="lash.sub">เลือกสไตล์ ความโค้ง และความยาวที่ชอบ แล้วส่งให้เราทางไลน์ ช่างจะเตรียมลุคนี้ไว้ก่อนคุณมาถึง</p>
       </div>
 
@@ -438,6 +452,7 @@
       <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">โปรโมชั่นพิเศษ</span>
         <h2 class="section-title" id="promotionsTitle">โปรโมชั่น &amp; แพ็กเกจ</h2>
+        <span class="section-flourish" aria-hidden="true"><svg viewBox="0 -3 64 44" focusable="false"><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></svg></span>
         <p class="section-sub">แพ็กเกจที่คัดสรรมาจับคู่บริการยอดนิยมของเรา ในราคาที่คุ้มค่า</p>
       </div>
 
@@ -488,6 +503,7 @@
       <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">ผลงานของเรา</span>
         <h2 class="section-title" id="galleryTitle">ผลงาน</h2>
+        <span class="section-flourish" aria-hidden="true"><svg viewBox="0 -3 64 44" focusable="false"><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></svg></span>
         <p class="section-sub">ชมความประณีตเบื้องหลังทุกคิวของลัลล์ลลิลอย่างใกล้ชิด</p>
       </div>
 
@@ -506,6 +522,7 @@
       <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">เสียงจากลูกค้า</span>
         <h2 class="section-title" id="reviewsTitle">ลูกค้าพูดถึงเรา</h2>
+        <span class="section-flourish" aria-hidden="true"><svg viewBox="0 -3 64 44" focusable="false"><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></svg></span>
       </div>
 
       <div class="reviews-carousel" data-reveal role="group" aria-roledescription="carousel" data-i18n-aria="reviews.label" aria-label="รีวิวจากลูกค้า">
@@ -559,6 +576,7 @@
       <div class="section-head section-head--center" data-reveal>
         <span class="eyebrow">ติดต่อเรา</span>
         <h2 class="section-title" id="contactTitle">จองคิวของคุณ</h2>
+        <span class="section-flourish" aria-hidden="true"><svg viewBox="0 -3 64 44" focusable="false"><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></svg></span>
         <p class="section-sub">บอกเราสักนิดว่าคุณต้องการอะไร แล้วเราจะยืนยันคิวให้ภายใน 24 ชั่วโมง</p>
       </div>
 

@@ -80,6 +80,17 @@
     initLightbox();
     initLashStudio();
     initBookingForm();
+    motion('chrome');
+  }
+
+  /* motion.js is optional: it lives in its own file precisely so a failure
+     there cannot take the page down with it. Call through this guard only. */
+  function motion(hook) {
+    var m = window.Lunlalin && window.Lunlalin.motion;
+    if (!m || typeof m[hook] !== 'function') return;
+    try { m[hook](); } catch (e) {
+      if (window.console) console.warn('[lunlalin] motion.' + hook + ' failed:', e);
+    }
   }
 
   /* ---------- Language toggle ---------- */
@@ -542,6 +553,7 @@
     initCounters();
     initScrollSpy();
     initReviews();
+    motion('content');
   }
 
   /* ---------- Scroll reveal ---------- */

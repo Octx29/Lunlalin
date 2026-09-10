@@ -25,6 +25,7 @@ Three scripts, loaded in this order, and **the order is load-bearing**:
 | `js/i18n.js` | Resolves the language before anything paints; holds the fixed chrome strings |
 | `js/script.js` | Defines all behaviour, exposes `window.Lunlalin.init()`. Does **not** self-start when `dynamic.js` is present |
 | `js/dynamic.js` | Fetches `data/content.json`, injects it, **then calls `Lunlalin.init()`** |
+| `js/motion.js` | Optional. Registers `Lunlalin.motion`; `init()` calls it through a guard |
 
 `dynamic.js` replaces large parts of the DOM. Anything bound before that
 injection is bound to detached nodes. This once meant every section below the
@@ -35,6 +36,26 @@ elements that no longer existed. **If you add behaviour, put it behind
 `init()` splits into:
 - `initChrome()` — bound once (navbar, menus, lightbox, booking form, lash studio)
 - `initContent()` — re-runnable, re-binds anything whose nodes get replaced
+
+### Signature motion
+
+`js/motion.js` is the anime.js layer, and it is **optional by construction**.
+It draws the lash-fan mark stroke by stroke: once in the hero on load, then
+once per section heading as that heading scrolls into view.
+
+anime.js v4 is **vendored** at `js/vendor/anime.esm.min.js` (MIT, licence
+alongside it) — no CDN, same rule as the icons. It is `import()`ed lazily, so
+its ~89 KB never sits on the critical path, and it is not downloaded at all
+under `prefers-reduced-motion`.
+
+The safety contract, which exists because this site has already shipped
+content that was invisible: **everything motion.js touches ships fully drawn
+in the markup.** Nothing is hidden by CSS waiting for a script to reveal it.
+motion.js only ever winds an element *back* to undrawn after anime.js has
+actually resolved, then plays it forward. Delete the file, break the import,
+throttle the network — the page is still finished. `script.js` calls it only
+through the `motion()` guard, and it lives in its own file so a parse error
+there cannot take the page down.
 
 ### Content
 
@@ -73,6 +94,18 @@ and disabled buttons stay on screen.
 `sitemap.xml` `<loc>`. They must change **together** or the social preview
 breaks.
 
+**`el.hidden = false` does nothing on an SVG element.** `hidden` is an
+`HTMLElement` IDL attribute; on an `<g>` the assignment silently creates an
+expando and leaves `display: none` in place. Use `removeAttribute('hidden')`.
+The hero's stroked twin animated perfectly while invisible for one round of
+this.
+
+**anime.js drawables animate the dash *length*, not the offset.** A drawable
+path reads `stroke-dasharray: <drawn>px, <rest>px` with `stroke-dashoffset`
+pinned at `0`. A check that samples `strokeDashoffset` therefore reports "fully
+drawn" always and can never fail — which is exactly what happened here.
+Measure `drawn / (drawn + rest)`.
+
 **No icon CDN.** Icons are an inline `<symbol>` sprite in `index.html`, used as
 `<svg class="icon"><use href="#i-name"/></svg>`. Do not add FontAwesome back to
 the public site (`admin.html` still uses it; it is an internal tool).
@@ -108,3 +141,9 @@ Two lessons worth keeping, both from checks that reported success wrongly:
   Confirm a check fails when it should before trusting that it passed.
 - An image check reported four broken images that were simply below the fold
   with `loading="lazy"`. Scroll before sampling `naturalWidth`.
+- A draw check sampled `strokeDashoffset`, which anime.js never moves, so
+  every element read as drawn. Third time a check here measured the wrong
+  property and passed. Drive motion.js in four modes — normal,
+  `prefers-reduced-motion`, anime.js unreachable, and mobile — because the
+  middle two are where this layer is allowed to vanish and the page must
+  still be whole.
