@@ -10,11 +10,17 @@ self-hosted admin panel the owner uses to edit its content.
 ## Running it
 
 ```bash
-python3 -m http.server 8899      # then open http://localhost:8899
+npm ci            # only for the anime.js dependency; see below
+npm start         # python3 -m http.server 8899 -> http://localhost:8899
 ```
 
-There is nothing to install or compile. `admin/node_modules` is committed to
-the repo but nothing on the site imports from it.
+There is still nothing to compile. `npm ci` is not required to serve the site
+— every file the browser loads is committed — it only restores `node_modules`
+so `npm run vendor:anime` can refresh the vendored bundle.
+
+`admin/node_modules` is a committed blob with no manifest of its own; nothing
+on the site imports from it. Leave it alone. The root `.gitignore` ignores
+`/node_modules` while keeping that exception.
 
 ## Architecture
 
@@ -43,10 +49,26 @@ elements that no longer existed. **If you add behaviour, put it behind
 It draws the lash-fan mark stroke by stroke: once in the hero on load, then
 once per section heading as that heading scrolls into view.
 
-anime.js v4 is **vendored** at `js/vendor/anime.esm.min.js` (MIT, licence
-alongside it) — no CDN, same rule as the icons. It is `import()`ed lazily, so
-its ~89 KB never sits on the critical path, and it is not downloaded at all
-under `prefers-reduced-motion`.
+anime.js is a real npm dependency, pinned exactly in `package.json`
+(`animejs: 4.2.2`) with `package-lock.json` committed. The browser does **not**
+load it from `node_modules`: this site has no bundler and no build step, and
+Vercel's treatment of `node_modules` in a static deployment is not something to
+bet the hero on. The served copy is a byte-for-byte vendored one at
+`js/vendor/anime.esm.min.js` (MIT, licence alongside it) — no CDN, same rule as
+the icons.
+
+```bash
+npm run vendor:anime    # re-copy dist bundle + licence into js/vendor
+npm run check:vendor    # fail if js/vendor has drifted from node_modules
+```
+
+**Bump the version in `package.json`, then run `vendor:anime`.** Editing
+`js/vendor/anime.esm.min.js` by hand, or bumping the dependency without
+re-running the copy, silently ships a different library than the lockfile
+claims. `check:vendor` is what catches that.
+
+It is `import()`ed lazily, so its ~89 KB never sits on the critical path, and
+it is not downloaded at all under `prefers-reduced-motion`.
 
 The safety contract, which exists because this site has already shipped
 content that was invisible: **everything motion.js touches ships fully drawn
