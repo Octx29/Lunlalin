@@ -643,6 +643,111 @@ body.is-locked { overflow: hidden; }
 .service-card__link:hover { gap: var(--sp-3); color: var(--accent-strong); }
 
 /* =========================================================
+   9b. LASH STUDIO
+   ========================================================= */
+.lash-studio { padding: var(--section-y) 0; }
+
+.studio {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(32px, 5vw, 60px);
+  align-items: center;
+}
+
+.studio__stage {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(20px, 3vw, 36px);
+  box-shadow: var(--shadow-2);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  text-align: center;
+}
+.studio__eye { width: 100%; height: auto; overflow: visible; }
+
+.eye__white  { fill: #EEF4EF; }
+.eye__pupil  { fill: #0B1A16; }
+.eye__glint  { fill: rgba(255, 255, 255, 0.85); }
+.eye__lid,
+.eye__lower  { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linecap: round; }
+.eye__lower  { stroke-width: 1.6; opacity: 0.5; }
+
+.eye__lashes path {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  /* Redrawn wholesale on every change, so animate opacity only. */
+  animation: lashIn 0.4s var(--ease) both;
+}
+@keyframes lashIn { from { opacity: 0; } to { opacity: 1; } }
+
+.studio__spec {
+  margin-top: var(--sp-5);
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--accent);
+  letter-spacing: 0.01em;
+  min-height: 1.6em;
+}
+
+.studio__controls { display: flex; flex-direction: column; gap: var(--sp-6); }
+.studio__group { border: 0; padding: 0; margin: 0; }
+.studio__group legend {
+  padding: 0 0 var(--sp-3);
+  font-size: var(--fs-2xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.studio__opts { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+.chip { display: inline-flex; }
+/* The input stays focusable and keyboard-navigable; only its box is hidden. */
+.chip input {
+  position: absolute;
+  width: 1px; height: 1px;
+  opacity: 0;
+  margin: 0;
+}
+.chip span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: var(--sp-3) var(--sp-5);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-1);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.chip span:hover { border-color: var(--accent); color: var(--text-strong); }
+.chip input:checked + span {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+.chip input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 3px; }
+.chip span:active { transform: scale(0.97); }
+
+.studio__note { font-size: var(--fs-xs); color: var(--text-muted); text-align: center; }
+
+@media (max-width: 900px) {
+  .studio { grid-template-columns: 1fr; gap: var(--sp-8); }
+  .studio__stage { order: -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eye__lashes path { animation: none; }
+}
+
+/* =========================================================
    10. PROMOTIONS
    ========================================================= */
 .promotions { padding: var(--section-y) 0; }
