@@ -203,6 +203,28 @@ h1, h2, h3, h4, h5 {
   max-width: 56ch;
   text-wrap: pretty;
 }
+/* Signature flourish under each section title. Ships drawn in the markup;
+   js/motion.js winds it back and draws it in as the heading scrolls up. */
+.section-flourish {
+  display: block;
+  width: 42px;
+  /* The title already carries a 20px bottom margin; pull up into it so the
+     flourish reads as part of the heading rather than a third stacked block. */
+  margin: calc(var(--sp-3) * -1) 0 var(--sp-5);
+  color: var(--accent);
+  opacity: 0.85;
+}
+.section-flourish svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+.section-head--center .section-flourish { margin-inline: auto; }
+
 .section-head { margin-bottom: clamp(40px, 5vw, 60px); }
 .section-head--center { text-align: center; }
 .section-head--center .section-sub { margin-inline: auto; }
@@ -463,10 +485,21 @@ body.is-locked { overflow: hidden; }
   width: min(620px, 60vw);
   height: auto;
   color: var(--accent);
-  opacity: 0.06;
   transform: rotate(-18deg);
   pointer-events: none;
-  fill: currentColor;
+}
+/* The backdrop motif, and the state the hero rests in. The opacity lives here
+   rather than on the <svg> so the stroked twin below can sit brighter while it
+   draws — nested opacity multiplies, and 6% of 6% is nothing. */
+.hero__fan-fill { fill: currentColor; opacity: 0.06; }
+/* Drawn in by js/motion.js, then faded out. [hidden] in the markup: this is a
+   pure enhancement and must never be the only thing painting the mark. */
+.hero__fan-line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: 0.34;
 }
 .hero__inner {
   display: grid;

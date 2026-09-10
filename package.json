@@ -1,0 +1,19 @@
+{
+  "name": "lunlalin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Marketing site for ลัลล์ลลิล, a lash, nail and waxing studio in Bangkok.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Octx29/Lunlalin.git"
+  },
+  "scripts": {
+    "start": "python3 -m http.server 8899",
+    "vendor:anime": "cp node_modules/animejs/dist/bundles/anime.esm.min.js js/vendor/anime.esm.min.js && cp node_modules/animejs/LICENSE.md js/vendor/anime.LICENSE.md",
+    "check:vendor": "cmp node_modules/animejs/dist/bundles/anime.esm.min.js js/vendor/anime.esm.min.js && echo 'js/vendor is in sync with node_modules'"
+  },
+  "dependencies": {
+    "animejs": "4.2.2"
+  }
+}
