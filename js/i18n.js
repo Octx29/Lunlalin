@@ -13,6 +13,27 @@
 
   var STRINGS = {
     th: {
+      'nav.studio': 'ออกแบบลุค',
+
+      'lash.eyebrow': 'ลองก่อนจอง',
+      'lash.title': 'ออกแบบลุคขนตาของคุณ',
+      'lash.sub': 'เลือกสไตล์ ความโค้ง และความยาวที่ชอบ แล้วส่งให้เราทางไลน์ ช่างจะเตรียมลุคนี้ไว้ก่อนคุณมาถึง',
+      'lash.style': 'สไตล์',
+      'lash.styleClassic': 'คลาสสิก',
+      'lash.styleHybrid': 'ไฮบริด',
+      'lash.styleVolume': 'วอลลุ่ม',
+      'lash.curl': 'ความโค้ง',
+      'lash.curlC': 'C · โค้งธรรมชาติ',
+      'lash.curlCC': 'CC · โค้งกลาง',
+      'lash.curlD': 'D · โค้งมาก',
+      'lash.length': 'ความยาว',
+      'lash.lenShort': '8–10 มม.',
+      'lash.lenMedium': '10–12 มม.',
+      'lash.lenLong': '12–14 มม.',
+      'lash.send': 'ส่งลุคนี้ทาง LINE',
+      'lash.note': 'ภาพเป็นเพียงตัวอย่างประกอบ ช่างจะช่วยปรับให้เข้ากับรูปตาของคุณหน้างาน',
+      'lash.msgTitle': 'อยากได้ลุคขนตาแบบนี้',
+
       'skip': 'ข้ามไปยังเนื้อหาหลัก',
       'brand.home': 'ลัลล์ลลิล — หน้าแรก',
 
@@ -106,6 +127,27 @@
     },
 
     en: {
+      'nav.studio': 'Design a Look',
+
+      'lash.eyebrow': 'Try before you book',
+      'lash.title': 'Design your lash look',
+      'lash.sub': 'Pick the style, curl and length you like, then send it to us on LINE — your technician will have the look ready before you arrive.',
+      'lash.style': 'Style',
+      'lash.styleClassic': 'Classic',
+      'lash.styleHybrid': 'Hybrid',
+      'lash.styleVolume': 'Volume',
+      'lash.curl': 'Curl',
+      'lash.curlC': 'C · natural lift',
+      'lash.curlCC': 'CC · medium lift',
+      'lash.curlD': 'D · dramatic lift',
+      'lash.length': 'Length',
+      'lash.lenShort': '8–10 mm',
+      'lash.lenMedium': '10–12 mm',
+      'lash.lenLong': '12–14 mm',
+      'lash.send': 'Send this look on LINE',
+      'lash.note': 'An illustration, not a photograph — your technician will adapt the map to your own eye shape in the chair.',
+      'lash.msgTitle': 'I would like this lash look',
+
       'skip': 'Skip to content',
       'brand.home': 'Lunlalin — home',
 

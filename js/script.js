@@ -78,6 +78,7 @@
     initNavbarScroll();
     initMobileMenu();
     initLightbox();
+    initLashStudio();
     initBookingForm();
   }
 
@@ -246,6 +247,143 @@
       else if (e.key === 'ArrowRight') show(index + 1);
       else if (e.key === 'Tab') trapFocus(lightbox, e);
     });
+  }
+
+  /* ---------- Lash studio ----------
+     Draws the chosen set onto a stylised eye and hands the spec to LINE.
+     Lashes are generated along the upper-lid Bezier rather than drawn by
+     hand, so style/curl/length combine the way a real lash map does:
+     shorter at the inner corner, longest just past the outer third. */
+  function initLashStudio() {
+    var svgNS = 'http://www.w3.org/2000/svg';
+    var group = document.getElementById('lashGroup');
+    var specEl = document.getElementById('lashSpec');
+    var sendBtn = document.getElementById('lashSend');
+    if (!group) return;
+
+    /* Upper lid control points, matching the path in the markup. */
+    var P0 = [46, 146], P1 = [200, 42], P2 = [356, 120];
+
+    function point(t) {
+      var u = 1 - t;
+      return [u * u * P0[0] + 2 * u * t * P1[0] + t * t * P2[0],
+              u * u * P0[1] + 2 * u * t * P1[1] + t * t * P2[1]];
+    }
+    function tangent(t) {
+      var u = 1 - t;
+      return [2 * u * (P1[0] - P0[0]) + 2 * t * (P2[0] - P1[0]),
+              2 * u * (P1[1] - P0[1]) + 2 * t * (P2[1] - P1[1])];
+    }
+    function rotate(v, deg) {
+      var r = deg * Math.PI / 180, c = Math.cos(r), s2 = Math.sin(r);
+      return [v[0] * c - v[1] * s2, v[0] * s2 + v[1] * c];
+    }
+    function unit(v) {
+      var m = Math.hypot(v[0], v[1]) || 1;
+      return [v[0] / m, v[1] / m];
+    }
+
+    var CURL   = { C: 0.20, CC: 0.34, D: 0.50 };
+    var LENGTH = { short: 30, medium: 38, long: 46 };
+    var STYLE  = {
+      classic: { count: 26, fan: 1, width: 2.2, spread: 0 },
+      hybrid:  { count: 24, fan: 2, width: 1.8, spread: 7 },
+      volume:  { count: 22, fan: 3, width: 1.25, spread: 9 }
+    };
+
+    /* Longest just past the outer third, tapering at the very corner —
+       a flat length across the lid looks synthetic. */
+    function lengthProfile(t) {
+      var peak = 0.74;
+      var d = (t - peak) / (t < peak ? 0.78 : 0.30);
+      return 0.62 + 0.38 * Math.exp(-d * d * 1.6);
+    }
+
+    function draw(style, curl, length) {
+      var cfg = STYLE[style] || STYLE.classic;
+      var curlAmt = CURL[curl] != null ? CURL[curl] : CURL.C;
+      var baseLen = LENGTH[length] || LENGTH.medium;
+      var frag = document.createDocumentFragment();
+
+      for (var i = 0; i < cfg.count; i++) {
+        var t = 0.06 + (i / (cfg.count - 1)) * 0.92;
+        var b = point(t);
+        var tan = unit(tangent(t));
+        /* Outward normal, fanned progressively toward the outer corner.
+           Starts slightly positive: the lid rises steeply at the inner corner,
+           so an unrotated normal there points back toward the nose, which no
+           real lash map does. */
+        var normal = rotate([tan[1], -tan[0]], 6 + t * 30);
+        var len = baseLen * lengthProfile(t);
+
+        for (var f = 0; f < cfg.fan; f++) {
+          var offset = cfg.fan === 1 ? 0 : (f - (cfg.fan - 1) / 2) * cfg.spread;
+          var dir = rotate(normal, offset);
+          var L = len * (cfg.fan === 1 ? 1 : 1 - Math.abs(offset) / 60);
+          var tip = [b[0] + dir[0] * L, b[1] + dir[1] * L];
+          /* Control point pushed sideways from the shaft gives the curl. */
+          var perp = [dir[1], -dir[0]];
+          var ctrl = [b[0] + dir[0] * L * 0.55 + perp[0] * L * curlAmt,
+                      b[1] + dir[1] * L * 0.55 + perp[1] * L * curlAmt];
+
+          var path = document.createElementNS(svgNS, 'path');
+          path.setAttribute('d',
+            'M' + b[0].toFixed(1) + ',' + b[1].toFixed(1) +
+            ' Q' + ctrl[0].toFixed(1) + ',' + ctrl[1].toFixed(1) +
+            ' ' + tip[0].toFixed(1) + ',' + tip[1].toFixed(1));
+          path.setAttribute('stroke-width', (cfg.width * (f === Math.floor(cfg.fan / 2) ? 1 : 0.82)).toFixed(2));
+          frag.appendChild(path);
+        }
+      }
+      group.textContent = '';
+      group.appendChild(frag);
+    }
+
+    function selected(name) {
+      var el = document.querySelector('input[name="' + name + '"]:checked');
+      return el ? el.value : null;
+    }
+    function labelFor(name) {
+      var el = document.querySelector('input[name="' + name + '"]:checked');
+      var span = el && el.closest('.chip') && el.closest('.chip').querySelector('span');
+      return span ? span.textContent.trim() : '';
+    }
+
+    function lineHref(message) {
+      var el = $('.contact-card[href*="line.me"] span') || $('[data-contact="line"]');
+      var raw = el ? el.textContent.trim() : '';
+      var id = /^@?[\w.\-]+$/.test(raw) ? (raw[0] === '@' ? raw : '@' + raw) : '@lunlalin';
+      return 'https://line.me/R/oaMessage/' + encodeURIComponent(id) + '/?' + encodeURIComponent(message);
+    }
+
+    function update() {
+      var style = selected('lashStyle'), curl = selected('lashCurl'), len = selected('lashLength');
+      draw(style, curl, len);
+
+      var spec = [labelFor('lashStyle'), labelFor('lashCurl'), labelFor('lashLength')]
+                   .filter(Boolean).join(' · ');
+      if (specEl) specEl.textContent = spec;
+
+      if (sendBtn) {
+        var msg = [
+          t('lash.msgTitle') + ' — Lunlalin', '',
+          t('lash.style') + ': ' + labelFor('lashStyle'),
+          t('lash.curl') + ': ' + labelFor('lashCurl'),
+          t('lash.length') + ': ' + labelFor('lashLength')
+        ].join('\n');
+        sendBtn.href = lineHref(msg);
+      }
+    }
+
+    $$('input[name="lashStyle"], input[name="lashCurl"], input[name="lashLength"]')
+      .forEach(function (input) { input.addEventListener('change', update); });
+
+    /* Labels are translated after this runs, so refresh on a language switch. */
+    document.addEventListener('lunlalin:langchange', function () {
+      window.setTimeout(update, 0);
+    });
+
+    update();
   }
 
   /* ---------- Booking form ---------- */

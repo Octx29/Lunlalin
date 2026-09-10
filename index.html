@@ -184,6 +184,7 @@
       <a href="#home" class="nav-link" data-nav data-i18n="nav.home">หน้าแรก</a>
       <a href="#about" class="nav-link" data-nav data-i18n="nav.about">เกี่ยวกับเรา</a>
       <a href="#services" class="nav-link" data-nav data-i18n="nav.services">บริการ</a>
+      <a href="#lash-studio" class="nav-link" data-nav data-i18n="nav.studio">ออกแบบลุค</a>
       <a href="#promotions" class="nav-link" data-nav data-i18n="nav.promotions">โปรโมชั่น</a>
       <a href="#gallery" class="nav-link" data-nav data-i18n="nav.gallery">ผลงาน</a>
       <a href="#reviews" class="nav-link" data-nav data-i18n="nav.reviews">รีวิว</a>
@@ -208,6 +209,7 @@
     <a href="#home" data-i18n="nav.home">หน้าแรก</a>
     <a href="#about" data-i18n="nav.about">เกี่ยวกับเรา</a>
     <a href="#services" data-i18n="nav.services">บริการ</a>
+    <a href="#lash-studio" data-i18n="nav.studio">ออกแบบลุค</a>
     <a href="#promotions" data-i18n="nav.promotions">โปรโมชั่น</a>
     <a href="#gallery" data-i18n="nav.gallery">ผลงาน</a>
     <a href="#reviews" data-i18n="nav.reviews">รีวิว</a>
@@ -356,6 +358,76 @@
             <a href="#promotions" class="service-card__link"><span data-i18n="services.viewPricing">ดูราคา</span> <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> — แว็กซ์ขน</span></a>
           </div>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== LASH STUDIO ========== -->
+  <!-- Pick a style, curl and length; the lashes are drawn live and the chosen
+       spec is handed to LINE, so the technician knows the look before arrival. -->
+  <section class="lash-studio" id="lash-studio" aria-labelledby="lashStudioTitle">
+    <div class="container">
+      <div class="section-head section-head--center" data-reveal>
+        <span class="eyebrow" data-i18n="lash.eyebrow">ลองก่อนจอง</span>
+        <h2 class="section-title" id="lashStudioTitle" data-i18n="lash.title">ออกแบบลุคขนตาของคุณ</h2>
+        <p class="section-sub" data-i18n="lash.sub">เลือกสไตล์ ความโค้ง และความยาวที่ชอบ แล้วส่งให้เราทางไลน์ ช่างจะเตรียมลุคนี้ไว้ก่อนคุณมาถึง</p>
+      </div>
+
+      <div class="studio" data-reveal>
+        <div class="studio__stage">
+          <svg class="studio__eye" id="lashPreview" viewBox="0 0 400 210" role="img" aria-describedby="lashSpec">
+            <defs>
+              <radialGradient id="irisG" cx=".38" cy=".34" r=".72">
+                <stop offset="0" stop-color="#7FB3AC"/>
+                <stop offset="1" stop-color="#1E3B33"/>
+              </radialGradient>
+            </defs>
+            <!-- lid, iris and waterline sit under the generated lashes -->
+            <path class="eye__white" d="M46,146 Q200,42 356,120 Q210,196 46,146 Z"/>
+            <circle class="eye__iris" cx="196" cy="126" r="33" fill="url(#irisG)"/>
+            <circle class="eye__pupil" cx="196" cy="126" r="13"/>
+            <circle class="eye__glint" cx="186" cy="116" r="5"/>
+            <path class="eye__lid" d="M46,146 Q200,42 356,120"/>
+            <path class="eye__lower" d="M46,146 Q210,196 356,120"/>
+            <g id="lashGroup" class="eye__lashes"></g>
+          </svg>
+          <p class="studio__spec" id="lashSpec" aria-live="polite"></p>
+        </div>
+
+        <div class="studio__controls">
+          <fieldset class="studio__group">
+            <legend data-i18n="lash.style">สไตล์</legend>
+            <div class="studio__opts">
+              <label class="chip"><input type="radio" name="lashStyle" value="classic" checked><span data-i18n="lash.styleClassic">คลาสสิก</span></label>
+              <label class="chip"><input type="radio" name="lashStyle" value="hybrid"><span data-i18n="lash.styleHybrid">ไฮบริด</span></label>
+              <label class="chip"><input type="radio" name="lashStyle" value="volume"><span data-i18n="lash.styleVolume">วอลลุ่ม</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="studio__group">
+            <legend data-i18n="lash.curl">ความโค้ง</legend>
+            <div class="studio__opts">
+              <label class="chip"><input type="radio" name="lashCurl" value="C" checked><span data-i18n="lash.curlC">C · โค้งธรรมชาติ</span></label>
+              <label class="chip"><input type="radio" name="lashCurl" value="CC"><span data-i18n="lash.curlCC">CC · โค้งกลาง</span></label>
+              <label class="chip"><input type="radio" name="lashCurl" value="D"><span data-i18n="lash.curlD">D · โค้งมาก</span></label>
+            </div>
+          </fieldset>
+
+          <fieldset class="studio__group">
+            <legend data-i18n="lash.length">ความยาว</legend>
+            <div class="studio__opts">
+              <label class="chip"><input type="radio" name="lashLength" value="short"><span data-i18n="lash.lenShort">8–10 มม.</span></label>
+              <label class="chip"><input type="radio" name="lashLength" value="medium" checked><span data-i18n="lash.lenMedium">10–12 มม.</span></label>
+              <label class="chip"><input type="radio" name="lashLength" value="long"><span data-i18n="lash.lenLong">12–14 มม.</span></label>
+            </div>
+          </fieldset>
+
+          <a class="btn btn--primary btn--block" id="lashSend" href="#" target="_blank" rel="noopener">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-line"/></svg>
+            <span data-i18n="lash.send">ส่งลุคนี้ทาง LINE</span>
+          </a>
+          <p class="studio__note" data-i18n="lash.note">ภาพเป็นเพียงตัวอย่างประกอบ ช่างจะช่วยปรับให้เข้ากับรูปตาของคุณหน้างาน</p>
+        </div>
       </div>
     </div>
   </section>
