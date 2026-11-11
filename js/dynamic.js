@@ -79,9 +79,10 @@
   }
 
   function setImage(root, selector, url) {
-    if (!url) return;
     var el = root && root.querySelector(selector);
-    if (el) el.src = url;
+    if (!el) return;
+    if (url) el.src = url;
+    else el.alt = '';
   }
 
   /* ---------- Sections ---------- */
@@ -95,6 +96,10 @@
     setHTML(hero, '.hero__desc', data.description);
     setText(hero, '.hero__badge span', data.badge);
     setImage(hero, '.hero__image-frame img', data.heroImage);
+    var media = hero.querySelector('.hero__media');
+    if (media) media.classList.toggle('hero__media--illustrated', !data.heroImage);
+    var heroImage = hero.querySelector('.hero__image-frame img');
+    if (heroImage) heroImage.alt = data.heroImage ? L(data.title).replace(/<[^>]*>/g, '') : '';
 
     var items = hero.querySelectorAll('.hero__trust-item');
     (data.stats || []).forEach(function (stat, i) {
@@ -156,21 +161,22 @@
     var grid = section.querySelector('.services-grid');
     if (!grid || !data.items || !data.items.length) return;
 
-    grid.innerHTML = data.items.map(function (item) {
+    grid.innerHTML = data.items.map(function (item, index) {
       var name = L(item.name);
       var img = item.image || placeholder(800, 600);
       return '' +
         '<article class="service-card" data-reveal>' +
           '<div class="service-card__img">' +
-            '<img src="' + esc(img) + '" alt="' + esc(name) + '" ' +
+            '<img src="' + esc(img) + '" alt="' + esc(item.image ? name : '') + '" ' +
                  'loading="lazy" decoding="async" width="800" height="600">' +
           '</div>' +
           '<div class="service-card__body">' +
             '<svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true"><use href="#lash-fan"/></svg>' +
             '<h3>' + esc(name) + '</h3>' +
             '<p>' + esc(L(item.description)) + '</p>' +
-            '<a href="#promotions" class="service-card__link">' +
-              '<span data-i18n="services.viewPricing">' + esc(T('services.viewPricing')) + '</span> ' +
+            '<a href="#contact" class="service-card__link" data-book-service="' +
+                esc(['Eyelash Extensions', 'Nails', 'Waxing'][index] || 'Other') + '">' +
+              '<span data-i18n="service.book">' + esc(T('service.book')) + '</span> ' +
               '<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg>' +
               '<span class="visually-hidden"> — ' + esc(name) + '</span>' +
             '</a>' +
@@ -190,7 +196,7 @@
     var grid = section.querySelector('.pricing-grid');
     if (!grid || !data.items || !data.items.length) return;
 
-    grid.innerHTML = data.items.map(function (item) {
+    grid.innerHTML = data.items.map(function (item, index) {
       var name = L(item.name);
       var features = (item.features || []).map(function (f) {
         return '<li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> ' + esc(L(f)) + '</li>';
@@ -201,11 +207,12 @@
           (L(item.tag) ? '<span class="pricing-card__tag">' + esc(L(item.tag)) + '</span>' : '') +
           '<h3 class="pricing-card__name">' + esc(name) + '</h3>' +
           '<p class="pricing-card__desc">' + esc(L(item.description)) + '</p>' +
-          '<div class="pricing-card__price">' +
-            '<span>' + esc(item.currency || '') + '</span>' + esc(item.price || '') +
-          '</div>' +
+          (item.price ? '<div class="pricing-card__price"><span>' + esc(item.currency || '') +
+            '</span>' + esc(item.price) + '</div>' :
+            '<div class="pricing-card__price pricing-card__price--quote" data-i18n="promo.quote">' + esc(T('promo.quote')) + '</div>') +
           '<ul class="pricing-card__features">' + features + '</ul>' +
-          '<a href="#contact" class="btn ' + (item.featured ? 'btn--primary' : 'btn--outline') + '">' +
+          '<a href="#contact" data-book-package="' + esc(['Eyelash Extensions', 'Eyelash Extensions', 'Waxing'][index] || 'Other') +
+              '" data-package-name="' + esc(name) + '" class="btn ' + (item.featured ? 'btn--primary' : 'btn--outline') + '">' +
             '<span data-i18n="promo.book">' + esc(T('promo.book')) + '</span>' +
             '<span class="visually-hidden">: ' + esc(name) + '</span>' +
           '</a>' +
@@ -231,7 +238,7 @@
       grid.classList.add('gallery-grid--empty');
       grid.innerHTML = '<p class="gallery-empty">' +
         '<span data-i18n="gallery.empty">' + esc(T('gallery.empty')) + '</span> ' +
-        '<a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener">@lunlalin.th</a> ' +
+        '<a href="https://instagram.com/lunlalin.th" data-social-handle="instagram" target="_blank" rel="noopener">@lunlalin.th</a> ' +
         '<span data-i18n="gallery.emptyTail">' + esc(T('gallery.emptyTail')) + '</span></p>';
       return;
     }
@@ -291,6 +298,25 @@
     if (!data) return;
     var contact = document.querySelector('.contact');
 
+    /* The admin edits handles, so every direct link must follow the same data.
+       Leave composed oaMessage links to the booking/lash-designer handlers. */
+    var line = String(data.line || '').trim();
+    if (/^@?[\w.\-]+$/.test(line)) {
+      var lineUrl = 'https://line.me/R/ti/p/' + (line[0] === '@' ? line : '@' + line);
+      document.querySelectorAll('a[href*="line.me"]').forEach(function (link) {
+        if (link.href.indexOf('/oaMessage/') === -1) link.href = lineUrl;
+      });
+    }
+    var instagram = String(data.instagram || '').trim().replace(/^@/, '');
+    if (/^[\w.]+$/.test(instagram)) {
+      document.querySelectorAll('a[href*="instagram.com"]').forEach(function (link) {
+        link.href = 'https://instagram.com/' + instagram;
+      });
+      document.querySelectorAll('[data-social-handle="instagram"]').forEach(function (el) {
+        el.textContent = '@' + instagram;
+      });
+    }
+
     if (contact) {
       /* Scoped to the contact cards: the booking hand-off panel also holds a
          tel: link and would otherwise be the first match in the section. */
@@ -302,6 +328,12 @@
       var telHref = 'tel:' + String(phone).replace(/[^\d+]/g, '');
       var telCard = contact.querySelector('.contact-card[href^="tel:"]');
       if (telCard && phone) telCard.href = telHref;
+      if (phone) {
+        document.querySelectorAll('a[href^="tel:"]').forEach(function (link) {
+          link.href = telHref;
+          if (link.closest('.booking-direct')) link.textContent = phone;
+        });
+      }
 
       /* Keep the booking fallback's number and href in step with it. */
       var telFallback = contact.querySelector('.booking-result__fallback a[href^="tel:"]');

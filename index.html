@@ -118,6 +118,7 @@
 </script>
 
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/refinement.css">
 
 <!-- i18n first: it resolves the language before the other scripts run. -->
 <script src="js/i18n.js" defer></script>
@@ -250,7 +251,7 @@
         <p class="hero__desc">ที่ลัลล์ลลิล ทุกบริการรังสรรค์ด้วยมือ ด้วยวัสดุคุณภาพพรีเมียมและเทคนิคที่ประณีต เพื่อลุคที่สวยอย่างเป็นธรรมชาติ</p>
         <div class="hero__actions">
           <a href="#contact" class="btn btn--primary" data-i18n="hero.cta">จองคิวเลย</a>
-          <a href="#services" class="btn btn--ghost" data-i18n="hero.explore">ดูบริการทั้งหมด</a>
+          <a href="#lash-studio" class="btn btn--ghost" data-i18n="hero.design">ออกแบบลุคขนตาของคุณ</a>
         </div>
         <div class="hero__trust">
           <div class="hero__trust-item"><strong>5,000+</strong><span>ลูกค้าที่ไว้วางใจ</span></div>
@@ -260,10 +261,16 @@
           <div class="hero__trust-item"><strong>100%</strong><span>วัสดุปลอดภัย</span></div>
         </div>
       </div>
-      <div class="hero__media" data-reveal>
+      <div class="hero__media hero__media--illustrated" data-reveal>
         <div class="hero__image-frame">
+          <div class="hero-art">
+            <span class="hero-art__eyebrow">LUNLALIN / BANGKOK</span>
+            <svg class="hero-art__mark" viewBox="0 -3 64 44" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
+            <p class="hero-art__title" data-i18n="hero.mediaLabel">ศิลปะแห่งขนตา ในแบบที่เป็นคุณ</p>
+            <a class="hero-art__link" href="#lash-studio"><span data-i18n="hero.mediaExplore">ค้นหาลุคที่ใช่สำหรับคุณ</span><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg></a>
+          </div>
           <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000' viewBox='0 0 800 1000'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23233A2C'/><stop offset='.55' stop-color='%232E4A38'/><stop offset='1' stop-color='%233C5D47'/></linearGradient><radialGradient id='v' cx='.5' cy='.44' r='.75'><stop offset='.45' stop-color='%23000000' stop-opacity='0'/><stop offset='1' stop-color='%23000000' stop-opacity='.22'/></radialGradient></defs><rect width='800' height='1000' fill='url(%23g)'/><g transform='translate(152.0 360.5) scale(7.750)' fill='%23C1EBE9' fill-opacity='.30'><path d='M2,38 Q10,10 6,2 M2,38 Q20,6 22,-2 M2,38 Q32,10 38,4 M2,38 Q42,18 52,14 M2,38 Q46,28 62,30'/></g><rect width='800' height='1000' fill='url(%23v)'/></svg>"
-               alt="Lash artistry at the Lunlalin studio" width="800" height="1000" fetchpriority="high" decoding="async">
+               alt="" width="800" height="1000" fetchpriority="high" decoding="async">
         </div>
         <div class="hero__badge">
           <span>Est. Bangkok</span>
@@ -279,11 +286,11 @@
       <div class="about__media" data-reveal>
         <div class="about__image-main">
           <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='1000' viewBox='0 0 800 1000'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23233A2C'/><stop offset='.55' stop-color='%232E4A38'/><stop offset='1' stop-color='%233C5D47'/></linearGradient><radialGradient id='v' cx='.5' cy='.44' r='.75'><stop offset='.45' stop-color='%23000000' stop-opacity='0'/><stop offset='1' stop-color='%23000000' stop-opacity='.22'/></radialGradient></defs><rect width='800' height='1000' fill='url(%23g)'/><g transform='translate(152.0 360.5) scale(7.750)' fill='%23C1EBE9' fill-opacity='.30'><path d='M2,38 Q10,10 6,2 M2,38 Q20,6 22,-2 M2,38 Q32,10 38,4 M2,38 Q42,18 52,14 M2,38 Q46,28 62,30'/></g><rect width='800' height='1000' fill='url(%23v)'/></svg>"
-               alt="The Lunlalin studio interior" width="800" height="1000" loading="lazy" decoding="async">
+               alt="" width="800" height="1000" loading="lazy" decoding="async">
         </div>
         <div class="about__image-accent">
           <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%23233A2C'/><stop offset='.55' stop-color='%232E4A38'/><stop offset='1' stop-color='%233C5D47'/></linearGradient><radialGradient id='v' cx='.5' cy='.44' r='.75'><stop offset='.45' stop-color='%23000000' stop-opacity='0'/><stop offset='1' stop-color='%23000000' stop-opacity='.22'/></radialGradient></defs><rect width='800' height='800' fill='url(%23g)'/><g transform='translate(152.0 260.5) scale(7.750)' fill='%23C1EBE9' fill-opacity='.30'><path d='M2,38 Q10,10 6,2 M2,38 Q20,6 22,-2 M2,38 Q32,10 38,4 M2,38 Q42,18 52,14 M2,38 Q46,28 62,30'/></g><rect width='800' height='800' fill='url(%23v)'/></svg>"
-               alt="Close-up of a completed lash set" width="800" height="800" loading="lazy" decoding="async">
+               alt="" width="800" height="800" loading="lazy" decoding="async">
         </div>
       </div>
 
@@ -342,7 +349,7 @@
             <svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
             <h3>ต่อขนตา</h3>
             <p>ต่อทีละเส้นทั้งแบบคลาสสิก ไฮบริด และวอลลุ่ม ด้วยเส้นใยละเอียดพิเศษ ให้ขนตาฟูแน่นแต่เบาสบาย</p>
-            <a href="#promotions" class="service-card__link"><span data-i18n="services.viewPricing">ดูราคา</span> <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> — ต่อขนตา</span></a>
+            <a href="#contact" class="service-card__link" data-book-service="Eyelash Extensions"><span data-i18n="service.book">สอบถามบริการนี้</span> <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> — ต่อขนตา</span></a>
           </div>
         </article>
 
@@ -355,7 +362,7 @@
             <svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
             <h3>ทำเล็บ</h3>
             <p>เจลสีติดทน เพ้นท์เล็บ และสปามือ ให้มือของคุณดูสวยเนี้ยบอยู่เสมอ</p>
-            <a href="#promotions" class="service-card__link"><span data-i18n="services.viewPricing">ดูราคา</span> <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> — ทำเล็บ</span></a>
+            <a href="#contact" class="service-card__link" data-book-service="Nails"><span data-i18n="service.book">สอบถามบริการนี้</span> <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> — ทำเล็บ</span></a>
           </div>
         </article>
 
@@ -368,7 +375,7 @@
             <svg class="service-card__icon" viewBox="0 0 64 40" aria-hidden="true" focusable="false"><use href="#lash-fan"/></svg>
             <h3>แว็กซ์ขน</h3>
             <p>แว็กซ์อย่างนุ่มนวลและแม่นยำ ด้วยแว็กซ์คุณภาพสูง เพื่อผิวเนียนเรียบไร้ขน</p>
-            <a href="#promotions" class="service-card__link"><span data-i18n="services.viewPricing">ดูราคา</span> <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> — แว็กซ์ขน</span></a>
+            <a href="#contact" class="service-card__link" data-book-service="Waxing"><span data-i18n="service.book">สอบถามบริการนี้</span> <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-right"/></svg><span class="visually-hidden"> — แว็กซ์ขน</span></a>
           </div>
         </article>
       </div>
@@ -466,32 +473,32 @@
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> ฟรี! ล้างขนตา + ชุดดูแลหลังทำ</li>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> ใช้เวลา 90 นาที</li>
           </ul>
-          <a href="#contact" class="btn btn--outline" data-i18n-book><span data-i18n="promo.book">จองแพ็กเกจนี้</span><span class="visually-hidden">: คลาสสิกซิกเนเจอร์</span></a>
+          <a href="#contact" class="btn btn--outline" data-book-package="Eyelash Extensions" data-package-name="คลาสสิกซิกเนเจอร์"><span data-i18n="promo.book">จองแพ็กเกจนี้</span><span class="visually-hidden">: คลาสสิกซิกเนเจอร์</span></a>
         </article>
 
         <article class="pricing-card pricing-card--featured" data-reveal>
           <span class="pricing-card__tag">ยอดนิยม</span>
           <h3 class="pricing-card__name">เซ็ตขนตา + เล็บ</h3>
           <p class="pricing-card__desc">ต่อขนตาเต็มเซ็ต + ทำเล็บเจล</p>
-          <div class="pricing-card__price"><span>฿</span>2,500</div>
+          <div class="pricing-card__price pricing-card__price--quote" data-i18n="promo.quote">สอบถามราคา</div>
           <ul class="pricing-card__features">
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> ต่อขนตาแบบวอลลุ่ม</li>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> ทาเจลสีที่มือ</li>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> ใช้เวลา 150 นาที</li>
           </ul>
-          <a href="#contact" class="btn btn--primary" data-i18n-book><span data-i18n="promo.book">จองแพ็กเกจนี้</span><span class="visually-hidden">: เซ็ตขนตา + เล็บ</span></a>
+          <a href="#contact" class="btn btn--primary" data-book-package="Eyelash Extensions" data-package-name="เซ็ตขนตา + เล็บ"><span data-i18n="promo.book">จองแพ็กเกจนี้</span><span class="visually-hidden">: เซ็ตขนตา + เล็บ</span></a>
         </article>
 
         <article class="pricing-card" data-reveal>
           <h3 class="pricing-card__name">แว็กซ์สปาเต็มรูปแบบ</h3>
           <p class="pricing-card__desc">ทรีตเมนต์เพื่อผิวเนียนนุ่ม</p>
-          <div class="pricing-card__price"><span>฿</span>1,800</div>
+          <div class="pricing-card__price pricing-card__price--quote" data-i18n="promo.quote">สอบถามราคา</div>
           <ul class="pricing-card__features">
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> แว็กซ์ขาและแขนเต็มส่วน</li>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> โลชั่นบำรุงผิวสูตรอ่อนโยน</li>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg> สิทธิ์จองคิวก่อนใคร</li>
           </ul>
-          <a href="#contact" class="btn btn--outline" data-i18n-book><span data-i18n="promo.book">จองแพ็กเกจนี้</span><span class="visually-hidden">: แว็กซ์สปาเต็มรูปแบบ</span></a>
+          <a href="#contact" class="btn btn--outline" data-book-package="Waxing" data-package-name="แว็กซ์สปาเต็มรูปแบบ"><span data-i18n="promo.book">จองแพ็กเกจนี้</span><span class="visually-hidden">: แว็กซ์สปาเต็มรูปแบบ</span></a>
         </article>
       </div>
     </div>
@@ -565,8 +572,32 @@
       <h2 class="banner__title" id="bannerTitle">ติดตามผลงานขนตาล่าสุดของเรา</h2>
       <p class="banner__desc">เซ็ตใหม่ ๆ ภาพก่อน-หลัง และเบื้องหลังการทำงาน อัปเดตทุกสัปดาห์ทางอินสตาแกรม</p>
       <a href="https://instagram.com/lunlalin.th" target="_blank" rel="noopener" class="btn btn--primary">
-        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg> ติดตาม @lunlalin.th
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-instagram"/></svg> <span data-social-handle="instagram">@lunlalin.th</span>
       </a>
+    </div>
+  </section>
+
+  <!-- ========== BEFORE YOUR VISIT ========== -->
+  <section class="faq" id="questions" aria-labelledby="faqTitle">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow" data-i18n="faq.eyebrow">ก่อนนัดหมาย</span>
+        <h2 class="section-title" id="faqTitle" data-i18n="faq.title">คำถามที่พบบ่อย</h2>
+      </div>
+      <div class="faq-grid" data-reveal>
+        <details class="faq-item">
+          <summary data-i18n="faq.styleQ">ควรเลือกขนตาสไตล์ไหนดี?</summary>
+          <p data-i18n="faq.styleA">ลองเลือกสไตล์ ความโค้ง และความยาวในตัวออกแบบลุค แล้วส่งลุคที่ชอบทาง LINE ทีมงานจะช่วยแนะนำให้เข้ากับความต้องการของคุณ</p>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.bookingQ">จองคิวอย่างไร?</summary>
+          <p data-i18n="faq.bookingA">เตรียมคำขอผ่านแบบฟอร์มแล้วส่งทาง LINE หรือทัก LINE โดยตรง ทีมงานจะยืนยันวันและเวลานัดหมายกับคุณอีกครั้ง</p>
+        </details>
+        <details class="faq-item">
+          <summary data-i18n="faq.visitQ">มาครั้งแรกควรแจ้งอะไรบ้าง?</summary>
+          <p data-i18n="faq.visitA">บอกลุคที่ต้องการ พร้อมคำถามหรือเรื่องความไวต่อผลิตภัณฑ์ที่อยากให้ทีมงานทราบทาง LINE ก่อนนัดหมาย</p>
+        </details>
+      </div>
     </div>
   </section>
 
@@ -574,14 +605,17 @@
   <section class="contact section-band" id="contact" aria-labelledby="contactTitle">
     <div class="container">
       <div class="section-head section-head--center" data-reveal>
-        <span class="eyebrow">ติดต่อเรา</span>
-        <h2 class="section-title" id="contactTitle">จองคิวของคุณ</h2>
+        <span class="eyebrow" data-i18n="contact.eyebrow">ติดต่อเรา</span>
+        <h2 class="section-title" id="contactTitle" data-i18n="contact.title">จองคิวของคุณ</h2>
         <span class="section-flourish" aria-hidden="true"><svg viewBox="0 -3 64 44" focusable="false"><path d="M2,38 Q10,10 6,2"/><path d="M2,38 Q20,6 22,-2"/><path d="M2,38 Q32,10 38,4"/><path d="M2,38 Q42,18 52,14"/><path d="M2,38 Q46,28 62,30"/></svg></span>
-        <p class="section-sub">บอกเราสักนิดว่าคุณต้องการอะไร แล้วเราจะยืนยันคิวให้ภายใน 24 ชั่วโมง</p>
+        <p class="section-sub" data-i18n="contact.subtitle">เตรียมคำขอจองคิว แล้วส่งให้เราทาง LINE ทางร้านจะยืนยันวันและเวลากับคุณอีกครั้ง</p>
       </div>
 
       <div class="contact-grid">
         <form class="booking-form" id="bookingForm" data-reveal novalidate>
+          <p class="booking-intro" id="bookingHelp" data-i18n="booking.help">ตรวจสอบข้อมูลก่อนส่งทาง LINE การกรอกแบบฟอร์มนี้ยังไม่ใช่การยืนยันคิว</p>
+          <fieldset class="booking-fields" id="bookingFields" disabled aria-describedby="bookingHelp">
+          <legend class="visually-hidden" data-i18n="contact.title">จองคิวของคุณ</legend>
           <div class="form-row">
             <div class="form-field">
               <label for="fullName"><span data-i18n="form.name">ชื่อ-นามสกุล</span> <span class="req" aria-hidden="true">*</span></label>
@@ -592,15 +626,15 @@
             <div class="form-field">
               <label for="phone"><span data-i18n="form.phone">เบอร์โทรศัพท์</span> <span class="req" aria-hidden="true">*</span></label>
               <input type="tel" id="phone" name="phone" placeholder="089-988-9896"
-                     autocomplete="tel" inputmode="tel" pattern="[0-9()+\-\s]{6,}" required aria-describedby="phoneError">
+                     autocomplete="tel" inputmode="tel" required aria-describedby="phoneError">
               <span class="form-error" id="phoneError"></span>
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-field">
-              <label for="line"><span data-i18n="form.line">ไลน์ไอดี</span> <span class="req" aria-hidden="true">*</span></label>
-              <input type="text" id="line" name="line" placeholder="@yourlineid" required aria-describedby="lineError">
+              <label for="line"><span data-i18n="form.line">ไลน์ไอดี (ไม่บังคับ)</span></label>
+              <input type="text" id="line" name="line" placeholder="yourlineid" autocomplete="off" aria-describedby="lineError">
               <span class="form-error" id="lineError"></span>
             </div>
             <div class="form-field">
@@ -636,11 +670,16 @@
           </div>
 
           <button type="submit" class="btn btn--primary btn--block">
-            <span class="btn__label" data-i18n="form.submit">ส่งคำขอจองคิว</span>
+            <span class="btn__label" data-i18n="form.submit">ตรวจสอบคำขอจองคิว</span>
             <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-send"/></svg>
           </button>
 
           <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+          </fieldset>
+          <div class="booking-direct">
+            <a href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-line"/></svg><span data-i18n="sticky.book">จองคิวทาง LINE</span></a>
+            <a href="tel:0899889896">089-988-9896</a>
+          </div>
 
           <!-- Shown once the form validates: the booking is composed here and
                handed to LINE, with copy and phone fallbacks if LINE cannot open. -->
@@ -752,6 +791,10 @@
   <span class="lightbox__counter" id="lightboxCounter"></span>
 </div>
 
+<aside class="quick-book" data-i18n-aria="sticky.book" aria-label="จองคิวทาง LINE">
+  <span class="quick-book__label">Lunlalin <small>Bangkok</small></span>
+  <a class="btn btn--primary" href="https://line.me/R/ti/p/@lunlalin" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-line"/></svg><span data-i18n="sticky.book">จองคิวทาง LINE</span></a>
+</aside>
 <button class="back-to-top" id="backToTop" type="button" data-i18n-aria="backToTop" aria-label="กลับขึ้นด้านบน"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow-up"/></svg></button>
 
 </body>
