@@ -211,8 +211,8 @@
           "th": "ต่อขนตาเต็มเซ็ต + ทำเล็บเจล",
           "en": "Full lash set + gel manicure."
         },
-        "price": "2,500",
-        "currency": "฿",
+        "price": "",
+        "currency": "",
         "features": [
           {
             "th": "ต่อขนตาแบบวอลลุ่ม",
@@ -242,8 +242,8 @@
           "th": "ทรีตเมนต์เพื่อผิวเนียนนุ่ม",
           "en": "Silky smooth skin treatment."
         },
-        "price": "1,800",
-        "currency": "฿",
+        "price": "",
+        "currency": "",
         "features": [
           {
             "th": "แว็กซ์ขาและแขนเต็มส่วน",

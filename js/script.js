@@ -415,6 +415,16 @@
       var wrap = fieldOf(input);
       if (!wrap) return true;
       var errorEl = $('.form-error', wrap);
+      var value = input.value.trim();
+      input.setCustomValidity('');
+      if (input.required && !value) {
+        input.setCustomValidity(t('form.required'));
+      } else if (input.id === 'phone' && value) {
+        var digits = value.replace(/\D/g, '');
+        if (!/^\+?[\d()\s-]+$/.test(value) || digits.length < 6 || digits.length > 15) {
+          input.setCustomValidity(t('form.phoneInvalid'));
+        }
+      }
       var ok = input.checkValidity();
       wrap.setAttribute('data-invalid', String(!ok));
       input.setAttribute('aria-invalid', String(!ok));
@@ -448,6 +458,64 @@
     var lineBtn = document.getElementById('bookingLine');
     var copyBtn = document.getElementById('bookingCopy');
     var summaryBox = document.getElementById('bookingSummary');
+    var lastPackageNote = '';
+
+    function clearPackageNote() {
+      var message = document.getElementById('message');
+      if (message && lastPackageNote) {
+        message.value = message.value.split('\n').filter(function (line) {
+          return line !== lastPackageNote;
+        }).join('\n').trim();
+      }
+      lastPackageNote = '';
+    }
+
+    function clearHandoff() {
+      if (result) result.hidden = true;
+      if (summaryBox) summaryBox.value = '';
+      if (lineBtn) lineBtn.removeAttribute('href');
+      if (note) { note.textContent = ''; note.removeAttribute('data-state'); }
+    }
+
+    /* A prepared message must never outlive the details it was made from. */
+    form.addEventListener('input', clearHandoff);
+    form.addEventListener('change', function (e) {
+      if (e.target.id === 'service') clearPackageNote();
+      clearHandoff();
+    });
+    document.addEventListener('lunlalin:langchange', function () {
+      clearHandoff();
+      fields.forEach(function (input) {
+        var wrap = fieldOf(input);
+        if (wrap && wrap.getAttribute('data-invalid') === 'true') validate(input);
+      });
+    });
+
+    /* Delegated because service and package cards are rebuilt on language change. */
+    document.addEventListener('click', function (e) {
+      var link = e.target.closest ? e.target.closest('[data-book-service], [data-book-package]') : null;
+      if (!link) return;
+      var service = document.getElementById('service');
+      var requested = link.getAttribute('data-book-service') || link.getAttribute('data-book-package');
+      if (!service || !Array.prototype.some.call(service.options, function (option) {
+        return option.value === requested;
+      })) return;
+
+      service.value = requested;
+      clearPackageNote();
+      clearHandoff();
+      validate(service);
+
+      var packageName = link.getAttribute('data-package-name');
+      var message = document.getElementById('message');
+      if (packageName && message) {
+        var remaining = message.value.trim();
+        lastPackageNote = t('booking.packageNote', { name: packageName });
+        message.value = remaining ? remaining + '\n' + lastPackageNote : lastPackageNote;
+      }
+      /* The anchor keeps its normal #contact navigation. */
+      service.focus({ preventScroll: true });
+    });
 
     function lineId() {
       /* Read the studio's LINE handle off the page so it follows content.json. */
@@ -535,14 +603,13 @@
 
       var message = composeMessage();
       showHandoff(message);
-
-      /* Opening here keeps the call inside the click gesture, so it is not
-         treated as a pop-up. If the browser blocks it anyway, the panel above
-         still carries the LINE button, the copy action and the phone number. */
-      try {
-        window.open(lineBtn.href, '_blank', 'noopener');
-      } catch (err) { /* the panel is the fallback */ }
+      /* The customer reviews the summary before explicitly opening LINE. */
     });
+
+    /* Static markup stays disabled if scripts fail; enable only after the
+       handler above prevents the browser's default GET form submission. */
+    var bookingFields = document.getElementById('bookingFields');
+    if (bookingFields) bookingFields.disabled = false;
   }
 
   /* =========================================================
